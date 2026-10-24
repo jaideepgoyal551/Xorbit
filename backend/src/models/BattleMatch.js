@@ -8,6 +8,17 @@ const battlePlayerSchema = new mongoose.Schema({
   },
   joinedAt: { type: Date, default: Date.now },
   status: { type: String, enum: ['coding', 'submitted'], default: 'coding' },
+  leetcodeUsername: { type: String, default: '' },
+  verificationStatus: {
+    type: String,
+    enum: ['pending', 'verified', 'unavailable'],
+    default: 'pending'
+  },
+  solvedProblems: [{
+    slug: { type: String, required: true },
+    solvedAt: { type: Date, required: true },
+    points: { type: Number, required: true }
+  }],
   code: { type: String, default: '', maxlength: 65536 },
   language: { type: String, default: 'cpp20' },
   verdict: { type: String, default: '' },
@@ -28,8 +39,15 @@ const battleMatchSchema = new mongoose.Schema({
   problem: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ProblemSet',
-    required: true
+    default: null
   },
+  leetcodeProblems: [{
+    title: { type: String, required: true },
+    slug: { type: String, required: true },
+    link: { type: String, required: true },
+    difficulty: { type: String, required: true },
+    topic: { type: String, required: true }
+  }],
   players: {
     type: [battlePlayerSchema],
     validate: {
@@ -37,10 +55,13 @@ const battleMatchSchema = new mongoose.Schema({
       message: 'A battle must have one or two players'
     }
   },
-  durationSeconds: { type: Number, default: 900 },
+  durationSeconds: { type: Number, default: 2700 },
   startsAt: { type: Date, default: null },
   endsAt: { type: Date, default: null },
   finishedAt: { type: Date, default: null },
+  lastVerificationAttemptAt: { type: Date, default: null },
+  finalVerificationAttemptAt: { type: Date, default: null },
+  finalVerificationCompletedAt: { type: Date, default: null },
   winner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }
 }, { timestamps: true });
 

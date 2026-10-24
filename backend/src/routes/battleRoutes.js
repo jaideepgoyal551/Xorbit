@@ -11,7 +11,5 @@ router.delete('/queue', battleController.leaveQuickQueue);
 router.post('/rooms', battleController.createFriendRoom);
 router.post('/rooms/:inviteCode/join', battleController.joinFriendRoom);
 router.get('/:battleId', battleController.getBattle);
-router.post('/:battleId/run', battleController.runBattleCode);
-router.post('/:battleId/submit', battleController.submitBattleCode);
 
 module.exports = router;

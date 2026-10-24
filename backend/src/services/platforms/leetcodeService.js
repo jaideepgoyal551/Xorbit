@@ -509,11 +509,19 @@ const fetchLeetCodeSolvedProblems = async (username) => {
     // Map submissions to unique solved problem titles and slugs
     const solvedMap = new Map();
     submissions.forEach(sub => {
-      if (!solvedMap.has(sub.titleSlug)) {
+      const submittedAt = new Date(Number(sub.timestamp) * 1000);
+      const existing = solvedMap.get(sub.titleSlug);
+      if (existing) {
+        existing.submissionTimestamps.push(submittedAt);
+      }
+      if (!existing || submittedAt > existing.lastSolvedAt) {
         solvedMap.set(sub.titleSlug, {
           title: sub.title,
           titleSlug: sub.titleSlug,
-          lastSolvedAt: new Date(sub.timestamp * 1000)
+          lastSolvedAt: submittedAt,
+          submissionTimestamps: existing
+            ? existing.submissionTimestamps
+            : [submittedAt]
         });
       }
     });

@@ -217,10 +217,12 @@ Users link their coding platform usernames in Settings. A background sync proces
 A cron job runs every minute, checks for upcoming contests, and queues reminder emails. The email queue uses MongoDB as its backend (configurable to Redis via BullMQ). A background worker processes the queue and sends emails via Gmail SMTP.
 
 ### 1v1 Coding Battles
-From the Contests page, users can find a quick match or create/join a friend room with an invite code. Both players get the same public problem, selected by topic and difficulty, and a 15-minute timer. Sample runs and submissions use the problem's test cases; the winner is decided by hidden cases passed, then execution time and memory. Battle problems must be published in Problem Sets with visibility set to `public` and judge test cases configured. The initial battle release does not include an Elo ladder or AI code-quality judging.
+From the Contests page, users can find a quick match or create/join a friend room with an invite code. Both players get the same three LeetCode problems, selected by topic and difficulty, and a 45-minute timer. Link a LeetCode username in Platforms before joining. The arena links directly to LeetCode and checks each player's recent accepted submissions; each verified solve during the battle is worth 10 points, with equal scores decided by who reached that score first.
+
+LeetCode submission verification relies on its public, unofficial recent-submissions GraphQL query (up to 500 recent accepted submissions). If LeetCode cannot be reached, verification is marked unavailable and no unverified points are awarded. A linked username is user-provided and is not proof of account ownership.
 
 ### Real-Time Collaboration
-Socket.IO connections are established post-authentication. Users join platform-specific rooms for sync updates, society/room channels for chat, and authorized battle rooms for opponent presence and coding progress. The server broadcasts sync progress, new messages, and battle state changes instantly.
+Socket.IO connections are established post-authentication. Users join platform-specific rooms for sync updates, society/room channels for chat, and authorized battle rooms for match state changes. The server broadcasts sync progress, new messages, and battle lifecycle updates.
 
 ---
 

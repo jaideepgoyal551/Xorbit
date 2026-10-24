@@ -1,111 +1,95 @@
 const crypto = require('crypto');
 const BattleMatch = require('../models/BattleMatch');
-const ProblemSet = require('../models/ProblemSet');
-const codeExecutionService = require('../services/codeExecutionService');
+const { problemsBank } = require('../data/problemsBank');
+const { fetchLeetCodeSolvedProblems } = require('../services/platforms/leetcodeService');
 
-const BATTLE_DURATION_SECONDS = 15 * 60;
+const BATTLE_DURATION_SECONDS = 45 * 60;
 const QUEUE_MAX_AGE_MS = 15 * 60 * 1000;
 const FRIEND_ROOM_MAX_AGE_MS = 24 * 60 * 60 * 1000;
-const ALLOWED_DIFFICULTIES = ['easy', 'medium', 'hard', 'expert'];
-const ALLOWED_LANGUAGES = ['cpp20', 'c', 'java', 'python3', 'pypy3'];
+const VERIFICATION_INTERVAL_MS = 30 * 1000;
+const POINTS_PER_PROBLEM = 10;
+const ALLOWED_DIFFICULTIES = ['easy', 'medium', 'hard'];
 
-const escapeRegex = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const getLeetCodeProblems = ({ topic, difficulty }) => {
+  const candidates = Object.entries(problemsBank).flatMap(([problemTopic, topicProblems]) =>
+    topicProblems
+      .filter(problem => problem.platform === 'leetcode')
+      .filter(problem => !topic || topic === problemTopic)
+      .filter(problem => !difficulty || problem.difficulty.toLowerCase() === difficulty)
+      .map(problem => ({ ...problem, topic: problemTopic }))
+  );
+  const uniqueProblems = [...new Map(candidates.map(problem => [problem.slug, problem])).values()];
 
-const normalizeOptions = body => {
-  const topic = typeof body.topic === 'string' ? body.topic.trim().slice(0, 60) : '';
-  const difficulty = ALLOWED_DIFFICULTIES.includes(body.difficulty) ? body.difficulty : 'medium';
-  return { topic, difficulty };
-};
-
-const getBattleProblem = async ({ topic, difficulty }) => {
-  const query = {
-    visibility: 'public',
-    difficulty,
-    'testCases.0': { $exists: true }
-  };
-  if (topic) query.tags = new RegExp(`^${escapeRegex(topic)}$`, 'i');
-
-  const problems = await ProblemSet.find(query)
-    .select('_id title problemCode slug description inputFormat outputFormat constraints explanation difficulty tags sampleInput sampleOutput testCases maxScore timeLimit memoryLimit allowedLanguages')
-    .limit(250)
-    .lean();
-
-  if (!problems.length) return null;
-  return problems[crypto.randomInt(problems.length)];
-};
-
-const getSampleCases = problem => {
-  const samples = (problem.testCases || []).filter(testCase => testCase.isSample);
-  if (samples.length) return samples;
-  if (problem.sampleInput !== undefined && problem.sampleOutput !== undefined) {
-    return [{ input: problem.sampleInput, expectedOutput: problem.sampleOutput, isSample: true }];
+  for (let index = uniqueProblems.length - 1; index > 0; index--) {
+    const swapIndex = crypto.randomInt(index + 1);
+    [uniqueProblems[index], uniqueProblems[swapIndex]] = [uniqueProblems[swapIndex], uniqueProblems[index]];
   }
-  return [];
+
+  return uniqueProblems.slice(0, 3);
 };
 
-const serializeProblem = problem => {
-  if (!problem) return null;
-  return {
-    _id: problem._id,
+const normalizeOptions = body => ({
+  topic: typeof body.topic === 'string' ? body.topic.trim().slice(0, 60) : '',
+  difficulty: ALLOWED_DIFFICULTIES.includes(body.difficulty) ? body.difficulty : 'medium'
+});
+
+const getLinkedLeetCodeUsername = user =>
+  typeof user.platforms?.leetcode === 'string' ? user.platforms.leetcode.trim() : '';
+
+const requireLeetCodeAccount = (req, res) => {
+  const username = getLinkedLeetCodeUsername(req.user);
+  if (username) return username;
+
+  res.status(400).json({
+    success: false,
+    error: 'Link your LeetCode username in Platforms before joining a battle.'
+  });
+  return null;
+};
+
+const serializeBattle = battle => ({
+  _id: battle._id,
+  inviteCode: battle.inviteCode,
+  mode: battle.mode,
+  status: battle.status,
+  topic: battle.topic,
+  difficulty: battle.difficulty,
+  durationSeconds: battle.durationSeconds,
+  pointsPerProblem: POINTS_PER_PROBLEM,
+  startsAt: battle.startsAt,
+  endsAt: battle.endsAt,
+  finishedAt: battle.finishedAt,
+  winner: battle.winner?._id || battle.winner || null,
+  problems: (battle.leetcodeProblems || []).map(problem => ({
     title: problem.title,
-    problemCode: problem.problemCode,
     slug: problem.slug,
-    description: problem.description,
-    inputFormat: problem.inputFormat,
-    outputFormat: problem.outputFormat,
-    constraints: problem.constraints,
-    explanation: problem.explanation,
+    link: problem.link,
     difficulty: problem.difficulty,
-    tags: problem.tags,
-    sampleCases: getSampleCases(problem).map(({ input, expectedOutput }) => ({ input, expectedOutput })),
-    timeLimit: problem.timeLimit,
-    memoryLimit: problem.memoryLimit,
-    allowedLanguages: problem.allowedLanguages
-  };
-};
-
-const serializeBattle = (battle, currentUserId) => {
-  const currentId = currentUserId.toString();
-  return {
-    _id: battle._id,
-    inviteCode: battle.inviteCode,
-    mode: battle.mode,
-    status: battle.status,
-    topic: battle.topic,
-    difficulty: battle.difficulty,
-    durationSeconds: battle.durationSeconds,
-    startsAt: battle.startsAt,
-    endsAt: battle.endsAt,
-    finishedAt: battle.finishedAt,
-    winner: battle.winner?._id || battle.winner || null,
-    problem: serializeProblem(battle.problem),
-    players: (battle.players || []).map(player => {
-      const user = player.user?._id ? player.user : { _id: player.user };
-      const ownPlayer = user._id.toString() === currentId;
-      return {
-        user: {
-          _id: user._id,
-          username: user.username || 'Coder',
-          fullName: user.fullName || '',
-          avatar: user.avatar || ''
-        },
-        status: player.status,
-        score: player.score,
-        testCasesPassed: player.testCasesPassed,
-        totalTestCases: player.totalTestCases,
-        executionTime: player.executionTime,
-        memoryUsed: player.memoryUsed,
-        verdict: player.verdict,
-        submittedAt: player.submittedAt,
-        ...(ownPlayer ? { code: player.code, language: player.language } : {})
-      };
-    })
-  };
-};
+    topic: problem.topic
+  })),
+  players: (battle.players || []).map(player => {
+    const user = player.user?._id ? player.user : { _id: player.user };
+    return {
+      user: {
+        _id: user._id,
+        username: user.username || 'Coder',
+        fullName: user.fullName || '',
+        avatar: user.avatar || ''
+      },
+      score: player.score,
+      solvedProblems: (player.solvedProblems || []).map(solved => ({
+        slug: solved.slug,
+        solvedAt: solved.solvedAt,
+        points: solved.points
+      })),
+      verificationStatus: player.verificationStatus
+    };
+  })
+});
 
 const loadBattle = id => BattleMatch.findById(id)
   .populate('players.user', 'username fullName avatar')
-  .populate('problem');
+  .populate('winner', 'username fullName avatar');
 
 const emitBattleUpdate = (req, battle) => {
   const io = req.app.get('io');
@@ -115,32 +99,37 @@ const emitBattleUpdate = (req, battle) => {
     status: battle.status,
     players: battle.players.map(player => ({
       userId: player.user._id?.toString?.() || player.user.toString(),
-      status: player.status,
       score: player.score,
-      testCasesPassed: player.testCasesPassed,
-      totalTestCases: player.totalTestCases,
-      verdict: player.verdict,
-      executionTime: player.executionTime,
-      memoryUsed: player.memoryUsed,
-      submittedAt: player.submittedAt
+      solvedProblems: player.solvedProblems,
+      verificationStatus: player.verificationStatus
     })),
     winner: battle.winner?._id?.toString?.() || battle.winner?.toString?.() || null,
     endsAt: battle.endsAt
   });
 };
 
+const getCompletionTime = player => {
+  const solves = [...(player.solvedProblems || [])].sort(
+    (first, second) => new Date(first.solvedAt) - new Date(second.solvedAt)
+  );
+  return solves[player.score / POINTS_PER_PROBLEM - 1]?.solvedAt || null;
+};
+
+const getPlayerUserId = player => player.user?._id || player.user;
+
 const comparePlayers = players => {
   const [first, second] = players;
   if (!first || !second || first.score === second.score && first.score === 0) return null;
-  if (!second || first.score > second.score) return first.user._id || first.user;
-  if (second.score > first.score) return second.user._id || second.user;
-  if (first.executionTime !== second.executionTime) {
-    return first.executionTime < second.executionTime ? (first.user._id || first.user) : (second.user._id || second.user);
+  if (first.score !== second.score) {
+    return getPlayerUserId(first.score > second.score ? first : second);
   }
-  if (first.memoryUsed !== second.memoryUsed) {
-    return first.memoryUsed < second.memoryUsed ? (first.user._id || first.user) : (second.user._id || second.user);
-  }
-  return first.submittedAt <= second.submittedAt ? (first.user._id || first.user) : (second.user._id || second.user);
+
+  const firstCompletedAt = getCompletionTime(first);
+  const secondCompletedAt = getCompletionTime(second);
+  if (!firstCompletedAt || !secondCompletedAt || new Date(firstCompletedAt).getTime() === new Date(secondCompletedAt).getTime()) return null;
+  return new Date(firstCompletedAt) < new Date(secondCompletedAt)
+    ? getPlayerUserId(first)
+    : getPlayerUserId(second);
 };
 
 const finishBattle = async battle => {
@@ -153,7 +142,12 @@ const finishBattle = async battle => {
 };
 
 const ensureBattleTime = async battle => {
-  if (battle.status === 'active' && battle.endsAt && battle.endsAt <= new Date()) {
+  if (
+    battle.status === 'active' &&
+    battle.endsAt &&
+    battle.endsAt <= new Date() &&
+    battle.finalVerificationCompletedAt
+  ) {
     return finishBattle(battle);
   }
   if (battle.status === 'waiting') {
@@ -169,55 +163,137 @@ const ensureBattleTime = async battle => {
   return battle;
 };
 
-const findWaitingMatch = async ({ mode, topic, difficulty, userId }) => {
-  const filter = {
-    status: 'waiting',
-    mode,
-    topic,
-    difficulty,
-    players: { $size: 1 },
-    'players.user': { $ne: userId }
-  };
+const verifyLeetCodeResults = async (battleId, isFinalAttempt = false) => {
+  const now = new Date();
+  const attemptCutoff = new Date(now.getTime() - VERIFICATION_INTERVAL_MS);
+  const claimFilter = { _id: battleId, status: 'active' };
+  if (isFinalAttempt) {
+    claimFilter.finalVerificationCompletedAt = null;
+    claimFilter.$or = [
+      { finalVerificationAttemptAt: null },
+      { finalVerificationAttemptAt: { $lte: attemptCutoff } }
+    ];
+  } else {
+    claimFilter.endsAt = { $gt: now };
+    claimFilter.$or = [
+      { lastVerificationAttemptAt: null },
+      { lastVerificationAttemptAt: { $lte: attemptCutoff } }
+    ];
+  }
+  const battle = await BattleMatch.findOneAndUpdate(
+    claimFilter,
+    {
+      $set: {
+        lastVerificationAttemptAt: now,
+        ...(isFinalAttempt ? { finalVerificationAttemptAt: now } : {})
+      }
+    },
+    { new: true }
+  ).populate('players.user', 'platforms');
+  if (!battle) return;
 
-  const waiting = await BattleMatch.findOne(filter).sort({ createdAt: 1 });
-  return waiting;
+  const verificationResults = await Promise.all(battle.players.map(async player => {
+    const username = player.leetcodeUsername || getLinkedLeetCodeUsername(player.user);
+    if (!username) return { success: false, data: [] };
+    return fetchLeetCodeSolvedProblems(username);
+  }));
+
+  const problemSlugs = new Set(battle.leetcodeProblems.map(problem => problem.slug));
+  const startTime = new Date(battle.startsAt).getTime();
+  const endTime = new Date(battle.endsAt).getTime();
+  const updates = battle.players.map((player, index) => {
+    const result = verificationResults[index];
+    const solvedBySlug = new Map((player.solvedProblems || []).map(solved => [solved.slug, solved]));
+    if (result.success) {
+      result.data.forEach(submission => {
+        const validSolveTimes = (submission.submissionTimestamps || [submission.lastSolvedAt])
+          .map(timestamp => new Date(timestamp).getTime())
+          .filter(timestamp => timestamp >= startTime && timestamp <= endTime);
+        if (problemSlugs.has(submission.titleSlug) && validSolveTimes.length && !solvedBySlug.has(submission.titleSlug)) {
+          solvedBySlug.set(submission.titleSlug, {
+            slug: submission.titleSlug,
+            solvedAt: new Date(Math.min(...validSolveTimes)),
+            points: POINTS_PER_PROBLEM
+          });
+        }
+      });
+    }
+
+    return {
+      [`players.${index}.solvedProblems`]: [...solvedBySlug.values()],
+      [`players.${index}.score`]: solvedBySlug.size * POINTS_PER_PROBLEM,
+      [`players.${index}.verificationStatus`]: result.success ? 'verified' : 'unavailable'
+    };
+  });
+  if (isFinalAttempt) {
+    updates.push({ finalVerificationCompletedAt: new Date() });
+  }
+
+  await BattleMatch.updateOne(
+    { _id: battle._id, status: 'active' },
+    { $set: Object.assign({}, ...updates) }
+  );
 };
 
-const startBattle = async (battle, userId, problemId) => {
+const findWaitingMatch = ({ mode, topic, difficulty, userId }) => BattleMatch.findOne({
+  status: 'waiting',
+  mode,
+  topic,
+  difficulty,
+  leetcodeProblems: { $size: 3 },
+  players: { $size: 1 },
+  'players.user': { $ne: userId }
+}).sort({ createdAt: 1 });
+
+const startBattle = async (battle, user) => {
   const now = new Date();
   return BattleMatch.findOneAndUpdate(
-    { _id: battle._id, status: 'waiting', players: { $size: 1 }, 'players.user': { $ne: userId } },
+    { _id: battle._id, status: 'waiting', players: { $size: 1 }, 'players.user': { $ne: user._id } },
     {
-      $push: { players: { user: userId } },
+      $push: {
+        players: {
+          user: user._id,
+          leetcodeUsername: getLinkedLeetCodeUsername(user)
+        }
+      },
       $set: {
         status: 'active',
-        problem: problemId || battle.problem,
         startsAt: now,
-        endsAt: new Date(now.getTime() + BATTLE_DURATION_SECONDS * 1000)
+        endsAt: new Date(now.getTime() + BATTLE_DURATION_SECONDS * 1000),
+        lastVerificationAttemptAt: null,
+        finalVerificationAttemptAt: null,
+        finalVerificationCompletedAt: null
       }
     },
     { new: true }
   );
 };
 
-const respondWithBattle = async (res, battle, userId, status = 200) => {
+const respondWithBattle = async (res, battle, status = 200) => {
   const populated = await loadBattle(battle._id);
-  res.status(status).json({ success: true, data: serializeBattle(populated, userId) });
+  res.status(status).json({ success: true, data: serializeBattle(populated) });
 };
 
 exports.getOptions = async (req, res) => {
   try {
-    const query = { visibility: 'public', 'testCases.0': { $exists: true } };
-    const [topics, problemCount] = await Promise.all([
-      ProblemSet.distinct('tags', query),
-      ProblemSet.countDocuments(query)
-    ]);
+    const topicOptions = Object.entries(problemsBank).flatMap(([topic, topicProblems]) =>
+      ALLOWED_DIFFICULTIES.map(difficulty => ({
+        topic,
+        difficulty,
+        count: new Set(topicProblems
+          .filter(problem => problem.platform === 'leetcode' && problem.difficulty.toLowerCase() === difficulty)
+          .map(problem => problem.slug)).size
+      })).filter(option => option.count >= 3)
+    );
     res.json({
       success: true,
       data: {
-        topics: topics.filter(Boolean).sort((a, b) => a.localeCompare(b)),
+        topics: [...new Set(topicOptions.map(option => option.topic))].sort((a, b) => a.localeCompare(b)),
+        topicOptions,
         difficulties: ALLOWED_DIFFICULTIES,
-        problemCount
+        problemCount: new Set(Object.values(problemsBank).flat()
+          .filter(problem => problem.platform === 'leetcode')
+          .map(problem => problem.slug)).size
       }
     });
   } catch (error) {
@@ -228,6 +304,9 @@ exports.getOptions = async (req, res) => {
 
 exports.joinQuickQueue = async (req, res) => {
   try {
+    const leetcodeUsername = requireLeetCodeAccount(req, res);
+    if (!leetcodeUsername) return;
+
     const { topic, difficulty } = normalizeOptions(req.body);
     const userId = req.user._id;
     const queueCutoff = new Date(Date.now() - QUEUE_MAX_AGE_MS);
@@ -239,24 +318,25 @@ exports.joinQuickQueue = async (req, res) => {
       mode: 'quick',
       status: 'waiting',
       createdAt: { $gte: queueCutoff },
+      leetcodeProblems: { $size: 3 },
       'players.user': userId
     });
-    if (existingQueue) return respondWithBattle(res, existingQueue, userId);
+    if (existingQueue) return respondWithBattle(res, existingQueue);
 
     const waiting = await findWaitingMatch({ mode: 'quick', topic, difficulty, userId });
     if (waiting) {
-      const matched = await startBattle(waiting, userId);
+      const matched = await startBattle(waiting, req.user);
       if (matched) {
         emitBattleUpdate(req, matched);
-        return respondWithBattle(res, matched, userId, 200);
+        return respondWithBattle(res, matched);
       }
     }
 
-    const problem = await getBattleProblem({ topic, difficulty });
-    if (!problem) {
+    const problems = getLeetCodeProblems({ topic, difficulty });
+    if (problems.length !== 3) {
       return res.status(404).json({
         success: false,
-        error: 'No public problems with test cases match these filters yet. Try another topic or difficulty.'
+        error: 'There are not three LeetCode problems for this topic and difficulty. Try another selection.'
       });
     }
 
@@ -264,11 +344,11 @@ exports.joinQuickQueue = async (req, res) => {
       mode: 'quick',
       topic,
       difficulty,
-      problem: problem._id,
+      leetcodeProblems: problems,
       durationSeconds: BATTLE_DURATION_SECONDS,
-      players: [{ user: userId }]
+      players: [{ user: userId, leetcodeUsername }]
     });
-    return respondWithBattle(res, match, userId, 201);
+    return respondWithBattle(res, match, 201);
   } catch (error) {
     console.error('Join quick battle queue error:', error);
     res.status(500).json({ success: false, error: 'Could not join the battle queue' });
@@ -292,12 +372,15 @@ exports.leaveQuickQueue = async (req, res) => {
 
 exports.createFriendRoom = async (req, res) => {
   try {
+    const leetcodeUsername = requireLeetCodeAccount(req, res);
+    if (!leetcodeUsername) return;
+
     const { topic, difficulty } = normalizeOptions(req.body);
-    const problem = await getBattleProblem({ topic, difficulty });
-    if (!problem) {
+    const problems = getLeetCodeProblems({ topic, difficulty });
+    if (problems.length !== 3) {
       return res.status(404).json({
         success: false,
-        error: 'No public problems with test cases match these filters yet. Try another topic or difficulty.'
+        error: 'There are not three LeetCode problems for this topic and difficulty. Try another selection.'
       });
     }
 
@@ -307,11 +390,11 @@ exports.createFriendRoom = async (req, res) => {
       mode: 'friend',
       topic,
       difficulty,
-      problem: problem._id,
+      leetcodeProblems: problems,
       durationSeconds: BATTLE_DURATION_SECONDS,
-      players: [{ user: req.user._id }]
+      players: [{ user: req.user._id, leetcodeUsername }]
     });
-    return respondWithBattle(res, battle, req.user._id, 201);
+    return respondWithBattle(res, battle, 201);
   } catch (error) {
     console.error('Create friend battle room error:', error);
     res.status(500).json({ success: false, error: 'Could not create a friend battle room' });
@@ -320,12 +403,16 @@ exports.createFriendRoom = async (req, res) => {
 
 exports.joinFriendRoom = async (req, res) => {
   try {
+    const leetcodeUsername = requireLeetCodeAccount(req, res);
+    if (!leetcodeUsername) return;
+
     const inviteCode = req.params.inviteCode.trim().toUpperCase();
     const roomCutoff = new Date(Date.now() - FRIEND_ROOM_MAX_AGE_MS);
     const waiting = await BattleMatch.findOne({
       inviteCode,
       mode: 'friend',
       status: 'waiting',
+      leetcodeProblems: { $size: 3 },
       createdAt: { $gte: roomCutoff }
     });
     if (!waiting) {
@@ -334,12 +421,12 @@ exports.joinFriendRoom = async (req, res) => {
     if (waiting.players.some(player => player.user.equals(req.user._id))) {
       return res.status(400).json({ success: false, error: 'You cannot join your own room with the same account' });
     }
-    const match = await startBattle(waiting, req.user._id);
+    const match = await startBattle(waiting, req.user);
     if (!match) {
       return res.status(409).json({ success: false, error: 'This room has already been joined' });
     }
     emitBattleUpdate(req, match);
-    return respondWithBattle(res, match, req.user._id);
+    return respondWithBattle(res, match);
   } catch (error) {
     console.error('Join friend battle room error:', error);
     res.status(500).json({ success: false, error: 'Could not join the friend battle room' });
@@ -353,134 +440,26 @@ exports.getBattle = async (req, res) => {
     if (!battle.players.some(player => player.user._id.equals(req.user._id))) {
       return res.status(403).json({ success: false, error: 'You are not a player in this battle' });
     }
-    const previousStatus = battle.status;
+
+    if ((battle.leetcodeProblems || []).length !== 3) {
+      if (battle.status === 'waiting' || battle.status === 'active') {
+        await BattleMatch.updateOne(
+          { _id: battle._id, status: battle.status },
+          { $set: { status: 'cancelled', finishedAt: new Date() } }
+        );
+        battle = await loadBattle(battle._id);
+      }
+      return res.json({ success: true, data: serializeBattle(battle) });
+    }
+
+    if (battle.status === 'active') {
+      await verifyLeetCodeResults(battle._id, battle.endsAt <= new Date());
+      battle = await loadBattle(battle._id);
+    }
     battle = await ensureBattleTime(battle);
-    if (battle.status !== previousStatus) emitBattleUpdate(req, battle);
-    return res.json({ success: true, data: serializeBattle(battle, req.user._id) });
+    return res.json({ success: true, data: serializeBattle(battle) });
   } catch (error) {
     console.error('Get battle error:', error);
     res.status(500).json({ success: false, error: 'Could not load this battle' });
-  }
-};
-
-exports.runBattleCode = async (req, res) => {
-  try {
-    const { code, language } = req.body;
-    if (typeof code !== 'string' || !code.trim() || code.length > 65536 || !ALLOWED_LANGUAGES.includes(language)) {
-      return res.status(400).json({ success: false, error: 'Provide code (up to 64 KB) and a supported language' });
-    }
-    const battle = await BattleMatch.findById(req.params.battleId).populate('problem');
-    if (!battle || !battle.players.some(player => player.user.equals(req.user._id))) {
-      return res.status(404).json({ success: false, error: 'Battle not found' });
-    }
-    if (battle.status !== 'active' || battle.endsAt <= new Date()) {
-      return res.status(409).json({ success: false, error: 'This battle is no longer active' });
-    }
-    const sampleCases = getSampleCases(battle.problem);
-    if (!sampleCases.length) {
-      return res.status(400).json({ success: false, error: 'This problem has no sample tests to run' });
-    }
-    const result = await codeExecutionService.executeCode(
-      code,
-      language,
-      sampleCases,
-      (battle.problem.timeLimit || 2) * 1000,
-      battle.problem.memoryLimit || 256
-    );
-    return res.json({
-      success: true,
-      data: {
-        status: result.status || 'internal_error',
-        testCasesPassed: result.testCasesPassed || 0,
-        totalTestCases: result.totalTestCases || sampleCases.length,
-        executionTime: result.totalExecutionTime || 0,
-        memoryUsed: result.maxMemoryUsed || 0,
-        output: (result.testCaseResults || []).map(testCase => ({
-          passed: testCase.passed,
-          status: testCase.status,
-          output: testCase.isSample ? testCase.output : undefined
-        }))
-      }
-    });
-  } catch (error) {
-    console.error('Run battle code error:', error);
-    res.status(500).json({ success: false, error: 'Could not run code against the sample tests' });
-  }
-};
-
-exports.submitBattleCode = async (req, res) => {
-  try {
-    const { code, language } = req.body;
-    if (typeof code !== 'string' || !code.trim() || code.length > 65536 || !ALLOWED_LANGUAGES.includes(language)) {
-      return res.status(400).json({ success: false, error: 'Provide code (up to 64 KB) and a supported language' });
-    }
-    const battle = await BattleMatch.findById(req.params.battleId).populate('problem');
-    if (!battle || !battle.players.some(player => player.user.equals(req.user._id))) {
-      return res.status(404).json({ success: false, error: 'Battle not found' });
-    }
-    if (battle.status !== 'active' || battle.endsAt <= new Date()) {
-      return res.status(409).json({ success: false, error: 'This battle is no longer accepting submissions' });
-    }
-    if (battle.players.find(player => player.user.equals(req.user._id)).status === 'submitted') {
-      return res.status(409).json({ success: false, error: 'You have already submitted for this battle' });
-    }
-    if (battle.problem.allowedLanguages?.length && !battle.problem.allowedLanguages.includes(language)) {
-      return res.status(400).json({ success: false, error: `Language ${language} is not allowed for this problem` });
-    }
-
-    const testCases = battle.problem.testCases || [];
-    if (!testCases.length) return res.status(409).json({ success: false, error: 'This problem has no judge test cases' });
-
-    const result = await codeExecutionService.executeCode(
-      code,
-      language,
-      testCases,
-      (battle.problem.timeLimit || 2) * 1000,
-      battle.problem.memoryLimit || 256
-    );
-    const passed = result.testCasesPassed || 0;
-    const verdict = result.status || 'internal_error';
-    const now = new Date();
-    const submission = {
-      code,
-      language,
-      verdict,
-      score: passed,
-      testCasesPassed: passed,
-      totalTestCases: testCases.length,
-      executionTime: result.totalExecutionTime || 0,
-      memoryUsed: result.maxMemoryUsed || 0,
-      submittedAt: now,
-      status: 'submitted'
-    };
-
-    const update = await BattleMatch.updateOne(
-      { _id: battle._id, status: 'active', endsAt: { $gt: now }, 'players.user': req.user._id },
-      { $set: Object.fromEntries(Object.entries(submission).map(([key, value]) => [`players.$.${key}`, value])) }
-    );
-    if (!update.modifiedCount) {
-      return res.status(409).json({ success: false, error: 'Battle ended before your submission was saved' });
-    }
-
-    let latest = await loadBattle(battle._id);
-    if (latest.players.length === 2 && latest.players.every(player => player.status === 'submitted')) {
-      latest = await finishBattle(latest);
-    }
-    emitBattleUpdate(req, latest);
-    return res.json({
-      success: true,
-      data: {
-        battle: serializeBattle(latest, req.user._id),
-        submission: {
-          verdict,
-          testCasesPassed: passed,
-          totalTestCases: testCases.length,
-          executionTime: submission.executionTime
-        }
-      }
-    });
-  } catch (error) {
-    console.error('Submit battle code error:', error);
-    res.status(500).json({ success: false, error: 'Could not submit your battle solution' });
   }
 };

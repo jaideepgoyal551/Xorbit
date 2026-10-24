@@ -713,22 +713,6 @@ async getRatingGrowth(userId = null) {
     return data.data;
   },
 
-  async runBattleCode(battleId, code, language) {
-    const data = await authFetch(`/battles/${encodeURIComponent(battleId)}/run`, {
-      method: 'POST',
-      body: JSON.stringify({ code, language })
-    });
-    return data.data;
-  },
-
-  async submitBattleCode(battleId, code, language) {
-    const data = await authFetch(`/battles/${encodeURIComponent(battleId)}/submit`, {
-      method: 'POST',
-      body: JSON.stringify({ code, language })
-    });
-    return data.data;
-  },
-
   // ============== PROBLEM APIs ==============
 
   // Get all problems for a contest
