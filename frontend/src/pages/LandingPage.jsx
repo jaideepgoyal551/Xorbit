@@ -57,10 +57,10 @@ const LandingPage = () => {
           </nav>
 
           <div className="flex items-center gap-3">
-            <Link to="/login" className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-violet-400/50 hover:text-white">
+            <Link to="/login" className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-indigo-400/50 hover:text-white">
               Sign in
             </Link>
-            <Link to="/register" className="rounded-xl bg-gradient-to-r from-violet-500 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_30px_rgba(139,92,246,0.45)] transition hover:scale-[1.02]">
+            <Link to="/register" className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_30px_rgba(59,88,255,0.35)] transition hover:scale-[1.02]">
               Get Started
             </Link>
           </div>
@@ -70,13 +70,13 @@ const LandingPage = () => {
       <main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-28 sm:px-6 lg:pt-32">
         <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
           <div>
-            <div className="mb-6 inline-flex items-center rounded-full border border-violet-400/20 bg-violet-500/10 px-3 py-1.5 text-xs font-medium text-violet-200 shadow-[0_0_25px_rgba(168,85,247,0.18)]">
+            <div className="mb-6 inline-flex items-center rounded-full border border-indigo-400/20 bg-indigo-500/10 px-3 py-1.5 text-xs font-medium text-indigo-200 shadow-[0_0_25px_rgba(88,101,242,0.18)]">
               All your competitive programming in one place
             </div>
 
             <h1 className="max-w-xl text-5xl font-black leading-[0.96] tracking-[-0.06em] text-white sm:text-6xl lg:text-[5rem]">
               Your coding journey,<br />
-              <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-300 bg-clip-text text-transparent">unified.</span>
+              <span className="bg-gradient-to-r from-blue-300 via-indigo-300 to-blue-200 bg-clip-text text-transparent">unified.</span>
             </h1>
 
             <p className="mt-6 max-w-lg text-lg leading-8 text-slate-300">
@@ -84,10 +84,10 @@ const LandingPage = () => {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link to="/register" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-500 px-6 py-3.5 text-base font-semibold text-white shadow-[0_0_30px_rgba(139,92,246,0.45)] transition hover:scale-[1.02]">
+              <Link to="/register" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-500 px-6 py-3.5 text-base font-semibold text-white shadow-[0_0_30px_rgba(59,88,255,0.35)] transition hover:scale-[1.02]">
                 Explore Dashboard <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link to="/dashboard" className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-3.5 text-base font-semibold text-white transition hover:border-violet-400/40 hover:bg-violet-500/5">
+              <Link to="/dashboard" className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-3.5 text-base font-semibold text-white transition hover:border-indigo-400/40 hover:bg-indigo-500/5">
                 <BarChart3 className="h-4 w-4" /> View Demo
               </Link>
             </div>
@@ -146,9 +146,9 @@ const LandingPage = () => {
 
         <section id="features" className="pt-24">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-violet-300">Features</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-indigo-300">Features</p>
             <h2 className="mt-5 text-4xl font-black tracking-[-0.05em] text-white sm:text-5xl">
-              Everything you need to <span className="bg-gradient-to-r from-violet-400 to-indigo-300 bg-clip-text text-transparent">level up</span>
+              Everything you need to <span className="bg-gradient-to-r from-blue-300 to-indigo-300 bg-clip-text text-transparent">level up</span>
             </h2>
             <p className="mt-5 text-lg text-slate-300">
               Powerful tools, beautiful insights and a unified experience for competitive programmers.
@@ -158,7 +158,7 @@ const LandingPage = () => {
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {features.map(({ icon: Icon, title, description }) => (
               <article key={title} className="feature-card rounded-[24px] border border-white/10 bg-slate-900/40 p-6">
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-violet-500/15 text-violet-300 ring-1 ring-violet-400/20">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/15 text-indigo-300 ring-1 ring-indigo-400/20">
                   <Icon className="h-5 w-5" />
                 </div>
                 <h3 className="mb-3 text-2xl font-bold text-white">{title}</h3>
