@@ -16,7 +16,7 @@ const getLeetCodeProblems = ({ topic, difficulty }) => {
       .filter(problem => problem.platform === 'leetcode')
       .filter(problem => !topic || topic === problemTopic)
       .filter(problem => !difficulty || problem.difficulty.toLowerCase() === difficulty)
-      .map(problem => ({ ...problem, topic: problemTopic }))
+      .map(problem => ({ ...problem, title: problem.name, topic: problemTopic }))
   );
   const uniqueProblems = [...new Map(candidates.map(problem => [problem.slug, problem])).values()];
 
