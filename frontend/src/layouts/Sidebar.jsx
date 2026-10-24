@@ -33,7 +33,7 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
     eventTracker: true,
     community: true
   });
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -80,6 +80,7 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
       label: 'PRACTICE',
       items: [
         { to: '/sheets', icon: BookOpen, label: 'DSA Sheets' },
+        { to: '/dsa-guide', icon: BookOpen, label: 'DSA Pattern Guide' },
         { to: '/daily-challenge', icon: Zap, label: 'Daily Challenge' },
         { to: '/problem-set', icon: FileCode2, label: 'Problem Set' },
       ]

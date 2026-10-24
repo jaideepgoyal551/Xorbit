@@ -20,6 +20,7 @@ const RoomsPage = lazy(() => import('./pages/RoomsPage'));
 const ComparisonPage = lazy(() => import('./pages/ComparisonPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const SheetsPage = lazy(() => import('./pages/SheetsPage'));
+const DsaGuidePage = lazy(() => import('./pages/DsaGuidePage'));
 const LeaderboardPage = lazy(() => import('./pages/LeaderboardPage'));
 const DailyChallengePage = lazy(() => import('./pages/DailyChallengePage'));
 const ContestsPage = lazy(() => import('./pages/ContestsPage'));
@@ -78,6 +79,7 @@ function App() {
             <Route path="societies/:societyId/:tab" element={<SocietyDetailPage />} />
             <Route path="compare" element={<ComparisonPage />} />
             <Route path="sheets" element={<SheetsPage />} />
+            <Route path="dsa-guide" element={<DsaGuidePage />} />
             <Route path="leaderboard" element={<LeaderboardPage />} />
             <Route path="daily-challenge" element={<DailyChallengePage />} />
             <Route path="contests" element={<ContestsPage />} />

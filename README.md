@@ -213,6 +213,9 @@ Users can register via email/password or authenticate instantly through Google o
 ### Platform Synchronization
 Users link their coding platform usernames in Settings. A background sync process scrapes profile data using platform-specific adapters (Puppeteer for JavaScript-rendered pages, Cheerio for static HTML). Results are stored in MongoDB and the dashboard updates in real-time via Socket.IO.
 
+### DSA Pattern Guide
+The authenticated DSA Pattern Guide presents original CodeVerse fundamentals, recognition cues, workflow notes, and C++/Java/Python pattern examples alongside the linked 150-question practice list. Learner completion marks are stored locally in the browser. Problem titles and links are references; CodeVerse is not affiliated with NeetCode or LeetCode.
+
 ### Contest Reminders
 A cron job runs every minute, checks for upcoming contests, and queues reminder emails. The email queue uses MongoDB as its backend (configurable to Redis via BullMQ). A background worker processes the queue and sends emails via Gmail SMTP.
 
