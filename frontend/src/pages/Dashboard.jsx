@@ -9,6 +9,8 @@ import {
   ChevronRight,
   BookOpen,
   Users,
+  MessageCircle,
+  ArrowUpRight,
   Zap,
   Trophy
 } from 'lucide-react';
@@ -442,6 +444,7 @@ const Dashboard = () => {
           >
             Connect Your Platforms
           </button>
+          <CommunitySection />
         </div>
       </div>
     );
@@ -450,6 +453,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-page min-h-full text-gray-900 dark:text-white transition-colors">
       <div className="dashboard-content">
+          {isOwnProfile && <CommunitySection />}
           <div className="dashboard-shell">
             <aside className="dashboard-profile-column">
               <ProfileSection
@@ -517,6 +521,31 @@ const Dashboard = () => {
 };
 
 // ============== Extracted Dashboard Sub-Components ==============
+
+const CommunitySection = () => (
+  <section className="mb-4 flex flex-col gap-4 rounded-2xl border border-indigo-400/20 bg-gradient-to-r from-indigo-950/80 via-[#17152b] to-[#10121b] p-5 shadow-lg shadow-indigo-950/20 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex items-start gap-4">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#5865F2]/15 text-[#8b95ff]">
+        <MessageCircle className="h-5 w-5" aria-hidden="true" />
+      </div>
+      <div>
+        <h2 className="text-base font-semibold text-white">Join the CodeVerse community</h2>
+        <p className="mt-1 text-sm text-gray-400">
+          Meet fellow coders, share your progress, and stay up to date with CodeVerse.
+        </p>
+      </div>
+    </div>
+    <a
+      href="https://discord.gg/WXNTQdJuY"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#5865F2] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#4752c4] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8b95ff]"
+    >
+      Join Discord
+      <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+    </a>
+  </section>
+);
 
 const ProfileSection = React.memo(({ displayUser, connectedPlatforms, codeforcesStats, totalProblems, isOwnProfile, navigate, getPlatformUrl }) => {
   const codeforcesRank = getCodeforcesMaxRank(codeforcesStats);
