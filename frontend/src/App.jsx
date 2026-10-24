@@ -23,6 +23,7 @@ const SheetsPage = lazy(() => import('./pages/SheetsPage'));
 const LeaderboardPage = lazy(() => import('./pages/LeaderboardPage'));
 const DailyChallengePage = lazy(() => import('./pages/DailyChallengePage'));
 const ContestsPage = lazy(() => import('./pages/ContestsPage'));
+const BattleArenaPage = lazy(() => import('./pages/BattleArenaPage'));
 
 // Society Pages
 const SocietiesPage = lazy(() => import('./pages/SocietiesPage'));
@@ -80,6 +81,8 @@ function App() {
             <Route path="leaderboard" element={<LeaderboardPage />} />
             <Route path="daily-challenge" element={<DailyChallengePage />} />
             <Route path="contests" element={<ContestsPage />} />
+            <Route path="contests/battle" element={<BattleArenaPage />} />
+            <Route path="contests/battle/:battleId" element={<BattleArenaPage />} />
             <Route path="settings" element={<SettingsPage />} />
             
             {/* Contest Admin Routes — Coming Soon */}

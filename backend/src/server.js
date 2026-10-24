@@ -202,6 +202,8 @@ const startServer = async () => {
       transports: ['polling', 'websocket']
     });
 
+    app.set('io', io);
+
     // Setup Socket.io handlers
     setupSocketIO(io);
     setupSyncSocketEvents(io);

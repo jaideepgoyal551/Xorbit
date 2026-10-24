@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Calendar, 
   Search, 
@@ -9,7 +10,9 @@ import {
   Clock, 
   ChevronLeft, 
   ChevronRight,
-  Filter
+  Filter,
+  Swords,
+  ArrowRight
 } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -469,6 +472,26 @@ const ContestsPage = () => {
             Refresh Contests
           </button>
         </div>
+
+        <Link
+          to="/contests/battle"
+          className="mb-6 flex flex-col gap-4 rounded-2xl border border-indigo-400/20 bg-gradient-to-r from-indigo-950/80 via-[#17152b] to-[#10121b] p-5 transition hover:border-indigo-300/40 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div className="flex items-start gap-4">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-500/20 text-indigo-200">
+              <Swords className="h-5 w-5" aria-hidden="true" />
+            </div>
+            <div>
+              <h2 className="text-base font-semibold text-white">1v1 Code Battle</h2>
+              <p className="mt-1 text-sm text-gray-400">
+                Queue for a ranked match or challenge a friend on the same problem.
+              </p>
+            </div>
+          </div>
+          <span className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-[#2939e8] px-4 py-2.5 text-sm font-semibold text-white">
+            Enter Battle Arena <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </span>
+        </Link>
 
         {/* Search and Filter */}
         <div className="flex flex-col sm:flex-row gap-4 mb-6">

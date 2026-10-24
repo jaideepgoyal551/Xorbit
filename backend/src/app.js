@@ -73,6 +73,7 @@ try {
   app.use('/api/sheets', require('./routes/sheetRoutes'));
   app.use('/api/daily-challenge', require('./routes/dailyChallengeRoutes'));
   app.use('/api/contests', require('./routes/contestRoutes'));
+  app.use('/api/battles', require('./routes/battleRoutes'));
   app.use('/api/hosted-contests', require('./routes/hostedContestRoutes'));
   app.use('/api/problem-set', require('./routes/problemSetRoutes'));
   app.use('/api/societies', require('./routes/societyRoutes'));

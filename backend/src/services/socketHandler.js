@@ -5,6 +5,7 @@ const ChatChannel = require('../models/ChatChannel');
 const SocietyMember = require('../models/SocietyMember');
 const Society = require('../models/Society');
 const SocietyStreak = require('../models/SocietyStreak');
+const BattleMatch = require('../models/BattleMatch');
 
 // Simple profanity filter (replaces bad-words package which has ESM/CJS issues)
 const PROFANITY_LIST = [
@@ -37,6 +38,10 @@ const setupSocketIO = (io) => {
       }
 
       socket.user = user;
+      socket.data.user = {
+        _id: user._id.toString(),
+        username: user.username
+      };
       next();
     } catch (error) {
       next(new Error('Invalid token'));
@@ -45,6 +50,70 @@ const setupSocketIO = (io) => {
 
   io.on('connection', (socket) => {
     console.log(`🔌 Socket connected: ${socket.user.username} (${socket.id})`);
+    socket.battleRooms = new Set();
+    socket.lastBattleProgressAt = 0;
+
+    socket.on('battle:join', async battleId => {
+      try {
+        if (typeof battleId !== 'string' || !/^[a-f\d]{24}$/i.test(battleId)) {
+          socket.emit('battle:error', { message: 'Invalid battle ID' });
+          return;
+        }
+        const isPlayer = await BattleMatch.exists({ _id: battleId, 'players.user': socket.user._id });
+        if (!isPlayer) {
+          socket.emit('battle:error', { message: 'You are not a player in this battle' });
+          return;
+        }
+        const room = `battle:${battleId}`;
+        socket.join(room);
+        socket.battleRooms.add(room);
+        socket.emit('battle:joined', { battleId });
+        const roomSockets = await io.in(room).fetchSockets();
+        roomSockets
+          .filter(roomSocket => roomSocket.id !== socket.id && roomSocket.data.user)
+          .forEach(roomSocket => {
+            socket.emit('battle:presence', {
+              userId: roomSocket.data.user._id,
+              username: roomSocket.data.user.username,
+              online: true
+            });
+          });
+        socket.to(room).emit('battle:presence', {
+          userId: socket.user._id.toString(),
+          username: socket.user.username,
+          online: true
+        });
+      } catch (error) {
+        console.error('Socket battle join error:', error);
+        socket.emit('battle:error', { message: 'Could not join battle updates' });
+      }
+    });
+
+    socket.on('battle:leave', battleId => {
+      if (typeof battleId !== 'string' || !/^[a-f\d]{24}$/i.test(battleId)) return;
+      const room = `battle:${battleId}`;
+      if (!socket.battleRooms.has(room)) return;
+      socket.leave(room);
+      socket.battleRooms.delete(room);
+      socket.to(room).emit('battle:presence', {
+        userId: socket.user._id.toString(),
+        username: socket.user.username,
+        online: false
+      });
+    });
+
+    socket.on('battle:progress', data => {
+      const { battleId, status } = data || {};
+      const room = `battle:${battleId}`;
+      if (!socket.battleRooms.has(room) || !['coding', 'running', 'submitted'].includes(status)) return;
+      const now = Date.now();
+      if (now - socket.lastBattleProgressAt < 750) return;
+      socket.lastBattleProgressAt = now;
+      socket.to(room).emit('battle:opponent-progress', {
+        userId: socket.user._id.toString(),
+        status
+      });
+    });
 
     // ========== JOIN SOCIETY ROOM ==========
     socket.on('join_society', async (societyId) => {
@@ -259,6 +328,14 @@ const setupSocketIO = (io) => {
     // ========== DISCONNECT ==========
     socket.on('disconnect', () => {
       console.log(`🔌 Socket disconnected: ${socket.user.username} (${socket.id})`);
+
+      for (const room of socket.battleRooms) {
+        socket.to(room).emit('battle:presence', {
+          userId: socket.user._id.toString(),
+          username: socket.user.username,
+          online: false
+        });
+      }
 
       // Remove from online users
       if (socket.societyId && onlineUsers.has(socket.societyId)) {

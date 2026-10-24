@@ -193,6 +193,7 @@ All API endpoints are prefixed with `/api`. Authenticated endpoints require an `
 |--------|--------------|------|-------|
 | **Auth** | `/auth/register`, `/auth/login`, `/auth/me`, `/auth/google`, `/auth/github` | Mixed | No |
 | **Contests** | `/contests`, `/contests/calendar`, `/hosted-contests/public` | Mixed | 60s |
+| **1v1 Battles** | `/battles/options`, `/battles/queue`, `/battles/rooms`, `/battles/:battleId` | Yes | No |
 | **Dashboard** | `/dashboard/summary`, `/dashboard/combined`, `/dashboard/calendar` | Yes | No |
 | **Leaderboard** | `/leaderboard`, `/leaderboard/rank`, `/leaderboard/institution/:inst` | Yes | 120s |
 | **Analytics** | `/analytics/global`, `/analytics/rating-history/:platform` | Mixed | 60s |
@@ -215,8 +216,11 @@ Users link their coding platform usernames in Settings. A background sync proces
 ### Contest Reminders
 A cron job runs every minute, checks for upcoming contests, and queues reminder emails. The email queue uses MongoDB as its backend (configurable to Redis via BullMQ). A background worker processes the queue and sends emails via Gmail SMTP.
 
+### 1v1 Coding Battles
+From the Contests page, users can find a quick match or create/join a friend room with an invite code. Both players get the same public problem, selected by topic and difficulty, and a 15-minute timer. Sample runs and submissions use the problem's test cases; the winner is decided by hidden cases passed, then execution time and memory. Battle problems must be published in Problem Sets with visibility set to `public` and judge test cases configured. The initial battle release does not include an Elo ladder or AI code-quality judging.
+
 ### Real-Time Collaboration
-Socket.IO connections are established post-authentication. Users join platform-specific rooms for sync updates and society/room channels for chat. The server broadcasts sync progress, new messages, and notification events instantly.
+Socket.IO connections are established post-authentication. Users join platform-specific rooms for sync updates, society/room channels for chat, and authorized battle rooms for opponent presence and coding progress. The server broadcasts sync progress, new messages, and battle state changes instantly.
 
 ---
 

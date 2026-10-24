@@ -72,7 +72,7 @@ const authFetch = async (url, options = {}) => {
           }, 500);
         }
         
-        const error = new Error(data.message || `API request failed with status ${response.status}`);
+        const error = new Error(data.message || data.error || `API request failed with status ${response.status}`);
         error.response = { data, status: response.status };
         throw error;
       }
@@ -672,6 +672,61 @@ async getRatingGrowth(userId = null) {
   async getContestLeaderboard(slug) {
     const data = await authFetch(`/hosted-contests/${slug}/leaderboard`);
     return data;
+  },
+
+  // ============== 1v1 BATTLE APIs ==============
+
+  async getBattleOptions() {
+    const data = await authFetch('/battles/options');
+    return data.data;
+  },
+
+  async joinBattleQueue(options) {
+    const data = await authFetch('/battles/queue', {
+      method: 'POST',
+      body: JSON.stringify(options)
+    });
+    return data.data;
+  },
+
+  async leaveBattleQueue() {
+    return authFetch('/battles/queue', { method: 'DELETE' });
+  },
+
+  async createFriendBattle(options) {
+    const data = await authFetch('/battles/rooms', {
+      method: 'POST',
+      body: JSON.stringify(options)
+    });
+    return data.data;
+  },
+
+  async joinFriendBattle(inviteCode) {
+    const data = await authFetch(`/battles/rooms/${encodeURIComponent(inviteCode)}/join`, {
+      method: 'POST'
+    });
+    return data.data;
+  },
+
+  async getBattle(battleId) {
+    const data = await authFetch(`/battles/${encodeURIComponent(battleId)}`);
+    return data.data;
+  },
+
+  async runBattleCode(battleId, code, language) {
+    const data = await authFetch(`/battles/${encodeURIComponent(battleId)}/run`, {
+      method: 'POST',
+      body: JSON.stringify({ code, language })
+    });
+    return data.data;
+  },
+
+  async submitBattleCode(battleId, code, language) {
+    const data = await authFetch(`/battles/${encodeURIComponent(battleId)}/submit`, {
+      method: 'POST',
+      body: JSON.stringify({ code, language })
+    });
+    return data.data;
   },
 
   // ============== PROBLEM APIs ==============
