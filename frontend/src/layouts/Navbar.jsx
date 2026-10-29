@@ -51,12 +51,6 @@ const Navbar = React.memo(({ user, onMenuClick, onLogout }) => {
 
         {/* Right Section */}
         <div className="flex items-center gap-4">
-          <div className="hidden items-center gap-5 lg:flex">
-            <button onClick={() => navigate('/sheets')} className="text-xs text-gray-400 transition hover:text-white">Explore</button>
-            <button onClick={() => navigate('/contests')} className="text-xs text-gray-400 transition hover:text-white">Contests</button>
-            <button onClick={() => navigate('/leaderboard')} className="text-xs text-gray-400 transition hover:text-white">Leaderboard</button>
-            <button onClick={() => navigate('/societies')} className="text-xs text-gray-400 transition hover:text-white">Community</button>
-          </div>
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Code2, 
   Users, 
-  GitCompare, 
-  Settings, 
   Trophy,
   BookOpen,
-  X,
   Zap,
   PlusCircle,
   FileCode2,
@@ -18,35 +15,67 @@ import {
   ChevronRight,
   ChevronLeft,
   Swords,
-  Menu,
-  Building2
+  Building2,
+  GraduationCap,
+  Compass,
+  Home
 } from 'lucide-react';
-import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import Logo from '../components/common/Logo';
 
+const sections = [
+  {
+    id: 'workspace',
+    label: 'WORKSPACE',
+    icon: Home,
+    items: [
+      { to: '/dashboard', icon: LayoutDashboard, label: 'Overview' },
+      { to: '/platforms', icon: Code2, label: 'Platforms' },
+    ]
+  },
+  {
+    id: 'learn',
+    label: 'LEARN',
+    icon: GraduationCap,
+    items: [
+      { to: '/sheets', icon: BookOpen, label: 'DSA Sheets' },
+      { to: '/dsa-guide', icon: BookOpen, label: 'DSA Pattern Guide' },
+      { to: '/daily-challenge', icon: Zap, label: 'Daily Challenge' },
+      { to: '/problem-set', icon: FileCode2, label: 'Problem Set' },
+    ]
+  },
+  {
+    id: 'compete',
+    label: 'COMPETE',
+    icon: Swords,
+    items: [
+      { to: '/contests', icon: Swords, label: 'Contests' },
+      { to: '/contests/battle', icon: Zap, label: 'Battle Arena' },
+      { to: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
+      { to: '/contests/admin', icon: PlusCircle, label: 'Host Contest' },
+    ]
+  },
+  {
+    id: 'community',
+    label: 'COMMUNITY',
+    icon: Users,
+    items: [
+      { to: '/societies', icon: Building2, label: 'Societies' },
+      { to: '/rooms', icon: Users, label: 'Rooms' },
+    ]
+  }
+];
+
 const Sidebar = ({ isOpen, onClose, onToggle }) => {
-  const [userRank, setUserRank] = useState(null);
   const [expandedSections, setExpandedSections] = useState({
-    profileTracker: true,
-    questionTracker: true,
-    eventTracker: true,
-    community: true
+    workspace: true,
+    learn: true,
+    compete: false,
+    community: false
   });
   const { logout } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchUserRank = async () => {
-      try {
-        const data = await api.getUserRank();
-        setUserRank(data);
-      } catch (error) {
-        console.error('Failed to fetch user rank:', error);
-      }
-    };
-    fetchUserRank();
-  }, []);
+  const location = useLocation();
 
   const toggleSection = (section) => {
     setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
@@ -57,58 +86,32 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
     navigate('/');
   };
 
-  const sections = [
-    {
-      id: 'profileTracker',
-      label: 'MAIN',
-      items: [
-      { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-        { to: '/platforms', icon: Code2, label: 'Platforms' },
-      ]
-    },
-    {
-      id: 'community',
-      label: 'COMMUNITY',
-      items: [
-        { to: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
-        { to: '/societies', icon: Building2, label: 'Societies' },
-        { to: '/rooms', icon: Users, label: 'Rooms' },
-      ]
-    },
-    {
-      id: 'questionTracker',
-      label: 'PRACTICE',
-      items: [
-        { to: '/sheets', icon: BookOpen, label: 'DSA Sheets' },
-        { to: '/dsa-guide', icon: BookOpen, label: 'DSA Pattern Guide' },
-        { to: '/daily-challenge', icon: Zap, label: 'Daily Challenge' },
-        { to: '/problem-set', icon: FileCode2, label: 'Problem Set' },
-      ]
-    },
-    {
-      id: 'eventTracker',
-      label: 'CONTESTS',
-      items: [
-        { to: '/contests', icon: Swords, label: 'Contests' },
-        { to: '/contests/admin', icon: PlusCircle, label: 'Host Contest' },
-      ]
+  useEffect(() => {
+    const activeSection = sections.find(section =>
+      section.items.some(item =>
+        item.to === location.pathname ||
+        (item.to !== '/dashboard' && location.pathname.startsWith(`${item.to}/`))
+      )
+    );
+    if (activeSection) {
+      setExpandedSections(prev => prev[activeSection.id] ? prev : { ...prev, [activeSection.id]: true });
     }
-  ];
+  }, [location.pathname]);
 
   const NavItem = ({ item }) => (
     <NavLink
       to={item.to}
       end={item.to === '/contests'} // Only match exact path for /contests to avoid conflict with /contests/admin
-      onClick={() => window.innerWidth < 1280 && onClose()}
+      onClick={() => window.innerWidth < 1024 && onClose()}
       className={({ isActive }) => `
-        flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200
+        flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-200
         ${isActive 
-          ? 'bg-[#5865f2]/10 text-[#aab2ff] shadow-[inset_2px_0_0_#5865f2]'
+          ? 'sidebar-link-active'
           : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-[#1a1a2e] hover:text-gray-900 dark:hover:text-gray-200'
         }
       `}
     >
-      <item.icon className="w-[18px] h-[18px] flex-shrink-0" />
+      <item.icon className="sidebar-nav-icon w-[17px] h-[17px] flex-shrink-0" />
       <span>{item.label}</span>
     </NavLink>
   );
@@ -116,14 +119,13 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
   const SectionHeader = ({ section }) => (
     <button
       onClick={() => toggleSection(section.id)}
-      className="flex items-center justify-between w-full px-3 py-1.5 text-[10px] font-bold tracking-widest text-gray-500 dark:text-gray-500 uppercase hover:text-gray-700 dark:hover:text-gray-400 transition-colors"
+      aria-expanded={expandedSections[section.id]}
+      className={`sidebar-section-heading sidebar-section-${section.id} flex items-center justify-between w-full px-3 py-2 text-[10px] font-bold tracking-[0.13em] text-gray-500 dark:text-gray-500 uppercase hover:text-gray-700 dark:hover:text-gray-300 transition-colors`}
     >
-      <span>{section.label}</span>
-      {expandedSections[section.id] ? (
-        <ChevronDown className="w-3 h-3" />
-      ) : (
-        <ChevronRight className="w-3 h-3" />
-      )}
+      <span className="flex items-center gap-2"><section.icon className="sidebar-section-icon h-3.5 w-3.5" />{section.label}</span>
+      <span className="sidebar-section-chevron">
+        {expandedSections[section.id] ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
+      </span>
     </button>
   );
 
@@ -132,7 +134,7 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
       {/* Mobile Overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-40 xl:hidden"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={onClose}
         />
       )}
@@ -144,13 +146,13 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
           fixed top-0 left-0 h-full z-50 bg-white dark:bg-[#111118]
           transition-all duration-300 ease-in-out flex-shrink-0 overflow-hidden
           ${isOpen ? 'w-60 translate-x-0 border-r border-gray-200 dark:border-gray-800/50' : 'w-60 -translate-x-full border-r-0'}
-          xl:relative xl:translate-x-0
-          ${isOpen ? 'xl:w-60 xl:border-r xl:border-gray-200 xl:dark:border-gray-800/50' : 'xl:w-0 xl:border-r-0'}
+          lg:relative lg:translate-x-0
+          ${isOpen ? 'lg:w-60 lg:border-r lg:border-gray-200 lg:dark:border-gray-800/50' : 'lg:w-0 lg:border-r-0'}
         `}
       >
         <div className="flex flex-col h-full w-60">
           {/* Logo */}
-          <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-800/50 transition-colors">
+          <div className="sidebar-brand-row flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-800/50 transition-colors">
             <NavLink to="/dashboard" className="flex items-center gap-2">
               <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
               <Logo className="w-full h-full drop-shadow-md" />
@@ -169,12 +171,16 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
           </div>
 
           {/* Navigation Sections */}
-          <nav className="flex-1 px-2 py-3 space-y-1 overflow-y-auto scrollbar-hide">
+          <div className="sidebar-workspace-caption">
+            <Compass className="h-3.5 w-3.5" />
+            <span>CODING WORKSPACE</span>
+          </div>
+          <nav aria-label="Workspace navigation" className="flex-1 px-2 py-3 space-y-1 overflow-y-auto scrollbar-hide">
             {sections.map((section) => (
-              <div key={section.id} className="mb-1">
+              <div key={section.id} className={`sidebar-nav-section sidebar-section-${section.id} mb-1`}>
                 <SectionHeader section={section} />
                 {expandedSections[section.id] && (
-                  <div className="space-y-0.5 ml-1">
+                  <div className="sidebar-nav-items space-y-0.5 ml-1">
                     {section.items.map(item => (
                       <NavItem key={item.to} item={item} />
                     ))}
@@ -186,31 +192,11 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
 
           {/* Bottom section */}
           <div className="border-t border-gray-200 dark:border-gray-800/50 p-3 space-y-2 transition-colors">
-            {/* Rank Card */}
-            <NavLink
-              to="/leaderboard"
-              className="flex items-center gap-3 p-2.5 rounded-lg bg-[#5865f2]/[0.06] border border-[#5865f2]/20 hover:border-[#5865f2]/40 transition-all"
-            >
-              <Trophy className="w-4 h-4 text-[#aab2ff] flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <div className="text-[10px] text-gray-500 dark:text-gray-500 uppercase tracking-wider">Rank</div>
-                <div className="text-sm font-bold text-gray-900 dark:text-white truncate">
-                  {userRank ? `#${userRank.rank.toLocaleString()}` : '—'}
-                </div>
-              </div>
-              {userRank && (
-                <div className="text-right flex-shrink-0">
-                  <div className="text-[10px] text-gray-500 dark:text-gray-500">Score</div>
-                  <div className="text-sm font-bold text-[#aab2ff]">{userRank.cScore}</div>
-                </div>
-              )}
-            </NavLink>
-
             {/* Edit Profile & Logout */}
             <div className="flex gap-2">
               <NavLink
                 to="/settings"
-                onClick={() => window.innerWidth < 1280 && onClose()}
+                onClick={() => window.innerWidth < 1024 && onClose()}
                 className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#1a1a2e] transition-all"
               >
                 <UserPen className="w-3.5 h-3.5" />

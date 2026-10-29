@@ -58,146 +58,6 @@ const CircularProgress = ({ value, max, size = 120, strokeWidth = 10, color = '#
   );
 };
 
-const InterviewHome = ({ displayUser, totalProblems, totalContests, connectedPlatforms, activeDays, navigate }) => {
-  const [leaderboardData, setLeaderboardData] = useState(null);
-
-  useEffect(() => {
-    let active = true;
-    api.getGlobalLeaderboard(1, 'codingScore', 3)
-      .then(data => {
-        if (active) setLeaderboardData(data);
-      })
-      .catch(error => {
-        console.error('Failed to fetch dashboard leaderboard:', error);
-      });
-
-    return () => { active = false; };
-  }, []);
-
-  const tracks = [
-    { title: 'Programming', description: 'Practice coding problems', icon: Code, path: '/sheets', color: 'blue' },
-    { title: 'Data Structures', description: 'Build strong fundamentals', icon: BookOpen, path: '/dsa-guide', color: 'amber' },
-    { title: 'System Design', description: 'Explore design challenges', icon: Users, path: '/problem-set', color: 'violet' },
-    { title: 'Contests', description: 'Compete and improve', icon: Trophy, path: '/contests', color: 'cyan' },
-    { title: 'Daily Challenge', description: 'Keep your streak moving', icon: Zap, path: '/daily-challenge', color: 'gold' }
-  ];
-  const languages = ['Java', 'JavaScript', 'Python', 'C++', 'C#'];
-  const leaders = leaderboardData?.leaderboard?.slice(0, 3) || [];
-  const firstName = displayUser?.fullName?.split(' ')[0] || displayUser?.username || 'Coder';
-
-  return (
-    <section className="cv-interview-home" aria-label="Coding practice home">
-      <div className="cv-interview-main">
-        <h1>Learn and Practice Coding Online</h1>
-
-        <div className="cv-interview-hero">
-          <div className="cv-interview-hero-copy">
-            <span className="cv-interview-eyebrow">WELCOME BACK, {firstName}</span>
-            <h2>Be interview ready with a plan built for you.</h2>
-            <p>Practice consistently, follow curated learning paths, and track your progress across platforms.</p>
-            <div className="cv-interview-hero-meta">
-              <span><BookOpen size={14} /> Guided practice</span>
-              <span><Code size={14} /> Coding problems</span>
-              <span><Trophy size={14} /> Contests</span>
-            </div>
-          </div>
-          <button className="cv-interview-hero-button" onClick={() => navigate('/sheets')}>
-            Explore practice <ChevronRight size={17} />
-          </button>
-          <div className="cv-interview-hero-dots" aria-hidden="true"><i /><i /><i /></div>
-        </div>
-
-        <section className="cv-interview-section">
-          <div className="cv-interview-section-heading">
-            <h2>Popular Tracks</h2>
-            <button onClick={() => navigate('/sheets')}>Explore all <ChevronRight size={15} /></button>
-          </div>
-          <div className="cv-interview-track-grid">
-            {tracks.map(({ title, description, icon: Icon, path, color }) => (
-              <button key={title} className={`cv-interview-track cv-track-${color}`} onClick={() => navigate(path)}>
-                <span className="cv-interview-track-art"><Icon size={28} /></span>
-                <span className="cv-interview-track-title">{title}</span>
-                <span className="cv-interview-track-description">{description}</span>
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <section className="cv-interview-section">
-          <div className="cv-interview-section-heading">
-            <h2>Fast Track Courses</h2>
-            <button onClick={() => navigate('/dsa-guide')}>Browse topics <ChevronRight size={15} /></button>
-          </div>
-          <div className="cv-interview-language-grid">
-            {languages.map((language, index) => (
-              <button key={language} className="cv-interview-language" onClick={() => navigate('/sheets')}>
-                <span className={`cv-language-mark cv-language-${index}`}>{['J', 'JS', 'Py', 'C+', 'C#'][index]}</span>
-                <span><strong>{language}</strong><small>Explore practice</small></span>
-                <ChevronRight size={16} />
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <section className="cv-interview-section cv-interview-question">
-          <div>
-            <span className="cv-interview-eyebrow">YOUR NEXT STEP</span>
-            <h2>Ready for a new challenge?</h2>
-            <p>Pick up a daily problem or explore a structured DSA roadmap.</p>
-          </div>
-          <button onClick={() => navigate('/daily-challenge')}>Open daily challenge <ChevronRight size={16} /></button>
-        </section>
-      </div>
-
-      <aside className="cv-interview-rail">
-        <section className="cv-interview-rail-card cv-interview-progress">
-          <h2>Your Progress</h2>
-          <div className="cv-interview-progress-stats">
-            <div className="cv-progress-ring"><span>{Number(totalProblems || 0).toLocaleString()}</span></div>
-            <div>
-              <span><b className="text-yellow">Solved</b><strong>{Number(totalProblems || 0).toLocaleString()}</strong></span>
-              <span><b className="text-cyan">Platforms</b><strong>{connectedPlatforms.length}</strong></span>
-              <span><b>Contests</b><strong>{Number(totalContests || 0).toLocaleString()}</strong></span>
-            </div>
-          </div>
-          <div className="cv-interview-progress-footer">
-            <span>{activeDays ? `${activeDays} active days` : 'Your journey starts here'}</span>
-            <button onClick={() => navigate('/platforms')}>View stats <ChevronRight size={14} /></button>
-          </div>
-        </section>
-
-        <section className="cv-interview-rail-card cv-interview-leaderboard">
-          <div className="cv-interview-rail-heading">
-            <h2>Leaderboard</h2>
-            <Trophy size={15} />
-          </div>
-          {leaders.length ? (
-            <ol>
-              {leaders.map((entry, index) => (
-                <li key={entry.userId || entry.username || index}>
-                  <span className="cv-leader-rank">#{index + 1}</span>
-                  <span className="cv-leader-name">{entry.fullName || entry.username || 'Coder'}</span>
-                  <strong>{Number(entry.codingScore || 0).toLocaleString()}</strong>
-                </li>
-              ))}
-            </ol>
-          ) : (
-            <p className="cv-interview-leaderboard-empty">See how you stack up with the community.</p>
-          )}
-          <button className="cv-interview-rail-link" onClick={() => navigate('/leaderboard')}>
-            View leaderboard <ChevronRight size={14} />
-          </button>
-        </section>
-
-        <section className="cv-interview-rail-note">
-          <span><Zap size={16} /></span>
-          <div><strong>Small steps, big progress.</strong><p>Keep showing up for your next problem.</p></div>
-        </section>
-      </aside>
-    </section>
-  );
-};
-
 const Dashboard = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
@@ -580,14 +440,6 @@ const Dashboard = () => {
   if (!connectedPlatforms.length) {
   return (
       <div className="dashboard-page min-h-full text-white transition-colors">
-        <InterviewHome
-          displayUser={displayUser}
-          totalProblems={totalProblems}
-          totalContests={totalContests}
-          connectedPlatforms={connectedPlatforms}
-          activeDays={contributionCalendar?.stats?.activeDays || userData?.totals?.activeDays || 0}
-          navigate={navigate}
-        />
         <div className="cv-connect-prompt">
           <div className="w-14 h-14 mx-auto mb-4 bg-cyan-400/10 rounded-full flex items-center justify-center">
             <Code className="w-12 h-12 text-[#4ade80]" />
@@ -610,14 +462,6 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-page min-h-full text-gray-900 dark:text-white transition-colors">
-      <InterviewHome
-        displayUser={displayUser}
-        totalProblems={totalProblems}
-        totalContests={totalContests}
-        connectedPlatforms={connectedPlatforms}
-        activeDays={contributionCalendar?.stats?.activeDays || userData?.totals?.activeDays || 0}
-        navigate={navigate}
-      />
       <div className="dashboard-content">
           {isOwnProfile && <CommunitySection />}
           <div className="dashboard-shell">

@@ -5,12 +5,12 @@ import Navbar from './Navbar';
 import { useAuth } from '../context/AuthContext';
 
 const DashboardLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth >= 1280);
+  const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth >= 1024);
   const { user, logout } = useAuth();
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1280) {
+      if (window.innerWidth >= 1024) {
         setSidebarOpen(true);
       } else {
         setSidebarOpen(false);

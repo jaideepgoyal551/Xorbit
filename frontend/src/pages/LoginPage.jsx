@@ -66,9 +66,32 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0d0d14] flex items-center justify-center px-4 sm:px-6 py-12 transition-colors relative">
-      
-      <div className="w-full max-w-md">
+    <div className="xorbits-auth-page">
+      <div className="xorbits-auth-layout">
+        <aside className="xorbits-auth-story">
+          <Link to="/" className="xorbits-auth-brand">
+            <Logo className="h-9 w-9" />
+            <span>Xorbits</span>
+          </Link>
+          <div className="xorbits-auth-story-content">
+            <span className="xorbits-auth-eyebrow"><span /> YOUR CODING JOURNEY, IN SYNC</span>
+            <h2>One place to<br />move <span>forward.</span></h2>
+            <p>Bring your coding practice, platform progress, and next challenge together in one focused workspace.</p>
+            <div className="xorbits-auth-mini-dashboard" aria-hidden="true">
+              <div className="xorbits-auth-mini-heading"><span>WEEKLY ACTIVITY</span><span>THIS WEEK <b>↗</b></span></div>
+              <div className="xorbits-auth-bars">
+                {[34, 52, 43, 74, 57, 91, 67, 45, 80, 61, 96, 72].map((height, index) => (
+                  <i key={index} style={{ height: `${height}%` }} />
+                ))}
+              </div>
+              <div className="xorbits-auth-mini-footer"><span>Keep your momentum</span><strong>Practice · Track · Grow</strong></div>
+            </div>
+          </div>
+          <span className="xorbits-auth-story-footer">A clearer view of your progress.</span>
+        </aside>
+
+        <section className="xorbits-auth-panel">
+        <div className="xorbits-auth-form w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
@@ -210,6 +233,8 @@ const LoginPage = () => {
             Sign up
           </Link>
         </p>
+        </div>
+        </section>
       </div>
     </div>
   );

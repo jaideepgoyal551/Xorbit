@@ -66,9 +66,32 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0d0d14] flex items-center justify-center px-4 sm:px-6 py-12 transition-colors relative">
-      
-      <div className="w-full max-w-md">
+    <div className="xorbits-auth-page">
+      <div className="xorbits-auth-layout">
+        <aside className="xorbits-auth-story">
+          <Link to="/" className="xorbits-auth-brand">
+            <Logo className="h-9 w-9" />
+            <span>Xorbits</span>
+          </Link>
+          <div className="xorbits-auth-story-content">
+            <span className="xorbits-auth-eyebrow"><span /> BUILT FOR CONSISTENT PROGRESS</span>
+            <h2>Make every<br />practice <span>count.</span></h2>
+            <p>Create your workspace, connect your coding platforms, and keep your learning moving forward.</p>
+            <div className="xorbits-auth-mini-dashboard" aria-hidden="true">
+              <div className="xorbits-auth-mini-heading"><span>YOUR NEXT MILESTONE</span><span>IN PROGRESS <b>↗</b></span></div>
+              <div className="xorbits-auth-milestone">
+                <span className="xorbits-auth-milestone-icon">&lt;/&gt;</span>
+                <span><strong>Build your daily streak</strong><small>One problem at a time</small></span>
+                <span className="xorbits-auth-milestone-arrow">↗</span>
+              </div>
+              <div className="xorbits-auth-progress-line"><i /></div>
+            </div>
+          </div>
+          <span className="xorbits-auth-story-footer">Your next breakthrough starts here.</span>
+        </aside>
+
+        <section className="xorbits-auth-panel xorbits-auth-panel-register">
+        <div className="xorbits-auth-form w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
@@ -263,6 +286,8 @@ const RegisterPage = () => {
             Sign in
           </Link>
         </p>
+        </div>
+        </section>
       </div>
     </div>
   );
