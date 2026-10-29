@@ -166,7 +166,16 @@ const AiVoiceInterviewPage = () => {
       socket.send(JSON.stringify({
         setup: {
           model: `models/${live.current.model}`,
-          responseModalities: ['AUDIO'],
+          generationConfig: {
+            responseModalities: ['AUDIO'],
+            speechConfig: {
+              voiceConfig: {
+                prebuiltVoiceConfig: {
+                  voiceName: 'Puck'
+                }
+              }
+            }
+          },
           inputAudioTranscription: {},
           outputAudioTranscription: {},
           sessionResumption: resumptionHandle ? { handle: resumptionHandle } : {},
@@ -247,10 +256,15 @@ const AiVoiceInterviewPage = () => {
       }
     };
 
-    socket.onclose = () => {
+    socket.onclose = event => {
       window.clearTimeout(setupTimeout);
       if (!setupComplete && !live.current.stopped) {
-        reject(new Error('Gemini Live closed before the session was ready.'));
+        const closeDetails = [
+          `code ${event.code}`,
+          event.reason ? `reason: ${event.reason}` : null,
+          `clean close: ${event.wasClean ? 'yes' : 'no'}`
+        ].filter(Boolean).join('; ');
+        reject(new Error(`Gemini Live closed before the session was ready (${closeDetails}).`));
       } else if (setupComplete && !live.current.stopped && socket === live.current.socket && !live.current.reconnecting) {
         setError('The Gemini Live connection ended. End the interview to review your transcript.');
         setStatus('error');
