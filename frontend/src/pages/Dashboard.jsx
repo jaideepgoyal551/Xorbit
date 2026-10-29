@@ -58,6 +58,146 @@ const CircularProgress = ({ value, max, size = 120, strokeWidth = 10, color = '#
   );
 };
 
+const InterviewHome = ({ displayUser, totalProblems, totalContests, connectedPlatforms, activeDays, navigate }) => {
+  const [leaderboardData, setLeaderboardData] = useState(null);
+
+  useEffect(() => {
+    let active = true;
+    api.getGlobalLeaderboard(1, 'codingScore', 3)
+      .then(data => {
+        if (active) setLeaderboardData(data);
+      })
+      .catch(error => {
+        console.error('Failed to fetch dashboard leaderboard:', error);
+      });
+
+    return () => { active = false; };
+  }, []);
+
+  const tracks = [
+    { title: 'Programming', description: 'Practice coding problems', icon: Code, path: '/sheets', color: 'blue' },
+    { title: 'Data Structures', description: 'Build strong fundamentals', icon: BookOpen, path: '/dsa-guide', color: 'amber' },
+    { title: 'System Design', description: 'Explore design challenges', icon: Users, path: '/problem-set', color: 'violet' },
+    { title: 'Contests', description: 'Compete and improve', icon: Trophy, path: '/contests', color: 'cyan' },
+    { title: 'Daily Challenge', description: 'Keep your streak moving', icon: Zap, path: '/daily-challenge', color: 'gold' }
+  ];
+  const languages = ['Java', 'JavaScript', 'Python', 'C++', 'C#'];
+  const leaders = leaderboardData?.leaderboard?.slice(0, 3) || [];
+  const firstName = displayUser?.fullName?.split(' ')[0] || displayUser?.username || 'Coder';
+
+  return (
+    <section className="cv-interview-home" aria-label="Coding practice home">
+      <div className="cv-interview-main">
+        <h1>Learn and Practice Coding Online</h1>
+
+        <div className="cv-interview-hero">
+          <div className="cv-interview-hero-copy">
+            <span className="cv-interview-eyebrow">WELCOME BACK, {firstName}</span>
+            <h2>Be interview ready with a plan built for you.</h2>
+            <p>Practice consistently, follow curated learning paths, and track your progress across platforms.</p>
+            <div className="cv-interview-hero-meta">
+              <span><BookOpen size={14} /> Guided practice</span>
+              <span><Code size={14} /> Coding problems</span>
+              <span><Trophy size={14} /> Contests</span>
+            </div>
+          </div>
+          <button className="cv-interview-hero-button" onClick={() => navigate('/sheets')}>
+            Explore practice <ChevronRight size={17} />
+          </button>
+          <div className="cv-interview-hero-dots" aria-hidden="true"><i /><i /><i /></div>
+        </div>
+
+        <section className="cv-interview-section">
+          <div className="cv-interview-section-heading">
+            <h2>Popular Tracks</h2>
+            <button onClick={() => navigate('/sheets')}>Explore all <ChevronRight size={15} /></button>
+          </div>
+          <div className="cv-interview-track-grid">
+            {tracks.map(({ title, description, icon: Icon, path, color }) => (
+              <button key={title} className={`cv-interview-track cv-track-${color}`} onClick={() => navigate(path)}>
+                <span className="cv-interview-track-art"><Icon size={28} /></span>
+                <span className="cv-interview-track-title">{title}</span>
+                <span className="cv-interview-track-description">{description}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="cv-interview-section">
+          <div className="cv-interview-section-heading">
+            <h2>Fast Track Courses</h2>
+            <button onClick={() => navigate('/dsa-guide')}>Browse topics <ChevronRight size={15} /></button>
+          </div>
+          <div className="cv-interview-language-grid">
+            {languages.map((language, index) => (
+              <button key={language} className="cv-interview-language" onClick={() => navigate('/sheets')}>
+                <span className={`cv-language-mark cv-language-${index}`}>{['J', 'JS', 'Py', 'C+', 'C#'][index]}</span>
+                <span><strong>{language}</strong><small>Explore practice</small></span>
+                <ChevronRight size={16} />
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="cv-interview-section cv-interview-question">
+          <div>
+            <span className="cv-interview-eyebrow">YOUR NEXT STEP</span>
+            <h2>Ready for a new challenge?</h2>
+            <p>Pick up a daily problem or explore a structured DSA roadmap.</p>
+          </div>
+          <button onClick={() => navigate('/daily-challenge')}>Open daily challenge <ChevronRight size={16} /></button>
+        </section>
+      </div>
+
+      <aside className="cv-interview-rail">
+        <section className="cv-interview-rail-card cv-interview-progress">
+          <h2>Your Progress</h2>
+          <div className="cv-interview-progress-stats">
+            <div className="cv-progress-ring"><span>{Number(totalProblems || 0).toLocaleString()}</span></div>
+            <div>
+              <span><b className="text-yellow">Solved</b><strong>{Number(totalProblems || 0).toLocaleString()}</strong></span>
+              <span><b className="text-cyan">Platforms</b><strong>{connectedPlatforms.length}</strong></span>
+              <span><b>Contests</b><strong>{Number(totalContests || 0).toLocaleString()}</strong></span>
+            </div>
+          </div>
+          <div className="cv-interview-progress-footer">
+            <span>{activeDays ? `${activeDays} active days` : 'Your journey starts here'}</span>
+            <button onClick={() => navigate('/platforms')}>View stats <ChevronRight size={14} /></button>
+          </div>
+        </section>
+
+        <section className="cv-interview-rail-card cv-interview-leaderboard">
+          <div className="cv-interview-rail-heading">
+            <h2>Leaderboard</h2>
+            <Trophy size={15} />
+          </div>
+          {leaders.length ? (
+            <ol>
+              {leaders.map((entry, index) => (
+                <li key={entry.userId || entry.username || index}>
+                  <span className="cv-leader-rank">#{index + 1}</span>
+                  <span className="cv-leader-name">{entry.fullName || entry.username || 'Coder'}</span>
+                  <strong>{Number(entry.codingScore || 0).toLocaleString()}</strong>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p className="cv-interview-leaderboard-empty">See how you stack up with the community.</p>
+          )}
+          <button className="cv-interview-rail-link" onClick={() => navigate('/leaderboard')}>
+            View leaderboard <ChevronRight size={14} />
+          </button>
+        </section>
+
+        <section className="cv-interview-rail-note">
+          <span><Zap size={16} /></span>
+          <div><strong>Small steps, big progress.</strong><p>Keep showing up for your next problem.</p></div>
+        </section>
+      </aside>
+    </section>
+  );
+};
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
@@ -90,11 +230,21 @@ const Dashboard = () => {
   };
 
   // ── Cooldown timer (persisted in localStorage per user) ──
-  const getSyncKey = () => `codeverse_lastSync_${authUser?._id || authUser?.id || 'default'}`;
+  const getSyncKey = () => `xorbits_lastSync_${authUser?._id || authUser?.id || 'default'}`;
+  const getLastSync = () => {
+    const key = getSyncKey();
+    const stored = localStorage.getItem(key);
+    if (stored) return stored;
+
+    const legacyKey = `codeverse_lastSync_${authUser?._id || authUser?.id || 'default'}`;
+    const legacyValue = localStorage.getItem(legacyKey);
+    if (legacyValue) localStorage.setItem(key, legacyValue);
+    return legacyValue;
+  };
 
   useEffect(() => {
     // On mount / user change: check remaining cooldown
-    const stored = localStorage.getItem(getSyncKey());
+    const stored = getLastSync();
     if (stored) {
       const elapsed = Date.now() - Number(stored);
       const remaining = Math.max(0, Math.ceil((SYNC_COOLDOWN_MS - elapsed) / 1000));
@@ -127,7 +277,7 @@ const Dashboard = () => {
     const loadData = async () => {
       await fetchDashboardData();
       // Auto-sync on first visit if there's no cooldown stored (never synced before)
-      const stored = localStorage.getItem(getSyncKey());
+      const stored = getLastSync();
       if (!stored) {
         handleAutoSync();
       }
@@ -429,29 +579,45 @@ const Dashboard = () => {
   // Empty state for new users
   if (!connectedPlatforms.length) {
   return (
-      <div className="min-h-full bg-[#05070a] transition-colors">
-        <div className="max-w-2xl mx-auto text-center py-20">
-          <div className="w-24 h-24 mx-auto mb-6 bg-[#22c55e]/10 rounded-full flex items-center justify-center">
+      <div className="dashboard-page min-h-full text-white transition-colors">
+        <InterviewHome
+          displayUser={displayUser}
+          totalProblems={totalProblems}
+          totalContests={totalContests}
+          connectedPlatforms={connectedPlatforms}
+          activeDays={contributionCalendar?.stats?.activeDays || userData?.totals?.activeDays || 0}
+          navigate={navigate}
+        />
+        <div className="cv-connect-prompt">
+          <div className="w-14 h-14 mx-auto mb-4 bg-cyan-400/10 rounded-full flex items-center justify-center">
             <Code className="w-12 h-12 text-[#4ade80]" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Welcome to CodeVerse!</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg">
-            Connect your coding platforms to see your comprehensive stats, track progress, and compete with friends!
+          <h2>Connect your coding platforms</h2>
+          <p>
+            Bring your stats into Xorbits to track progress and compare your coding journey.
           </p>
           <button
             onClick={() => navigate('/settings')}
-            className="bg-[#22c55e] hover:bg-[#4ade80] text-[#06100a] font-semibold px-8 py-3 rounded-lg text-lg transition-colors"
+            className="cv-connect-button"
           >
-            Connect Your Platforms
+            Connect platforms
           </button>
-          <CommunitySection />
         </div>
+        <CommunitySection />
       </div>
     );
   }
 
   return (
     <div className="dashboard-page min-h-full text-gray-900 dark:text-white transition-colors">
+      <InterviewHome
+        displayUser={displayUser}
+        totalProblems={totalProblems}
+        totalContests={totalContests}
+        connectedPlatforms={connectedPlatforms}
+        activeDays={contributionCalendar?.stats?.activeDays || userData?.totals?.activeDays || 0}
+        navigate={navigate}
+      />
       <div className="dashboard-content">
           {isOwnProfile && <CommunitySection />}
           <div className="dashboard-shell">
@@ -465,7 +631,7 @@ const Dashboard = () => {
                 navigate={navigate}
                 getPlatformUrl={getPlatformUrl}
               />
-              <SyncButtonSection isOwnProfile={isOwnProfile} syncing={syncing} cooldownRemaining={cooldownRemaining} handleSync={handleSync} formatCooldown={formatCooldown} SYNC_COOLDOWN_MS={SYNC_COOLDOWN_MS} getSyncKey={getSyncKey} />
+              <SyncButtonSection isOwnProfile={isOwnProfile} syncing={syncing} cooldownRemaining={cooldownRemaining} handleSync={handleSync} formatCooldown={formatCooldown} SYNC_COOLDOWN_MS={SYNC_COOLDOWN_MS} getLastSync={getLastSync} />
               <QuickLinksSection navigate={navigate} />
             </aside>
 
@@ -529,9 +695,9 @@ const CommunitySection = () => (
         <MessageCircle className="h-5 w-5" aria-hidden="true" />
       </div>
       <div>
-        <h2 className="text-base font-semibold text-white">Join the CodeVerse community</h2>
+        <h2 className="text-base font-semibold text-white">Join the Xorbits community</h2>
         <p className="mt-1 text-sm text-gray-400">
-          Meet fellow coders, share your progress, and stay up to date with CodeVerse.
+          Meet fellow coders, share your progress, and stay up to date with Xorbits.
         </p>
       </div>
     </div>
@@ -801,7 +967,7 @@ const ProblemsBreakdown = React.memo(({ platformStats, dsaProblems, cpProblems, 
   </div>
 ));
 
-const SyncButtonSection = React.memo(({ isOwnProfile, syncing, cooldownRemaining, handleSync, formatCooldown, SYNC_COOLDOWN_MS, getSyncKey }) => (
+const SyncButtonSection = React.memo(({ isOwnProfile, syncing, cooldownRemaining, handleSync, formatCooldown, SYNC_COOLDOWN_MS, getLastSync }) => (
   isOwnProfile && (
     <div className="space-y-2">
       <button
@@ -828,7 +994,7 @@ const SyncButtonSection = React.memo(({ isOwnProfile, syncing, cooldownRemaining
         </div>
       )}
       {(() => {
-        const stored = localStorage.getItem(getSyncKey());
+        const stored = getLastSync();
         if (!stored) return <p className="text-xs text-gray-500 text-center">Never synced — syncing automatically...</p>;
         const mins = Math.floor((Date.now() - Number(stored)) / 60000);
         const label = mins < 1 ? 'just now' : mins < 60 ? `${mins}m ago` : `${Math.floor(mins / 60)}h ${mins % 60}m ago`;

@@ -31,7 +31,7 @@ const fetchGitHubStats = async (username, token = null) => {
   try {
     const headers = {
       'Accept': 'application/vnd.github.v3+json',
-      'User-Agent': 'CodeVerse-App'
+      'User-Agent': 'Xorbits-App'
     };
 
     if (token) {

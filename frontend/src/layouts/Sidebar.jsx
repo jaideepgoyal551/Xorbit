@@ -156,7 +156,7 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
               <Logo className="w-full h-full drop-shadow-md" />
               </div>
               <span className="text-lg font-bold text-gray-900 dark:text-white tracking-tight whitespace-nowrap">
-                CodeVerse
+                Xorbits
               </span>
             </NavLink>
             <button

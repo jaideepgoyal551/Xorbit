@@ -103,7 +103,7 @@ const SplashScreen = ({ onComplete }) => {
         </div>
 
         <h1 className="mb-4 text-[5.1rem] font-black leading-[0.9] tracking-[-0.08em] text-white">
-          CodeVerse
+          Xorbits
         </h1>
 
         <p className="mb-10 text-[2.2rem] font-light text-slate-200">

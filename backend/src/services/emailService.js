@@ -143,7 +143,7 @@ function generateContestReminderTemplate(user, contest) {
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #EAEAEA; background-color: #121212; max-width: 600px; margin: 20px auto; border: 1px solid #333; border-radius: 8px; overflow: hidden;">
       <div style="background-color: #1F1F1F; padding: 20px; text-align: center; border-bottom: 1px solid #333;">
         <h1 style="color: #4A90E2; font-size: 28px; margin: 0; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
-          <span style="font-size: 32px;">⚡</span> CodeVerse
+          <span style="font-size: 32px;">⚡</span> Xorbits
         </h1>
       </div>
       <div style="padding: 25px;">
@@ -162,11 +162,11 @@ function generateContestReminderTemplate(user, contest) {
           </a>
         </div>
         <p style="font-size: 16px;">Good luck, and may the best algorithm win!</p>
-        <p style="font-size: 16px;"><em>— The CodeVerse Team</em></p>
+        <p style="font-size: 16px;"><em>— The Xorbits Team</em></p>
       </div>
       <div style="background-color: #1F1F1F; color: #888; padding: 15px; text-align: center; font-size: 12px; border-top: 1px solid #333;">
-        <p>You're receiving this because you opted in for contest reminders on CodeVerse.</p>
-        <p>&copy; ${new Date().getFullYear()} CodeVerse. All rights reserved.</p>
+        <p>You're receiving this because you opted in for contest reminders on Xorbits.</p>
+        <p>&copy; ${new Date().getFullYear()} Xorbits. All rights reserved.</p>
       </div>
     </div>
   `;
@@ -184,7 +184,7 @@ async function sendEmail(options) {
     // Prefer SendGrid HTTP API if configured
     const sg = getSendgridClient();
     if (process.env.SENDGRID_API_KEY && sg) {
-      const senderEmail = process.env.EMAIL_FROM || `CodeVerse <${process.env.EMAIL_USER || 'noreply@example.com'}>`;
+      const senderEmail = process.env.EMAIL_FROM || `Xorbits <${process.env.EMAIL_USER || 'noreply@example.com'}>`;
       const msg = {
         to: options.to,
         from: senderEmail,
@@ -202,7 +202,7 @@ async function sendEmail(options) {
     }
 
     const { transporter, isEthereal } = await getCachedNodemailerTransporter();
-    const senderEmail = process.env.EMAIL_FROM || `"CodeVerse" <${process.env.EMAIL_USER}>`;
+    const senderEmail = process.env.EMAIL_FROM || `"Xorbits" <${process.env.EMAIL_USER}>`;
 
     const mailOptions = {
       from: senderEmail,

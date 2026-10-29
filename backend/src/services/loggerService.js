@@ -37,7 +37,7 @@ try {
 // Create logger instance
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
-  defaultMeta: { service: 'codeverse-sync' },
+  defaultMeta: { service: 'xorbits-sync' },
   transports: [
     // Console transport
     new winston.transports.Console({

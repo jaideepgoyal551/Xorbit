@@ -285,7 +285,7 @@ const SettingsPage = () => {
 
           <div className="flex-1">
             <div className="mb-4">
-              <span className="text-sm text-gray-400">CodeVerse Id: </span>
+              <span className="text-sm text-gray-400">Xorbits Id: </span>
               <span className="text-sm text-gray-500">{user.username}</span>
             </div>
             

@@ -1,21 +1,21 @@
-# CodeVerse
+# Xorbits
 
 **Unified Competitive Programming Hub — Track, Compete, Collaborate.**
 
-CodeVerse is a full-stack platform that aggregates coding activity from multiple competitive programming platforms, delivers deep analytics, enables real-time collaboration, and manages contests — all from a single, beautifully crafted dashboard.
+Xorbits is a full-stack platform that aggregates coding activity from multiple competitive programming platforms, delivers deep analytics, enables real-time collaboration, and manages contests — all from a single, beautifully crafted dashboard.
 
 ---
 
-## Why CodeVerse?
+## Why Xorbits?
 
-Competitive programmers use multiple platforms — LeetCode, Codeforces, CodeChef, GeeksforGeeks. Stats are scattered, progress is fragmented, and there's no single place to track growth, compare with peers, or collaborate with teams. CodeVerse solves this by acting as a **unified layer** over all your coding platforms.
+Competitive programmers use multiple platforms — LeetCode, Codeforces, CodeChef, GeeksforGeeks. Stats are scattered, progress is fragmented, and there's no single place to track growth, compare with peers, or collaborate with teams. Xorbits solves this by acting as a **unified layer** over all your coding platforms.
 
 ---
 
 ## Capabilities
 
 ### Platform Aggregation
-Connect your LeetCode, Codeforces, CodeChef, and GeeksforGeeks profiles. CodeVerse automatically syncs your solved counts, ratings, submissions, and achievements into one consolidated profile.
+Connect your LeetCode, Codeforces, CodeChef, and GeeksforGeeks profiles. Xorbits automatically syncs your solved counts, ratings, submissions, and achievements into one consolidated profile.
 
 ### Analytics & Insights
 Track rating history across platforms with interactive charts, visualize problem-solving by DSA topic and difficulty, monitor active streaks, and measure growth over custom time ranges.
@@ -214,7 +214,7 @@ Users can register via email/password or authenticate instantly through Google o
 Users link their coding platform usernames in Settings. A background sync process scrapes profile data using platform-specific adapters (Puppeteer for JavaScript-rendered pages, Cheerio for static HTML). Results are stored in MongoDB and the dashboard updates in real-time via Socket.IO.
 
 ### DSA Pattern Guide
-The authenticated DSA Pattern Guide presents original CodeVerse fundamentals, recognition cues, workflow notes, and C++/Java/Python pattern examples alongside the linked 150-question practice list. Learner completion marks are stored locally in the browser. Problem titles and links are references; CodeVerse is not affiliated with NeetCode or LeetCode.
+The authenticated DSA Pattern Guide presents original Xorbits fundamentals, recognition cues, workflow notes, and C++/Java/Python pattern examples alongside the linked 150-question practice list. Learner completion marks are stored locally in the browser. Problem titles and links are references; Xorbits is not affiliated with NeetCode or LeetCode.
 
 ### Contest Reminders
 A cron job runs every minute, checks for upcoming contests, and queues reminder emails. The email queue uses MongoDB as its backend (configurable to Redis via BullMQ). A background worker processes the queue and sends emails via Gmail SMTP.

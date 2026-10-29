@@ -174,7 +174,7 @@ const ContestLandingPage = () => {
 
           {/* Organization */}
           <p className="text-gray-400 mb-8">
-            Hosted by <span className="text-white font-medium">{contest.organizationName || 'CodeVerse'}</span>
+            Hosted by <span className="text-white font-medium">{contest.organizationName || 'Xorbits'}</span>
           </p>
 
           {/* Contest Info */}

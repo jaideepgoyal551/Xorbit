@@ -194,7 +194,7 @@ const BattleArenaPage = () => {
               <Swords className="h-6 w-6" />
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-300">CodeVerse Arena</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-300">Xorbits Arena</p>
               <h1 className="mt-1 text-2xl font-bold sm:text-3xl">Three LeetCode questions. One head-to-head battle.</h1>
             </div>
           </div>
@@ -205,7 +205,7 @@ const BattleArenaPage = () => {
 
           {!linkedLeetCode && (
             <div className="mb-6 rounded-lg border border-amber-400/20 bg-amber-500/10 p-4 text-sm text-amber-100">
-              Link your LeetCode username to let CodeVerse verify accepted submissions.{' '}
+              Link your LeetCode username to let Xorbits verify accepted submissions.{' '}
               <Link to="/platforms?tab=leetcode" className="font-semibold underline underline-offset-2">
                 Link LeetCode
               </Link>
@@ -384,7 +384,7 @@ const BattleArenaPage = () => {
 
               {battle.players.some(player => player.verificationStatus === 'unavailable') && (
                 <p className="mb-5 rounded-lg border border-amber-400/20 bg-amber-500/10 p-3 text-sm text-amber-100">
-                  LeetCode verification is temporarily unavailable. Scores may take longer to update; CodeVerse will retry automatically.
+                  LeetCode verification is temporarily unavailable. Scores may take longer to update; Xorbits will retry automatically.
                 </p>
               )}
 

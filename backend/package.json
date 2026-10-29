@@ -1,5 +1,5 @@
 {
-  "name": "codeverse-backend",
+  "name": "xorbits-backend",
   "version": "1.0.0",
   "main": "src/server.js",
   "scripts": {
@@ -19,7 +19,7 @@
   ],
   "author": "",
   "license": "ISC",
-  "description": "Backend for CodeVerse - A comprehensive coding platform analytics tool",
+  "description": "Backend for Xorbits - A comprehensive coding platform analytics tool",
   "dependencies": {
     "@sendgrid/mail": "^8.1.5",
     "axios": "^1.13.2",

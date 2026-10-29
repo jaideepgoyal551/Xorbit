@@ -403,7 +403,7 @@ exports.getAllRatingHistory = async (req, res) => {
 };
 
 /**
- * Get Global CodeVerse Stats (Public Endpoint)
+ * Get Global Xorbits Stats (Public Endpoint)
  * GET /api/analytics/global
  */
 exports.getGlobalStats = async (req, res) => {

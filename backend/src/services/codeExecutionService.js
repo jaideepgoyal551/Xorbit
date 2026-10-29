@@ -51,7 +51,7 @@ const LANGUAGE_CONFIG = {
 
 class CodeExecutionService {
   constructor() {
-    this.tempDir = path.join(os.tmpdir(), 'codeverse-exec');
+    this.tempDir = path.join(os.tmpdir(), 'xorbits-exec');
     this.ensureTempDir();
   }
 

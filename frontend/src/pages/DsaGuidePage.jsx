@@ -13,11 +13,13 @@ const LANGUAGE_TABS = [
   { id: 'python', label: 'Python' }
 ];
 
-const STORAGE_KEY = 'codeverse:dsa-guide-progress:v1';
+const STORAGE_KEY = 'xorbits:dsa-guide-progress:v1';
+const LEGACY_STORAGE_KEY = 'codeverse:dsa-guide-progress:v1';
 
 const readProgress = () => {
   try {
-    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const savedProgress = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY) || '{}';
+    const stored = JSON.parse(savedProgress);
     return stored && typeof stored === 'object' ? stored : {};
   } catch {
     return {};
@@ -163,7 +165,7 @@ const DsaGuidePage = () => {
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-3xl">
               <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-indigo-200/15 bg-indigo-300/10 px-3 py-1.5 text-xs font-semibold text-indigo-100">
-                <Sparkles className="h-3.5 w-3.5" /> CODEVERSE LEARNING PATH
+                <Sparkles className="h-3.5 w-3.5" /> XORBITS LEARNING PATH
               </div>
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">DSA Pattern Playbook</h1>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
@@ -301,7 +303,7 @@ const DsaGuidePage = () => {
                   <div className="flex flex-col gap-4 border-b border-white/10 p-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
                     <div>
                       <div className="flex items-center gap-2 text-lg font-bold"><Lightbulb className="h-5 w-5 text-indigo-300" /> Practice this pattern</div>
-                      <p className="mt-1 text-xs text-slate-400">Problem titles and links are listed for practice; CodeVerse notes below are independently written.</p>
+                      <p className="mt-1 text-xs text-slate-400">Problem titles and links are listed for practice; Xorbits notes below are independently written.</p>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                       <label className="relative">
@@ -389,7 +391,7 @@ const DsaGuidePage = () => {
               </section>
             )}
             <p className="px-1 text-xs leading-5 text-slate-600">
-              CodeVerse is independent and is not affiliated with NeetCode or LeetCode. Problem names and links are provided for study navigation; theory, notes, and code examples on this page are original CodeVerse material.
+              Xorbits is independent and is not affiliated with NeetCode or LeetCode. Problem names and links are provided for study navigation; theory, notes, and code examples on this page are original Xorbits material.
             </p>
           </main>
         </div>

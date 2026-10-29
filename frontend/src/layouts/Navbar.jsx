@@ -41,7 +41,7 @@ const Navbar = React.memo(({ user, onMenuClick, onLogout }) => {
             <Search className="h-4 w-4 shrink-0 text-gray-500" />
             <input
               type="search"
-              aria-label="Search CodeVerse"
+              aria-label="Search Xorbits"
               placeholder="Search problems, contests, users, or topics..."
               className="min-w-0 flex-1 bg-transparent text-xs text-gray-200 outline-none placeholder:text-gray-500"
             />

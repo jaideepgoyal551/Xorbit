@@ -275,7 +275,7 @@ const ContestEditPage = () => {
                   target="_blank"
                   className="text-amber-500 hover:underline text-sm"
                 >
-                  www.codeverse.com/{slug}
+                  www.xorbits.com/{slug}
                 </a>
               )}
             </div>

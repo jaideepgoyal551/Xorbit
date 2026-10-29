@@ -8,7 +8,7 @@ const Logo = ({ className = "w-8 h-8" }) => (
     className={className}
   >
     <defs>
-      <linearGradient id="codeverseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="xorbitsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stopColor="#F59E0B" />
         <stop offset="30%" stopColor="#F97316" />
         <stop offset="70%" stopColor="#EC4899" />
@@ -20,7 +20,7 @@ const Logo = ({ className = "w-8 h-8" }) => (
     <path
       d="M 680 200 A 350 350 0 1 0 680 824"
       fill="none"
-      stroke="url(#codeverseGradient)"
+      stroke="url(#xorbitsGradient)"
       strokeWidth="120"
       strokeLinecap="round"
     />
