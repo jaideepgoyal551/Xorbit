@@ -194,15 +194,7 @@ const createLiveToken = async (req, res, next) => {
       {
         uses: 1,
         expireTime: new Date(now + 30 * 60 * 1000).toISOString(),
-        newSessionExpireTime: new Date(now + 60 * 1000).toISOString(),
-        liveConnectConstraints: {
-          model: `models/${LIVE_MODEL}`,
-          config: {
-            responseModalities: ['AUDIO'],
-            sessionResumption: {},
-            systemInstruction: { parts: [{ text: systemInstruction }] }
-          }
-        }
+        newSessionExpireTime: new Date(now + 60 * 1000).toISOString()
       },
       {
         headers: {
@@ -221,6 +213,7 @@ const createLiveToken = async (req, res, next) => {
       data: {
         token: tokenResponse.data.name,
         model: LIVE_MODEL,
+        systemInstruction,
         expiresAt: tokenResponse.data.expireTime || new Date(now + 30 * 60 * 1000).toISOString()
       }
     });

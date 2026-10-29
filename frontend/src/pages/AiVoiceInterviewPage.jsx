@@ -169,7 +169,8 @@ const AiVoiceInterviewPage = () => {
           responseModalities: ['AUDIO'],
           inputAudioTranscription: {},
           outputAudioTranscription: {},
-          sessionResumption: resumptionHandle ? { handle: resumptionHandle } : {}
+          sessionResumption: resumptionHandle ? { handle: resumptionHandle } : {},
+          systemInstruction: { parts: [{ text: live.current.systemInstruction }] }
         }
       }));
     };
@@ -331,6 +332,7 @@ const AiVoiceInterviewPage = () => {
       const created = await api.startAiInterview({ topic, duration, level, mode: 'voice' });
       const credentials = await api.createAiInterviewLiveToken(created.sessionId);
       live.current.model = credentials.model;
+      live.current.systemInstruction = credentials.systemInstruction;
       live.current.token = credentials.token;
       await connectLiveSocket(credentials.token);
       await startMicrophoneStream(stream);
@@ -342,7 +344,7 @@ const AiVoiceInterviewPage = () => {
       const socket = live.current.socket;
       socket.send(JSON.stringify({
         realtimeInput: {
-          text: 'Start the interview now. Introduce yourself, read the DSA problem aloud, and ask me to explain my approach.'
+          text: `Start the interview now. Introduce yourself, read this prompt aloud, and ask me to explain my approach:\n\n${created.message}`
         }
       }));
     } catch (requestError) {
