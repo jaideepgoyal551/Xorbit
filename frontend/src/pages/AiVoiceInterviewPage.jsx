@@ -22,6 +22,27 @@ const DURATIONS = [5, 10, 15];
 const LEVELS = ['Beginner', 'Intermediate', 'Advanced'];
 const LIVE_SOCKET_URL = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained';
 
+const parseLiveMessage = async data => {
+  let text;
+  if (typeof data === 'string') {
+    text = data;
+  } else if (data instanceof ArrayBuffer) {
+    text = new TextDecoder().decode(data);
+  } else if (data instanceof Blob) {
+    text = await data.text();
+  } else if (ArrayBuffer.isView(data)) {
+    text = new TextDecoder().decode(data);
+  } else {
+    throw new Error('Unsupported WebSocket frame type.');
+  }
+
+  const message = JSON.parse(text);
+  if (!message || typeof message !== 'object' || Array.isArray(message)) {
+    throw new Error('Unexpected WebSocket message format.');
+  }
+  return message;
+};
+
 const formatTime = seconds => {
   const minutes = Math.floor(seconds / 60).toString().padStart(2, '0');
   const remainder = (seconds % 60).toString().padStart(2, '0');
@@ -153,6 +174,7 @@ const AiVoiceInterviewPage = () => {
   const connectLiveSocket = useCallback((token, resumptionHandle = null) => new Promise((resolve, reject) => {
     const socketUrl = `${LIVE_SOCKET_URL}?access_token=${encodeURIComponent(token)}`;
     const socket = new WebSocket(socketUrl);
+    socket.binaryType = 'arraybuffer';
     live.current.socket = socket;
     let setupComplete = false;
     const setupTimeout = window.setTimeout(() => {
@@ -184,12 +206,20 @@ const AiVoiceInterviewPage = () => {
       }));
     };
 
-    socket.onmessage = event => {
+    socket.onmessage = async event => {
       let message;
       try {
-        message = JSON.parse(event.data);
-      } catch {
-        setError('Gemini Live sent an unreadable response. End the interview and try again.');
+        message = await parseLiveMessage(event.data);
+      } catch (parseError) {
+        const detail = parseError instanceof SyntaxError
+          ? 'Gemini Live returned data that was not valid JSON.'
+          : parseError.message;
+        const messageText = `Could not read a Gemini Live message (${detail}).`;
+        setError(messageText);
+        if (!setupComplete) {
+          window.clearTimeout(setupTimeout);
+          reject(new Error(messageText));
+        }
         return;
       }
       if (message.error) {
