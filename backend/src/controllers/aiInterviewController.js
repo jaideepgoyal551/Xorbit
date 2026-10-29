@@ -425,20 +425,31 @@ const createVoiceReport = async (session, transcript) => {
     );
   } catch (error) {
     const status = error.response?.status;
-    console.error('Gemini voice report request failed:', status || error.code || error.message);
+    const detail = getGeminiErrorDetail(error);
+    console.error('Gemini voice report request failed:', {
+      status: status || null,
+      code: error.code || null,
+      detail: detail || error.message
+    });
     const message = status === 401 || status === 403
       ? 'Gemini rejected the backend API key. Check GEMINI_API_KEY in the deployment environment.'
       : status === 402
         ? 'Google rejected the report request because of project billing or eligibility. Check the Gemini API project settings.'
       : status === 429
-        ? 'The Gemini free-tier request limit has been reached. Your transcript is still available; try scoring again later.'
-        : status >= 500
-          ? 'Gemini is temporarily unavailable. Your interview transcript is still available; please try scoring again.'
-          : error.code === 'ECONNABORTED'
-            ? 'The interview report request timed out. Your transcript is still available; please try again.'
-            : 'Could not generate the interview report.';
+        ? `The Gemini request limit has been reached. Your transcript is still available; try again later.${detail ? ` Details: ${detail}` : ''}`
+        : status === 404
+          ? `Gemini could not find the report model. Check model availability for this API key.${detail ? ` Details: ${detail}` : ''}`
+          : status === 400
+            ? `Gemini rejected the report request.${detail ? ` Details: ${detail}` : ''}`
+            : status >= 500
+              ? `Gemini is temporarily unavailable. Your transcript is still available; please try scoring again.${detail ? ` Details: ${detail}` : ''}`
+              : error.code === 'ECONNABORTED'
+                ? 'The interview report request timed out. Your transcript is still available; please try again.'
+                : error.code
+                  ? `The backend could not reach Gemini (${error.code}). Check outbound HTTPS access and try again.`
+                  : `Could not generate the interview report${detail ? `: ${detail}` : '.'}`;
     const providerError = new Error(message);
-    providerError.statusCode = status === 429 ? 429 : status === 401 || status === 403 ? 502 : 503;
+    providerError.statusCode = status === 429 ? 429 : status === 400 || status === 404 || status === 401 || status === 403 ? 502 : 503;
     throw providerError;
   }
 
