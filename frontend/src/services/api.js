@@ -503,6 +503,29 @@ async getRatingGrowth(userId = null) {
     return data;
   },
 
+  async startAiInterview(options) {
+    const data = await authFetch('/ai-interviews/start', {
+      method: 'POST',
+      body: JSON.stringify(options)
+    });
+    return data.data;
+  },
+
+  async answerAiInterview(sessionId, answer) {
+    const data = await authFetch(`/ai-interviews/${encodeURIComponent(sessionId)}/answer`, {
+      method: 'POST',
+      body: JSON.stringify({ answer })
+    });
+    return data.data;
+  },
+
+  async finishAiInterview(sessionId) {
+    const data = await authFetch(`/ai-interviews/${encodeURIComponent(sessionId)}/finish`, {
+      method: 'POST'
+    });
+    return data.data;
+  },
+
   async updateSheetNotes(payload) {
     const data = await authFetch('/sheets/notes', {
       method: 'POST',

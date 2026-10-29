@@ -179,6 +179,11 @@ cd frontend && npm run dev    # Vite dev server on :5173
 - `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` — GitHub OAuth credentials
 - `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` — Email configuration
 - `REDIS_ENABLED` — Set to true to use BullMQ with Redis (default: false)
+- `DEEPSEEK_API_KEY` — Server-side DeepSeek API key required for AI DSA interviews
+- `DEEPSEEK_API_URL` — Optional DeepSeek-compatible chat-completions URL
+- `DEEPSEEK_MODEL` — Optional model name (defaults to `deepseek-chat`)
+
+Keep `DEEPSEEK_API_KEY` only in `backend/.env` or your deployment's backend secrets. Never add it to the frontend environment or commit it.
 
 **Frontend** — Configure via `frontend/.env`:
 - `VITE_API_URL` — Backend API base URL (e.g. http://localhost:5000/api)

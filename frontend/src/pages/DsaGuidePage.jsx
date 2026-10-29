@@ -148,14 +148,14 @@ const DsaGuidePage = () => {
 
   if (!problemSets && !loadError) {
     return (
-      <div className="mx-auto flex min-h-72 max-w-6xl items-center justify-center text-indigo-200">
+      <div className="dsa-guide-page mx-auto flex min-h-72 max-w-6xl items-center justify-center text-indigo-200">
         <BookOpen className="mr-3 h-5 w-5 animate-pulse" /> Loading your DSA study guide…
       </div>
     );
   }
 
   return (
-    <div className="mx-auto w-full max-w-7xl pb-10 text-white">
+    <div className="dsa-guide-page mx-auto w-full max-w-7xl pb-10 text-white">
       <section className="relative mb-6 overflow-hidden rounded-3xl border border-indigo-300/15 bg-gradient-to-br from-[#171b47] via-[#11152d] to-[#0b1020] p-6 sm:p-9">
         <div className="pointer-events-none absolute -right-14 -top-24 h-72 w-72 rounded-full bg-indigo-500/15 blur-3xl" />
         <div className="relative">

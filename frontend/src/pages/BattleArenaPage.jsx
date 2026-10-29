@@ -182,7 +182,7 @@ const BattleArenaPage = () => {
   const winnerId = battle?.winner?._id || battle?.winner;
 
   return (
-    <div className="mx-auto w-full max-w-5xl pb-8 text-white">
+    <div className="battle-arena-page mx-auto w-full max-w-5xl pb-8 text-white">
       <Link to="/contests" className="mb-5 inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-white">
         <ArrowLeft className="h-4 w-4" /> Back to contests
       </Link>

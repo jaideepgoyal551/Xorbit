@@ -1288,6 +1288,1042 @@ body {
   }
 }
 
+.ai-interview-page {
+  position: relative;
+  isolation: isolate;
+  color: #f7f2ec;
+  background:
+    radial-gradient(ellipse at 2% 0%, rgba(240, 90, 36, 0.1), transparent 34%),
+    radial-gradient(ellipse at 98% 20%, rgba(81, 210, 189, 0.065), transparent 32%);
+  border-radius: 22px;
+}
+
+.ai-interview-hero {
+  position: relative;
+  display: flex;
+  min-height: 245px;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  margin-bottom: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: clamp(24px, 4vw, 42px);
+  background:
+    radial-gradient(ellipse at 90% 0%, rgba(81, 210, 189, 0.14), transparent 36%),
+    linear-gradient(118deg, rgba(240, 90, 36, 0.2), rgba(32, 24, 20, 0.88) 54%, rgba(20, 22, 21, 0.88));
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  -webkit-backdrop-filter: blur(24px) saturate(145%);
+  backdrop-filter: blur(24px) saturate(145%);
+}
+
+.ai-interview-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+}
+
+.ai-interview-eyebrow,
+.ai-interview-card-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #ffad78;
+  font-size: 0.66rem;
+  font-weight: 760;
+  letter-spacing: 0.15em;
+}
+
+.ai-interview-hero h1 {
+  max-width: 650px;
+  margin-top: 15px;
+  color: #fff8f2;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 780;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+}
+
+.ai-interview-hero-content > p {
+  max-width: 620px;
+  margin-top: 13px;
+  color: #c2b9b1;
+  font-size: 0.91rem;
+  line-height: 1.7;
+}
+
+.ai-interview-benefits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 23px;
+}
+
+.ai-interview-benefits span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 8px 11px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #d7cec6;
+  font-size: 0.7rem;
+}
+
+.ai-interview-benefits svg {
+  color: #8fe4d4;
+}
+
+.ai-interview-hero-icon {
+  display: grid;
+  width: 108px;
+  height: 108px;
+  flex: 0 0 auto;
+  place-items: center;
+  margin: 0 5% 0 24px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 30px;
+  background: linear-gradient(145deg, rgba(240, 90, 36, 0.3), rgba(81, 210, 189, 0.14));
+  color: #ffbd94;
+  box-shadow: 0 0 60px rgba(240, 90, 36, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  transform: rotate(7deg);
+}
+
+.ai-interview-hero-orb {
+  position: absolute;
+  right: 12%;
+  bottom: -180px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240, 90, 36, 0.12), transparent 70%);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.ai-interview-setup-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  align-items: start;
+  gap: 16px;
+}
+
+.ai-interview-panel {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent 48%),
+    rgba(23, 21, 19, 0.78);
+  box-shadow: 0 17px 40px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  backdrop-filter: blur(22px) saturate(145%);
+}
+
+.ai-interview-setup,
+.ai-interview-howto {
+  padding: 23px;
+}
+
+.ai-interview-panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.ai-interview-heading-icon,
+.ai-interview-message-avatar {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(255, 154, 97, 0.18);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(240, 90, 36, 0.17), rgba(81, 210, 189, 0.08));
+  color: #ffad78;
+}
+
+.ai-interview-panel-heading h2,
+.ai-interview-howto > h2 {
+  color: #f8f2ed;
+  font-size: 1.05rem;
+  font-weight: 720;
+}
+
+.ai-interview-panel-heading p {
+  margin-top: 3px;
+  color: #9e958d;
+  font-size: 0.75rem;
+}
+
+.ai-interview-field {
+  display: block;
+  min-width: 0;
+  margin-top: 18px;
+  border: 0;
+  padding: 0;
+}
+
+.ai-interview-field > span,
+.ai-interview-field legend {
+  display: block;
+  margin-bottom: 9px;
+  color: #d5ccc4;
+  font-size: 0.76rem;
+  font-weight: 650;
+}
+
+.ai-interview-field select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 12px;
+  padding: 0 13px;
+  background: rgba(12, 11, 10, 0.68);
+  color: #f7f2ec;
+  font-size: 0.82rem;
+  outline: none;
+}
+
+.ai-interview-field select:focus {
+  border-color: rgba(255, 154, 97, 0.55);
+  box-shadow: 0 0 0 3px rgba(240, 90, 36, 0.1);
+}
+
+.ai-interview-field option {
+  background: #171411;
+  color: #f7f2ec;
+}
+
+.ai-interview-choice-row,
+.ai-interview-levels {
+  display: flex;
+  gap: 8px;
+}
+
+.ai-interview-choice-row button,
+.ai-interview-levels button {
+  min-height: 43px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.035);
+  color: #c7bdb4;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.ai-interview-choice-row button {
+  display: flex;
+  min-width: 80px;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 12px;
+}
+
+.ai-interview-choice-row button strong {
+  color: #f8f1eb;
+  font-size: 1rem;
+}
+
+.ai-interview-choice-row button span {
+  font-size: 0.7rem;
+}
+
+.ai-interview-levels button {
+  flex: 1;
+  padding: 0 10px;
+  font-size: 0.72rem;
+}
+
+.ai-interview-choice-row button:hover,
+.ai-interview-levels button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 154, 97, 0.3);
+}
+
+.ai-interview-choice-row button.is-selected,
+.ai-interview-levels button.is-selected {
+  border-color: rgba(255, 154, 97, 0.45);
+  background: linear-gradient(130deg, rgba(240, 90, 36, 0.2), rgba(240, 90, 36, 0.08));
+  color: #ffb78d;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 5px 16px rgba(240, 90, 36, 0.08);
+}
+
+.ai-interview-choice-row button.is-selected strong {
+  color: #ffbd94;
+}
+
+.ai-interview-primary-button {
+  display: inline-flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 22px;
+  border: 1px solid rgba(255, 174, 129, 0.35);
+  border-radius: 14px;
+  padding: 0 18px;
+  background: linear-gradient(110deg, #ed6531, #c44e2a);
+  color: #fff9f5;
+  font-size: 0.82rem;
+  font-weight: 720;
+  cursor: pointer;
+  box-shadow: 0 9px 23px rgba(240, 90, 36, 0.2);
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+.ai-interview-primary-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.07);
+  box-shadow: 0 13px 28px rgba(240, 90, 36, 0.28);
+}
+
+.ai-interview-primary-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ai-interview-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: ai-interview-spin 700ms linear infinite;
+}
+
+@keyframes ai-interview-spin {
+  to { transform: rotate(360deg); }
+}
+
+.ai-interview-privacy-note {
+  margin-top: 12px;
+  color: #817970;
+  font-size: 0.65rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.ai-interview-howto {
+  background:
+    radial-gradient(ellipse at 90% 0%, rgba(81, 210, 189, 0.09), transparent 40%),
+    linear-gradient(140deg, rgba(23, 30, 27, 0.78), rgba(23, 21, 19, 0.82));
+}
+
+.ai-interview-howto > h2 {
+  max-width: 280px;
+  margin-top: 10px;
+  font-size: 1.35rem;
+  line-height: 1.25;
+}
+
+.ai-interview-step {
+  display: flex;
+  gap: 12px;
+  margin-top: 21px;
+}
+
+.ai-interview-step > span {
+  display: grid;
+  width: 33px;
+  height: 33px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(81, 210, 189, 0.19);
+  border-radius: 11px;
+  background: rgba(81, 210, 189, 0.07);
+  color: #8fe4d4;
+  font-size: 0.65rem;
+  font-weight: 750;
+}
+
+.ai-interview-step h3 {
+  color: #eae3dc;
+  font-size: 0.79rem;
+  font-weight: 680;
+}
+
+.ai-interview-step p {
+  margin-top: 4px;
+  color: #9d948b;
+  font-size: 0.7rem;
+  line-height: 1.55;
+}
+
+.ai-interview-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 15px;
+  color: #9a9188;
+  font-size: 0.67rem;
+  line-height: 1.5;
+}
+
+.ai-interview-note svg {
+  flex: 0 0 auto;
+  color: #c5b4fb;
+}
+
+.ai-interview-error {
+  margin-top: 16px;
+  border: 1px solid rgba(248, 113, 113, 0.24);
+  border-radius: 12px;
+  padding: 11px 13px;
+  background: rgba(239, 68, 68, 0.08);
+  color: #fecaca;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.ai-interview-session {
+  overflow: hidden;
+}
+
+.ai-interview-session-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 19px 22px;
+}
+
+.ai-interview-session-title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 11px;
+}
+
+.ai-interview-session-title .ai-interview-back-button {
+  margin-right: 1px;
+}
+
+.ai-interview-session-title h1 {
+  color: #f7f0e9;
+  font-size: 0.94rem;
+  font-weight: 720;
+}
+
+.ai-interview-session-title p {
+  margin-top: 3px;
+  color: #a99f96;
+  font-size: 0.7rem;
+}
+
+.ai-interview-session-title p span,
+.ai-interview-result-heading p span {
+  padding: 0 4px;
+  color: #625a52;
+}
+
+.ai-interview-back-button {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.035);
+  color: #bfb6ae;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.ai-interview-back-button:hover {
+  border-color: rgba(255, 154, 97, 0.35);
+  color: #ffb78d;
+}
+
+.ai-interview-timer {
+  display: inline-flex;
+  min-width: 94px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(81, 210, 189, 0.2);
+  border-radius: 999px;
+  padding: 9px 13px;
+  background: rgba(81, 210, 189, 0.07);
+  color: #9be4d7;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.83rem;
+  font-weight: 750;
+}
+
+.ai-interview-timer.is-low {
+  border-color: rgba(255, 115, 86, 0.35);
+  background: rgba(240, 90, 36, 0.1);
+  color: #ffad78;
+}
+
+.ai-interview-session-progress,
+.ai-interview-score-bar {
+  height: 3px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ai-interview-session-progress > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #f07839, #51d2bd);
+  transition: width 1s linear;
+}
+
+.ai-interview-transcript {
+  display: flex;
+  min-height: 360px;
+  max-height: min(57vh, 650px);
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  padding: 20px clamp(14px, 3vw, 28px);
+}
+
+.ai-interview-session-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(172, 145, 246, 0.13);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: rgba(172, 145, 246, 0.055);
+  color: #bdb1d6;
+  font-size: 0.69rem;
+}
+
+.ai-interview-session-hint svg {
+  flex: 0 0 auto;
+  color: #c6b5fb;
+}
+
+.ai-interview-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: min(88%, 820px);
+}
+
+.ai-interview-message.from-user {
+  align-self: flex-end;
+}
+
+.ai-interview-message p {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px 16px 16px 16px;
+  padding: 13px 15px;
+  background: rgba(255, 255, 255, 0.045);
+  color: #e5ddd6;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.ai-interview-message.from-user p {
+  border-color: rgba(255, 154, 97, 0.16);
+  border-radius: 16px 4px 16px 16px;
+  background: linear-gradient(130deg, rgba(240, 90, 36, 0.16), rgba(240, 90, 36, 0.07));
+  color: #ffe3d2;
+}
+
+.ai-interview-message-avatar {
+  width: 31px;
+  height: 31px;
+  border-radius: 11px;
+}
+
+.ai-interview-message.from-user .ai-interview-message-avatar {
+  border-color: rgba(81, 210, 189, 0.16);
+  background: rgba(81, 210, 189, 0.08);
+  color: #8fe4d4;
+}
+
+.ai-interview-typing {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 5px;
+  color: #9d948b;
+  font-size: 0.7rem;
+}
+
+.ai-interview-typing span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f07839;
+  animation: ai-interview-dots 1s ease-in-out infinite alternate;
+}
+
+.ai-interview-typing span:nth-child(2) { animation-delay: 150ms; }
+.ai-interview-typing span:nth-child(3) { margin-right: 4px; animation-delay: 300ms; }
+
+@keyframes ai-interview-dots {
+  to { opacity: 0.35; transform: translateY(-3px); }
+}
+
+.ai-interview-session-error {
+  margin: 0 20px 12px;
+}
+
+.ai-interview-composer {
+  margin: 0 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 10px;
+  background: rgba(10, 9, 8, 0.48);
+}
+
+.ai-interview-composer textarea {
+  display: block;
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  border: 0;
+  padding: 8px;
+  background: transparent;
+  color: #f5eee8;
+  font: inherit;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  outline: none;
+}
+
+.ai-interview-composer textarea::placeholder {
+  color: #716961;
+}
+
+.ai-interview-composer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 9px 4px 0;
+}
+
+.ai-interview-composer-footer > span {
+  color: #827a72;
+  font-size: 0.63rem;
+}
+
+.ai-interview-composer-footer button,
+.ai-interview-session-bottom button {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid rgba(255, 154, 97, 0.3);
+  border-radius: 999px;
+  padding: 0 14px;
+  background: rgba(240, 90, 36, 0.13);
+  color: #ffbd94;
+  font-size: 0.69rem;
+  font-weight: 680;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.ai-interview-composer-footer button:hover:not(:disabled),
+.ai-interview-session-bottom button:hover:not(:disabled) {
+  border-color: rgba(255, 154, 97, 0.48);
+  background: rgba(240, 90, 36, 0.2);
+}
+
+.ai-interview-composer-footer button:disabled,
+.ai-interview-session-bottom button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ai-interview-session-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 13px 21px 17px;
+}
+
+.ai-interview-session-bottom > span {
+  color: #827a72;
+  font-size: 0.65rem;
+}
+
+.ai-interview-results {
+  padding: clamp(20px, 4vw, 34px);
+}
+
+.ai-interview-results > .ai-interview-back-button {
+  margin-bottom: 22px;
+}
+
+.ai-interview-result-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.ai-interview-result-heading h1 {
+  margin-top: 9px;
+  color: #fff8f2;
+  font-size: clamp(1.55rem, 3vw, 2.2rem);
+  font-weight: 760;
+  letter-spacing: -0.035em;
+}
+
+.ai-interview-result-heading p {
+  margin-top: 7px;
+  color: #aaa19a;
+  font-size: 0.75rem;
+}
+
+.ai-interview-score-ring {
+  display: grid;
+  width: 126px;
+  height: 126px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: conic-gradient(#f07839 var(--score), rgba(255, 255, 255, 0.08) 0);
+  box-shadow: 0 0 32px rgba(240, 90, 36, 0.13);
+}
+
+.ai-interview-score-ring > div {
+  display: flex;
+  width: 105px;
+  height: 105px;
+  align-items: baseline;
+  justify-content: center;
+  gap: 3px;
+  border-radius: 50%;
+  background: #181512;
+  padding-top: 34px;
+}
+
+.ai-interview-score-ring strong {
+  color: #fff4ea;
+  font-size: 2.25rem;
+  font-weight: 780;
+  letter-spacing: -0.05em;
+}
+
+.ai-interview-score-ring span {
+  color: #a99f96;
+  font-size: 0.72rem;
+}
+
+.ai-interview-summary {
+  margin-top: 22px;
+  border-left: 2px solid #f07839;
+  padding: 2px 0 2px 14px;
+  color: #d1c7be;
+  font-size: 0.83rem;
+  line-height: 1.7;
+}
+
+.ai-interview-criteria-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+  margin-top: 23px;
+}
+
+.ai-interview-criterion {
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 15px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.ai-interview-criterion-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ai-interview-criterion-title h3 {
+  color: #e7ded6;
+  font-size: 0.77rem;
+  font-weight: 680;
+}
+
+.ai-interview-criterion-title strong {
+  color: #ffad78;
+  font-size: 0.88rem;
+}
+
+.ai-interview-criterion-title strong span {
+  color: #817970;
+  font-size: 0.65rem;
+  font-weight: 500;
+}
+
+.ai-interview-score-bar {
+  height: 5px;
+  margin-top: 11px;
+  border-radius: 999px;
+}
+
+.ai-interview-score-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #f07839, #51d2bd);
+}
+
+.ai-interview-criterion > p {
+  margin-top: 10px;
+  color: #a99f96;
+  font-size: 0.69rem;
+  line-height: 1.55;
+}
+
+.ai-interview-feedback-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.ai-interview-feedback-grid article {
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.ai-interview-feedback-grid h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #eee5dd;
+  font-size: 0.79rem;
+  font-weight: 700;
+}
+
+.ai-interview-feedback-grid article:first-child h2 svg { color: #8fe4d4; }
+.ai-interview-feedback-grid article:last-child h2 svg { color: #ffad78; }
+
+.ai-interview-feedback-grid ul {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.ai-interview-feedback-grid li,
+.ai-interview-feedback-grid article > p {
+  color: #aaa19a;
+  font-size: 0.7rem;
+  line-height: 1.55;
+}
+
+.ai-interview-feedback-grid li {
+  position: relative;
+  padding-left: 14px;
+}
+
+.ai-interview-feedback-grid li::before {
+  position: absolute;
+  top: 0.45em;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f07839;
+  content: "";
+}
+
+.ai-interview-feedback-grid article > p {
+  margin-top: 12px;
+}
+
+.ai-interview-next-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  border: 1px solid rgba(81, 210, 189, 0.15);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(81, 210, 189, 0.05);
+}
+
+.ai-interview-next-step > svg {
+  flex: 0 0 auto;
+  color: #8fe4d4;
+}
+
+.ai-interview-next-step strong {
+  color: #b6eee4;
+  font-size: 0.72rem;
+}
+
+.ai-interview-next-step p {
+  margin-top: 4px;
+  color: #aaa19a;
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+.ai-interview-restart {
+  width: auto;
+  margin-top: 20px;
+}
+
+.ai-interview-page :focus-visible {
+  outline: 2px solid #ffad78;
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .ai-interview-hero {
+    min-height: auto;
+    padding: 23px 19px;
+  }
+
+  .ai-interview-hero-icon {
+    display: none;
+  }
+
+  .ai-interview-setup-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ai-interview-setup,
+  .ai-interview-howto {
+    padding: 18px;
+  }
+
+  .ai-interview-session-header {
+    align-items: flex-start;
+    padding: 14px;
+  }
+
+  .ai-interview-session-title {
+    gap: 7px;
+  }
+
+  .ai-interview-session-title .ai-interview-back-button {
+    min-width: 36px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .ai-interview-session-title .ai-interview-back-button svg {
+    flex: 0 0 auto;
+  }
+
+  .ai-interview-session-title .ai-interview-back-button {
+    font-size: 0;
+  }
+
+  .ai-interview-session-title .ai-interview-back-button svg {
+    width: 16px;
+  }
+
+  .ai-interview-heading-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .ai-interview-timer {
+    min-width: 80px;
+    padding: 8px 10px;
+  }
+
+  .ai-interview-transcript {
+    min-height: 310px;
+    padding: 14px;
+  }
+
+  .ai-interview-message {
+    max-width: 96%;
+  }
+
+  .ai-interview-composer {
+    margin: 0 12px;
+  }
+
+  .ai-interview-session-error {
+    margin-right: 12px;
+    margin-left: 12px;
+  }
+
+  .ai-interview-session-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  .ai-interview-criteria-grid,
+  .ai-interview-feedback-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ai-interview-score-ring {
+    width: 94px;
+    height: 94px;
+  }
+
+  .ai-interview-score-ring > div {
+    width: 78px;
+    height: 78px;
+    padding-top: 25px;
+  }
+
+  .ai-interview-score-ring strong {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .ai-interview-result-heading {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .ai-interview-result-heading h1 {
+    font-size: 1.35rem;
+  }
+
+  .ai-interview-choice-row button {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .ai-interview-levels {
+    flex-direction: column;
+  }
+
+  .ai-interview-composer-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-interview-page *,
+  .ai-interview-page *::before,
+  .ai-interview-page *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 :root {
   color-scheme: dark;
   --ui-canvas: #0c0b0a;
@@ -3490,7 +4526,13 @@ body {
 .cv-track-gold .cv-interview-track-art { background: linear-gradient(110deg, #55c5a6, #28826f); }
 
 .dashboard-sidebar {
-  position: relative;
+  position: fixed;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-sidebar {
+    position: relative;
+  }
 }
 
 .sidebar-brand-row {
@@ -3653,5 +4695,498 @@ body {
 
   .xorbits-auth-form > div:nth-child(2) {
     padding: 17px 14px;
+  }
+}
+
+.dashboard-page {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 4% 0%, rgba(240, 90, 36, 0.12), transparent 34%),
+    radial-gradient(ellipse at 92% 18%, rgba(81, 210, 189, 0.08), transparent 30%),
+    radial-gradient(ellipse at 54% 100%, rgba(172, 145, 246, 0.055), transparent 36%),
+    #0c0b0a !important;
+}
+
+.dashboard-content {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1600px);
+}
+
+.dashboard-welcome {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+  padding: 22px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse at 90% 0%, rgba(81, 210, 189, 0.1), transparent 34%),
+    linear-gradient(120deg, rgba(240, 90, 36, 0.14), rgba(24, 20, 17, 0.84) 56%, rgba(22, 20, 27, 0.88));
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(24px) saturate(145%);
+  backdrop-filter: blur(24px) saturate(145%);
+}
+
+.dashboard-welcome-eyebrow {
+  color: #ffad78;
+  font-size: 0.65rem;
+  font-weight: 750;
+  letter-spacing: 0.16em;
+}
+
+.dashboard-welcome h1 {
+  margin-top: 5px;
+  color: #fff8f2;
+  font-size: clamp(1.45rem, 2.4vw, 2rem);
+  font-weight: 760;
+  letter-spacing: -0.035em;
+}
+
+.dashboard-welcome p,
+.dashboard-section-intro p {
+  margin-top: 5px;
+  color: #aaa19a;
+  font-size: 0.8rem;
+}
+
+.dashboard-welcome-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.dashboard-welcome-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 0 15px;
+  color: #f7eee7;
+  font-size: 0.74rem;
+  font-weight: 650;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.dashboard-welcome-actions button:first-child {
+  border-color: rgba(255, 154, 97, 0.34);
+  background: linear-gradient(115deg, #ed6531, #bd4d27);
+  box-shadow: 0 7px 22px rgba(240, 90, 36, 0.2);
+}
+
+.dashboard-welcome-actions button:last-child {
+  border-color: rgba(81, 210, 189, 0.24);
+  background: rgba(81, 210, 189, 0.08);
+  color: #a9eee2;
+}
+
+.dashboard-welcome-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+}
+
+.dashboard-section-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 3px 1px -5px;
+}
+
+.dashboard-section-intro h2 {
+  color: #f6f1ec;
+  font-size: 0.97rem;
+  font-weight: 720;
+}
+
+.dashboard-section-intro > span {
+  flex: 0 0 auto;
+  border: 1px solid rgba(81, 210, 189, 0.18);
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(81, 210, 189, 0.055);
+  color: #91d9cc;
+  font-size: 0.64rem;
+}
+
+.dashboard-section-intro-compact {
+  margin-top: 3px;
+}
+
+.dashboard-page .dashboard-card,
+.dashboard-page .dashboard-profile-card,
+.dashboard-page .dashboard-platform-card,
+.dashboard-page .dashboard-rating-chart-compact,
+.dashboard-page .dashboard-promo-card,
+.dashboard-page .dashboard-add-platform {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.055), transparent 48%),
+    linear-gradient(145deg, rgba(29, 25, 22, 0.8), rgba(17, 15, 14, 0.76));
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.065);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  backdrop-filter: blur(22px) saturate(145%);
+  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.dashboard-page .dashboard-profile-card::before,
+.dashboard-page .dashboard-card::before {
+  display: block;
+}
+
+.dashboard-page .dashboard-card:hover,
+.dashboard-page .dashboard-profile-card:hover,
+.dashboard-page .dashboard-platform-card:hover,
+.dashboard-page .dashboard-promo-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 154, 97, 0.25);
+  box-shadow: 0 20px 46px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.09);
+}
+
+.dashboard-page .dashboard-stat-card-primary {
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(240, 90, 36, 0.22), transparent 62%),
+    linear-gradient(145deg, rgba(56, 31, 22, 0.84), rgba(24, 18, 15, 0.84));
+}
+
+.dashboard-page .dashboard-stat-card:nth-child(2) {
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(81, 210, 189, 0.13), transparent 62%),
+    linear-gradient(145deg, rgba(23, 38, 34, 0.78), rgba(17, 18, 16, 0.82));
+}
+
+.dashboard-page .dashboard-profile-total,
+.dashboard-page .dashboard-rank-badge,
+.dashboard-page .dashboard-platform-rank {
+  border-radius: 999px;
+  background: rgba(240, 90, 36, 0.1);
+  color: #ffad78 !important;
+}
+
+.dashboard-page .dashboard-profile-total {
+  border-color: rgba(255, 154, 97, 0.22);
+}
+
+.dashboard-page .dashboard-rank-badge,
+.dashboard-page .dashboard-platform-rank {
+  border-color: rgba(172, 145, 246, 0.22);
+  background: rgba(172, 145, 246, 0.08);
+  color: #c6b5fb !important;
+}
+
+.dashboard-page .dashboard-avatar,
+.dashboard-page .dashboard-platform-icon {
+  border: 1px solid rgba(255, 154, 97, 0.15);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(240, 90, 36, 0.17), rgba(81, 210, 189, 0.08), rgba(26, 22, 19, 0.8));
+}
+
+.dashboard-page .dashboard-live-dot {
+  background: #ff9a61;
+  box-shadow: 0 0 12px rgba(255, 154, 97, 0.72);
+}
+
+.dashboard-page .dashboard-contests-card .bg-\[\#22c55e\]\/10 {
+  background: rgba(81, 210, 189, 0.1);
+  color: #8fe4d4;
+}
+
+.dashboard-page .dashboard-welcome button:focus-visible {
+  outline: 2px solid #ffad78;
+  outline-offset: 3px;
+}
+
+.dsa-guide-page,
+.battle-arena-page,
+.leaderboard-page {
+  position: relative;
+  isolation: isolate;
+  color: #f7f2ec;
+}
+
+.dsa-guide-page,
+.battle-arena-page {
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 8% 0%, rgba(240, 90, 36, 0.1), transparent 35%),
+    radial-gradient(ellipse at 94% 16%, rgba(81, 210, 189, 0.075), transparent 31%);
+}
+
+.dsa-guide-page::before,
+.battle-arena-page::before,
+.leaderboard-page::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 3%;
+  width: min(32vw, 380px);
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240, 90, 36, 0.11), rgba(81, 210, 189, 0.045) 42%, transparent 72%);
+  content: "";
+  filter: blur(28px);
+  pointer-events: none;
+}
+
+.dsa-guide-page section,
+.dsa-guide-page aside > div,
+.battle-arena-page section {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px !important;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.055), transparent 48%),
+    rgba(24, 21, 19, 0.72) !important;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.055);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+}
+
+.dsa-guide-page > section:first-child,
+.battle-arena-page > section:first-of-type {
+  background:
+    radial-gradient(ellipse at 92% 0%, rgba(81, 210, 189, 0.14), transparent 36%),
+    linear-gradient(120deg, rgba(240, 90, 36, 0.17), rgba(27, 22, 19, 0.78) 58%, rgba(22, 20, 25, 0.84)) !important;
+}
+
+.dsa-guide-page [class*="text-indigo-"],
+.dsa-guide-page [class*="text-sky-"],
+.battle-arena-page [class*="text-indigo-"] {
+  color: #ffad78 !important;
+}
+
+.dsa-guide-page [class*="border-indigo-"],
+.dsa-guide-page [class*="border-sky-"],
+.battle-arena-page [class*="border-indigo-"] {
+  border-color: rgba(255, 154, 97, 0.22) !important;
+}
+
+.dsa-guide-page [class*="bg-indigo-"],
+.battle-arena-page [class*="bg-indigo-"] {
+  background-color: rgba(240, 90, 36, 0.12) !important;
+}
+
+.dsa-guide-page [class*="bg-sky-"] {
+  background-color: rgba(81, 210, 189, 0.1) !important;
+}
+
+.dsa-guide-page [class*="from-indigo-"],
+.dsa-guide-page [class*="via-[#11152d"],
+.dsa-guide-page [class*="to-[#0b1020"],
+.battle-arena-page [class*="from-indigo-"],
+.battle-arena-page [class*="via-[#17152b"],
+.battle-arena-page [class*="to-[#10121b"] {
+  --tw-gradient-from: rgba(240, 90, 36, 0.22) var(--tw-gradient-from-position) !important;
+  --tw-gradient-via: rgba(28, 23, 20, 0.9) var(--tw-gradient-via-position) !important;
+  --tw-gradient-to: rgba(18, 17, 16, 0.9) var(--tw-gradient-to-position) !important;
+}
+
+.dsa-guide-page [class*="from-[#2939e8]"],
+.battle-arena-page [class*="from-[#2939e8]"] {
+  --tw-gradient-from: #ed6531 var(--tw-gradient-from-position) !important;
+}
+
+.dsa-guide-page [class*="to-[#5865f2]"],
+.battle-arena-page [class*="to-[#5865f2]"] {
+  --tw-gradient-to: #c94f2a var(--tw-gradient-to-position) !important;
+}
+
+.dsa-guide-page [class*="bg-[#111426]"],
+.dsa-guide-page [class*="bg-[#0d1020]"],
+.dsa-guide-page [class*="bg-[#0c0f1d]"],
+.dsa-guide-page [class*="bg-[#111426]/90"],
+.battle-arena-page [class*="bg-[#121528]"],
+.battle-arena-page [class*="bg-[#111426]"],
+.battle-arena-page [class*="bg-[#101326]"] {
+  background-color: rgba(20, 18, 16, 0.76) !important;
+}
+
+.dsa-guide-page button,
+.battle-arena-page button,
+.leaderboard-page button {
+  border-radius: 12px;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.dsa-guide-page button:hover:not(:disabled),
+.battle-arena-page button:hover:not(:disabled),
+.leaderboard-page button:hover:not(:disabled) {
+  border-color: rgba(255, 154, 97, 0.34);
+}
+
+.dsa-guide-page input,
+.dsa-guide-page select,
+.battle-arena-page input,
+.battle-arena-page select,
+.leaderboard-page input {
+  border-color: rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background-color: rgba(12, 11, 10, 0.7);
+  color: #f7f2ec;
+}
+
+.dsa-guide-page input:focus,
+.dsa-guide-page select:focus,
+.battle-arena-page input:focus,
+.battle-arena-page select:focus,
+.leaderboard-page input:focus {
+  border-color: rgba(255, 154, 97, 0.58);
+  box-shadow: 0 0 0 3px rgba(240, 90, 36, 0.1);
+}
+
+.leaderboard-page {
+  min-height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 7% 0%, rgba(240, 90, 36, 0.1), transparent 34%),
+    radial-gradient(ellipse at 94% 10%, rgba(81, 210, 189, 0.065), transparent 30%),
+    transparent !important;
+}
+
+.leaderboard-content {
+  position: relative;
+  z-index: 1;
+  padding: 8px 0 20px;
+}
+
+.leaderboard-page .leaderboard-user-card,
+.leaderboard-page .leaderboard-podium-card,
+.leaderboard-page .leaderboard-filter-panel,
+.leaderboard-page .leaderboard-tabs,
+.leaderboard-page .leaderboard-table,
+.leaderboard-page .leaderboard-score-info {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent 50%),
+    rgba(23, 21, 19, 0.72);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.055);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  backdrop-filter: blur(22px) saturate(145%);
+}
+
+.leaderboard-page .leaderboard-user-card {
+  border-color: rgba(255, 154, 97, 0.2);
+  background:
+    radial-gradient(ellipse at 95% 0%, rgba(81, 210, 189, 0.1), transparent 34%),
+    linear-gradient(120deg, rgba(240, 90, 36, 0.14), rgba(23, 21, 19, 0.78) 60%);
+}
+
+.leaderboard-page .leaderboard-podium-card {
+  min-height: 250px;
+  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.leaderboard-page .leaderboard-podium-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 154, 97, 0.35);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.3), 0 0 30px rgba(240, 90, 36, 0.07);
+}
+
+.leaderboard-page .leaderboard-podium-winner {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 173, 51, 0.16), transparent 60%),
+    linear-gradient(145deg, rgba(35, 29, 22, 0.86), rgba(20, 18, 16, 0.78));
+}
+
+.leaderboard-page .leaderboard-filter-panel,
+.leaderboard-page .leaderboard-tabs {
+  padding: 12px;
+}
+
+.leaderboard-page .leaderboard-tabs button {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 999px;
+}
+
+.leaderboard-page .leaderboard-tabs button:hover {
+  background: rgba(255, 255, 255, 0.075);
+}
+
+.leaderboard-page .leaderboard-table {
+  overflow: hidden;
+}
+
+.leaderboard-page .leaderboard-table [class*="hover:bg-gray-50"]:hover,
+.leaderboard-page .leaderboard-table [class*="hover:bg-[#1a1a2e]"]:hover {
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.leaderboard-page .leaderboard-table [class*="divide-gray-"] > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(255, 255, 255, 0.065);
+}
+
+.leaderboard-page .leaderboard-content button[class*="px-4"][class*="py-2"] {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.055);
+}
+
+.leaderboard-page .leaderboard-content button[class*="px-4"][class*="py-2"]:hover:not(:disabled) {
+  border-color: rgba(255, 154, 97, 0.32);
+  background-color: rgba(240, 90, 36, 0.1);
+}
+
+.leaderboard-page input:focus {
+  outline: none;
+}
+
+.dsa-guide-page a:focus-visible,
+.dsa-guide-page button:focus-visible,
+.battle-arena-page a:focus-visible,
+.battle-arena-page button:focus-visible,
+.leaderboard-page a:focus-visible,
+.leaderboard-page button:focus-visible {
+  outline: 2px solid #ffad78;
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .dashboard-welcome {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .dashboard-welcome-actions {
+    width: 100%;
+  }
+
+  .dashboard-welcome-actions button {
+    flex: 1 1 180px;
+  }
+
+  .dashboard-section-intro {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .leaderboard-content {
+    padding: 4px 0 16px;
+  }
+
+  .leaderboard-page .leaderboard-podium-card {
+    min-height: unset;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-welcome-actions button,
+  .dashboard-page .dashboard-card,
+  .dashboard-page .dashboard-profile-card,
+  .dashboard-page .dashboard-platform-card,
+  .leaderboard-page .leaderboard-podium-card,
+  .dsa-guide-page button,
+  .battle-arena-page button,
+  .leaderboard-page button {
+    transition-duration: 0.01ms !important;
   }
 }

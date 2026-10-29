@@ -440,22 +440,25 @@ const Dashboard = () => {
   if (!connectedPlatforms.length) {
   return (
       <div className="dashboard-page min-h-full text-white transition-colors">
-        <div className="cv-connect-prompt">
-          <div className="w-14 h-14 mx-auto mb-4 bg-cyan-400/10 rounded-full flex items-center justify-center">
-            <Code className="w-12 h-12 text-[#4ade80]" />
+        <div className="dashboard-content">
+          <DashboardWelcome navigate={navigate} />
+          <div className="cv-connect-prompt">
+            <div className="w-14 h-14 mx-auto mb-4 bg-cyan-400/10 rounded-full flex items-center justify-center">
+              <Code className="w-12 h-12 text-[#4ade80]" />
+            </div>
+            <h2>Connect your coding platforms</h2>
+            <p>
+              Bring your stats into Xorbits to track progress and compare your coding journey.
+            </p>
+            <button
+              onClick={() => navigate('/settings')}
+              className="cv-connect-button"
+            >
+              Connect platforms
+            </button>
           </div>
-          <h2>Connect your coding platforms</h2>
-          <p>
-            Bring your stats into Xorbits to track progress and compare your coding journey.
-          </p>
-          <button
-            onClick={() => navigate('/settings')}
-            className="cv-connect-button"
-          >
-            Connect platforms
-          </button>
+          <CommunitySection />
         </div>
-        <CommunitySection />
       </div>
     );
   }
@@ -463,6 +466,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-page min-h-full text-gray-900 dark:text-white transition-colors">
       <div className="dashboard-content">
+          <DashboardWelcome navigate={navigate} />
           {isOwnProfile && <CommunitySection />}
           <div className="dashboard-shell">
             <aside className="dashboard-profile-column">
@@ -480,6 +484,13 @@ const Dashboard = () => {
             </aside>
 
             <main className="dashboard-main-column">
+              <div className="dashboard-section-intro">
+                <div>
+                  <h2>Your progress</h2>
+                  <p>A snapshot of your coding activity across connected platforms.</p>
+                </div>
+                <span>Updated from your platforms</span>
+              </div>
               <div className="dashboard-overview">
                 <StatsRow
                   totalProblems={totalProblems}
@@ -490,6 +501,12 @@ const Dashboard = () => {
                 </div>
               </div>
 
+              <div className="dashboard-section-intro dashboard-section-intro-compact">
+                <div>
+                  <h2>Performance breakdown</h2>
+                  <p>Contest participation and problem-solving progress.</p>
+                </div>
+              </div>
               <div className="dashboard-secondary-grid">
                 <ContestsSection totalContests={totalContests} contestsByPlatform={contestsByPlatform} PlatformIcon={PlatformIcon} getPlatformColor={getPlatformColor} />
                 <ProblemsBreakdown platformStats={platformStats} dsaProblems={dsaProblems} cpProblems={cpProblems} PLATFORM_CONFIG={PLATFORM_CONFIG} PlatformIcon={PlatformIcon} />
@@ -531,6 +548,20 @@ const Dashboard = () => {
 };
 
 // ============== Extracted Dashboard Sub-Components ==============
+
+const DashboardWelcome = ({ navigate }) => (
+  <header className="dashboard-welcome">
+    <div>
+      <span className="dashboard-welcome-eyebrow">YOUR WORKSPACE</span>
+      <h1>Your coding overview</h1>
+      <p>Track your progress, celebrate consistency, and choose what to work on next.</p>
+    </div>
+    <div className="dashboard-welcome-actions">
+      <button type="button" onClick={() => navigate('/sheets')}>Explore DSA sheets <ChevronRight className="h-4 w-4" /></button>
+      <button type="button" onClick={() => navigate('/leaderboard')}>View leaderboard <Trophy className="h-4 w-4" /></button>
+    </div>
+  </header>
+);
 
 const CommunitySection = () => (
   <section className="mb-4 flex flex-col gap-4 rounded-2xl border border-indigo-400/20 bg-gradient-to-r from-indigo-950/80 via-[#17152b] to-[#10121b] p-5 shadow-lg shadow-indigo-950/20 sm:flex-row sm:items-center sm:justify-between">

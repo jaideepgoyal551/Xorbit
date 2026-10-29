@@ -84,7 +84,7 @@ const LeaderboardPage = () => {
       amber: 'text-amber-500 bg-amber-500/20',
       green: 'text-green-500 bg-green-500/20',
       orange: 'text-orange-500 bg-orange-500/20',
-      blue: 'text-blue-500 bg-blue-500/20',
+      blue: 'text-violet-300 bg-violet-400/15',
       gray: 'text-gray-300 bg-gray-500/20'
     };
     return colorMap[type?.color] || colorMap.amber;
@@ -114,7 +114,7 @@ const LeaderboardPage = () => {
 
   if (loading && !leaderboardData) {
     return (
-      <div className="min-h-full bg-white dark:bg-[#0d0d14] transition-colors">
+      <div className="leaderboard-page min-h-full bg-white dark:bg-[#0d0d14] transition-colors">
         <SkeletonLoader type="list" />
       </div>
     );
@@ -122,7 +122,7 @@ const LeaderboardPage = () => {
 
   if (error && !leaderboardData) {
     return (
-      <div className="min-h-full bg-white dark:bg-[#0d0d14] transition-colors flex items-center justify-center">
+      <div className="leaderboard-page min-h-full bg-white dark:bg-[#0d0d14] transition-colors flex items-center justify-center">
         <div className="text-center p-8">
           <Trophy className="w-12 h-12 text-gray-400 mx-auto mb-4" />
           <p className="text-gray-600 dark:text-gray-400 mb-4">{error}</p>
@@ -141,8 +141,8 @@ const LeaderboardPage = () => {
   const currentUser = leaderboardData?.currentUser;
 
   return (
-    <div className="min-h-full bg-white dark:bg-[#0d0d14] text-gray-900 dark:text-white transition-colors">
-      <div className="max-w-7xl mx-auto">
+    <div className="leaderboard-page min-h-full bg-white dark:bg-[#0d0d14] text-gray-900 dark:text-white transition-colors">
+      <div className="leaderboard-content max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-3">
@@ -156,7 +156,7 @@ const LeaderboardPage = () => {
 
         {/* Current User Stats Card */}
         {currentUser && (
-          <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-xl p-6 mb-8">
+          <div className="leaderboard-user-card bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-xl p-6 mb-8">
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center gap-4">
                 <div className="relative">
@@ -205,7 +205,7 @@ const LeaderboardPage = () => {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
               {/* 2nd Place */}
-              <div className={`bg-gradient-to-br ${getRankColor(2)} border rounded-xl p-6 order-1 md:order-1`}>
+              <div className={`leaderboard-podium-card bg-gradient-to-br ${getRankColor(2)} border rounded-xl p-6 order-1 md:order-1`}>
                 <div className="flex flex-col items-center text-center">
                   <div className="relative mb-4">
                     <ProfileLink userId={topThree[1]?.id || topThree[1]?._id}>
@@ -228,7 +228,7 @@ const LeaderboardPage = () => {
               </div>
 
               {/* 1st Place */}
-              <div className={`bg-gradient-to-br ${getRankColor(1)} border-2 rounded-xl p-8 order-0 md:order-2`}>
+              <div className={`leaderboard-podium-card leaderboard-podium-winner bg-gradient-to-br ${getRankColor(1)} border-2 rounded-xl p-8 order-0 md:order-2`}>
                 <div className="flex flex-col items-center text-center">
                   <div className="relative mb-4">
                     <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
@@ -251,7 +251,7 @@ const LeaderboardPage = () => {
               </div>
 
               {/* 3rd Place */}
-              <div className={`bg-gradient-to-br ${getRankColor(3)} border rounded-xl p-6 order-2 md:order-3`}>
+              <div className={`leaderboard-podium-card bg-gradient-to-br ${getRankColor(3)} border rounded-xl p-6 order-2 md:order-3`}>
                 <div className="flex flex-col items-center text-center">
                   <div className="relative mb-4">
                     <ProfileLink userId={topThree[2]?.id || topThree[2]?._id}>
@@ -277,7 +277,7 @@ const LeaderboardPage = () => {
         )}
 
         {/* Filters and Search */}
-        <div className="bg-gray-50 dark:bg-[#16161f] rounded-xl p-4 mb-6 transition-colors">
+        <div className="leaderboard-filter-panel bg-gray-50 dark:bg-[#16161f] rounded-xl p-4 mb-6 transition-colors">
           <div className="flex flex-col md:flex-row gap-4">
             {/* Filter Type Label */}
             <div className="flex items-center gap-2">
@@ -305,7 +305,7 @@ const LeaderboardPage = () => {
 
         {/* Ranking Type Tabs */}
         <div className="mb-4">
-          <div className="flex flex-wrap gap-2 bg-gray-50 dark:bg-[#16161f] rounded-xl p-3 transition-colors">
+          <div className="leaderboard-tabs flex flex-wrap gap-2 bg-gray-50 dark:bg-[#16161f] rounded-xl p-3 transition-colors">
             {rankingTypes.map((type) => (
               <button
                 key={type.id}
@@ -315,7 +315,7 @@ const LeaderboardPage = () => {
                     ? type.id === 'codingScore' ? 'bg-amber-500 text-black font-semibold' :
                       type.id === 'problems' ? 'bg-green-500 text-black font-semibold' :
                       type.id === 'leetcode' ? 'bg-orange-500 text-black font-semibold' :
-                      type.id === 'codeforces' ? 'bg-blue-500 text-black font-semibold' :
+                      type.id === 'codeforces' ? 'bg-violet-500 text-white font-semibold' :
                       type.id === 'codechef' ? 'bg-amber-600 text-black font-semibold' :
                       'bg-gray-400 text-black font-semibold'
                     : 'bg-gray-100 dark:bg-[#1a1a2e] text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#252536] transition-colors'
@@ -336,7 +336,7 @@ const LeaderboardPage = () => {
         </div>
 
         {/* Leaderboard Table */}
-        <div className="bg-white dark:bg-[#16161f] rounded-xl overflow-hidden transition-colors">
+        <div className="leaderboard-table bg-white dark:bg-[#16161f] rounded-xl overflow-hidden transition-colors">
           {/* Header */}
           <div className="hidden sm:grid grid-cols-12 gap-4 p-4 bg-gray-100 dark:bg-[#1a1a2e] text-sm font-medium text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700 transition-colors">
             <div className="col-span-1">Rank</div>
@@ -499,7 +499,7 @@ const LeaderboardPage = () => {
         )}
 
         {/* Score Breakdown Info */}
-        <div className="mt-8 bg-white dark:bg-[#16161f] rounded-xl p-6 border border-gray-200 dark:border-gray-800 transition-colors">
+        <div className="leaderboard-score-info mt-8 bg-white dark:bg-[#16161f] rounded-xl p-6 border border-gray-200 dark:border-gray-800 transition-colors">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             <Zap className="w-5 h-5 text-amber-500" />
             How Coding Score is Calculated
