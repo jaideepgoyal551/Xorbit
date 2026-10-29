@@ -59,7 +59,8 @@ app.get('/health', (req, res) => {
       bullBoard: bullBoardInitialized,
       redis: redisEnabled,
       syncMode: redisEnabled ? 'queue' : 'direct',
-      aiInterviews: Boolean(process.env.DEEPSEEK_API_KEY)
+      aiInterviews: true,
+      interviewMode: 'guided'
     }
   });
 });

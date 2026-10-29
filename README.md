@@ -179,11 +179,8 @@ cd frontend && npm run dev    # Vite dev server on :5173
 - `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` — GitHub OAuth credentials
 - `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` — Email configuration
 - `REDIS_ENABLED` — Set to true to use BullMQ with Redis (default: false)
-- `DEEPSEEK_API_KEY` — Server-side DeepSeek API key required for AI DSA interviews
-- `DEEPSEEK_API_URL` — Optional DeepSeek-compatible chat-completions URL
-- `DEEPSEEK_MODEL` — Optional model name (defaults to `deepseek-chat`)
 
-Copy `backend/.env.example` to `backend/.env` and fill in the required values. Keep `DEEPSEEK_API_KEY` only in `backend/.env` or your deployment's backend secrets. Never add it to the frontend environment or commit it.
+Copy `backend/.env.example` to `backend/.env` and fill in the required values. Interview Practice uses built-in questions and rubric-based scoring; it does not require a paid AI API key.
 
 **Frontend** — Configure via `frontend/.env`:
 - `VITE_API_URL` — Backend API base URL (defaults to `http://localhost:5000/api` for local development)
@@ -193,10 +190,10 @@ Copy `backend/.env.example` to `backend/.env` and fill in the required values. K
 The recommended single-service deployment builds the frontend and serves it from the Express backend, keeping the web app, REST API, and Socket.IO on the same origin:
 
 1. Push the repository to GitHub and create a Render Blueprint from the repository root (`render.yaml`).
-2. Provide `MONGODB_URI` for a MongoDB database and a newly generated `DEEPSEEK_API_KEY` when Render requests the private environment values. Render generates `JWT_SECRET`.
-3. Deploy. The health endpoint is `/health`; its `features.aiInterviews` field indicates whether the DeepSeek key is configured.
+2. Provide `MONGODB_URI` for a MongoDB database. Render generates `JWT_SECRET`.
+3. Deploy. The health endpoint is `/health`; its `features.interviewMode` field is `guided` for the free built-in interview practice.
 
-Do not put the DeepSeek key in `frontend/.env`, `VITE_*` variables, source files, or this repository. If using a separate frontend host instead, set `VITE_API_URL` to the public backend API URL including `/api`, and configure the backend `FRONTEND_URL` and `BACKEND_URL` for that deployment.
+If using a separate frontend host instead, set `VITE_API_URL` to the public backend API URL including `/api`, and configure the backend `FRONTEND_URL` and `BACKEND_URL` for that deployment.
 
 ---
 

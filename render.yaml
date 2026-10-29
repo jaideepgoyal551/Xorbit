@@ -12,5 +12,3 @@ services:
         generateValue: true
       - key: MONGODB_URI
         sync: false
-      - key: DEEPSEEK_API_KEY
-        sync: false

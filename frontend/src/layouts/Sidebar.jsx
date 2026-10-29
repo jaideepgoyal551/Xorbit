@@ -41,7 +41,7 @@ const sections = [
     items: [
       { to: '/sheets', icon: BookOpen, label: 'DSA Sheets' },
       { to: '/dsa-guide', icon: BookOpen, label: 'DSA Pattern Guide' },
-      { to: '/ai-interview', icon: BrainCircuit, label: 'AI Interview' },
+      { to: '/ai-interview', icon: BrainCircuit, label: 'Interview Practice' },
       { to: '/daily-challenge', icon: Zap, label: 'Daily Challenge' },
       { to: '/problem-set', icon: FileCode2, label: 'Problem Set' },
     ]

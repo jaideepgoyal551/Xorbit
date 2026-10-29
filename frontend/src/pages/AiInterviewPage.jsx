@@ -139,8 +139,8 @@ const AiInterviewPage = () => {
             <div className="ai-interview-hero-orb" />
             <div className="ai-interview-hero-content">
               <span className="ai-interview-eyebrow"><Sparkles className="h-3.5 w-3.5" /> XORBITS PRACTICE STUDIO</span>
-              <h1>Practice your next interview with AI.</h1>
-              <p>Talk through an original DSA problem, get thoughtful follow-ups, then receive a score with practical feedback.</p>
+              <h1>Practice your next DSA interview for free.</h1>
+              <p>Talk through a DSA problem, work through guided follow-ups, then get an instant rubric-based scorecard.</p>
               <div className="ai-interview-benefits">
                 <span><Clock3 className="h-4 w-4" /> 5, 10, or 15 minutes</span>
                 <span><Target className="h-4 w-4" /> DSA-focused questions</span>
@@ -204,20 +204,20 @@ const AiInterviewPage = () => {
               {error && <p className="ai-interview-error" role="alert">{error}</p>}
               <button className="ai-interview-primary-button" type="submit" disabled={loading}>
                 {loading ? <span className="ai-interview-spinner" /> : <Sparkles className="h-4 w-4" />}
-                {loading ? 'Preparing your interview…' : 'Start AI interview'}
+                {loading ? 'Preparing your interview…' : 'Start free interview'}
                 {!loading && <ArrowRight className="h-4 w-4" />}
               </button>
-              <p className="ai-interview-privacy-note">Your answers are sent to DeepSeek to conduct and score this session. Avoid sharing personal or sensitive information.</p>
+              <p className="ai-interview-privacy-note">No paid AI API is used. Your answers stay in the active session and the score is an automated estimate, not a code execution or correctness guarantee.</p>
             </form>
 
             <aside className="ai-interview-panel ai-interview-howto">
               <span className="ai-interview-card-kicker">HOW IT WORKS</span>
               <h2>Think out loud. Learn as you go.</h2>
               <div className="ai-interview-step">
-                <span>01</span><div><h3>Get a fresh problem</h3><p>Your interviewer creates a DSA prompt for your selected topic and level.</p></div>
+                <span>01</span><div><h3>Get a DSA problem</h3><p>Choose a focus and get a question from the built-in practice bank.</p></div>
               </div>
               <div className="ai-interview-step">
-                <span>02</span><div><h3>Explain your approach</h3><p>Share your reasoning, ask clarifying questions, and respond to follow-ups.</p></div>
+                <span>02</span><div><h3>Explain your approach</h3><p>Share your reasoning and work through structured follow-up prompts.</p></div>
               </div>
               <div className="ai-interview-step">
                 <span>03</span><div><h3>Review your scorecard</h3><p>Get a score out of 100 plus strengths and suggested next steps.</p></div>
@@ -276,7 +276,7 @@ const AiInterviewPage = () => {
             <div className="ai-interview-session-title">
               <button className="ai-interview-back-button" onClick={resetInterview} aria-label="Leave interview"><ArrowLeft className="h-4 w-4" /></button>
               <div className="ai-interview-heading-icon"><BrainCircuit className="h-5 w-5" /></div>
-              <div><h1>AI DSA Interview</h1><p>{session.topic} <span>·</span> {session.level}</p></div>
+              <div><h1>Guided DSA Interview</h1><p>{session.topic} <span>·</span> {session.level}</p></div>
             </div>
             <div className={`ai-interview-timer ${remaining < 60 ? 'is-low' : ''}`} aria-live="polite">
               <Clock3 className="h-4 w-4" /> {formatTime(remaining)}
