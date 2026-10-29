@@ -513,6 +513,13 @@ async getRatingGrowth(userId = null) {
     return data.data;
   },
 
+  async createAiInterviewLiveToken(sessionId) {
+    const data = await authFetch(`/ai-interviews/${encodeURIComponent(sessionId)}/live-token`, {
+      method: 'POST'
+    });
+    return data.data;
+  },
+
   async answerAiInterview(sessionId, answer) {
     const data = await authFetch(`/ai-interviews/${encodeURIComponent(sessionId)}/answer`, {
       method: 'POST',
@@ -521,9 +528,10 @@ async getRatingGrowth(userId = null) {
     return data.data;
   },
 
-  async finishAiInterview(sessionId) {
+  async finishAiInterview(sessionId, transcript) {
     const data = await authFetch(`/ai-interviews/${encodeURIComponent(sessionId)}/finish`, {
-      method: 'POST'
+      method: 'POST',
+      ...(transcript ? { body: JSON.stringify({ transcript }) } : {})
     });
     return data.data;
   },

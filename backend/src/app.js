@@ -60,7 +60,8 @@ app.get('/health', (req, res) => {
       redis: redisEnabled,
       syncMode: redisEnabled ? 'queue' : 'direct',
       aiInterviews: true,
-      interviewMode: 'guided'
+      interviewMode: 'guided',
+      voiceInterviews: Boolean(process.env.GEMINI_API_KEY)
     }
   });
 });

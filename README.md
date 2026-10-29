@@ -179,8 +179,12 @@ cd frontend && npm run dev    # Vite dev server on :5173
 - `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` — GitHub OAuth credentials
 - `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` — Email configuration
 - `REDIS_ENABLED` — Set to true to use BullMQ with Redis (default: false)
+- `GEMINI_API_KEY` — Server-side Gemini API key for the optional Gemini Live voice interview
+- `GEMINI_LIVE_MODEL` — Optional Live model override (defaults to `gemini-2.5-flash-native-audio-preview-12-2025`)
 
-Copy `backend/.env.example` to `backend/.env` and fill in the required values. Interview Practice uses built-in questions and rubric-based scoring; it does not require a paid AI API key.
+Copy `backend/.env.example` to `backend/.env` and fill in the required values. Text Interview Practice uses built-in questions and rubric-based scoring without an AI API key. AI Voice Interview uses Gemini Live and Gemini Flash to conduct and score live voice sessions.
+
+The official [Gemini API pricing page](https://ai.google.dev/gemini-api/docs/pricing) currently lists the Gemini 2.5 Flash Native Audio Live model with free-tier input/output pricing. Free-tier usage has quota limits and may be used by Google to improve its products. Check current pricing and terms before deployment. The backend keeps `GEMINI_API_KEY` private and provisions a single-use, short-lived token for each browser Live session; only that temporary token is sent to the browser. See Google's [Live API WebSocket guide](https://ai.google.dev/gemini-api/docs/live-api/get-started-websocket) and [ephemeral token documentation](https://ai.google.dev/gemini-api/docs/live-api/ephemeral-tokens) for protocol and token lifetime details.
 
 **Frontend** — Configure via `frontend/.env`:
 - `VITE_API_URL` — Backend API base URL (defaults to `http://localhost:5000/api` for local development)
@@ -190,8 +194,8 @@ Copy `backend/.env.example` to `backend/.env` and fill in the required values. I
 The recommended single-service deployment builds the frontend and serves it from the Express backend, keeping the web app, REST API, and Socket.IO on the same origin:
 
 1. Push the repository to GitHub and create a Render Blueprint from the repository root (`render.yaml`).
-2. Provide `MONGODB_URI` for a MongoDB database. Render generates `JWT_SECRET`.
-3. Deploy. The health endpoint is `/health`; its `features.interviewMode` field is `guided` for the free built-in interview practice.
+2. Provide `MONGODB_URI` for a MongoDB database and `GEMINI_API_KEY` as private values. Render generates `JWT_SECRET`.
+3. Deploy. The health endpoint is `/health`; `features.voiceInterviews` indicates whether the backend has a Gemini key.
 
 If using a separate frontend host instead, set `VITE_API_URL` to the public backend API URL including `/api`, and configure the backend `FRONTEND_URL` and `BACKEND_URL` for that deployment.
 

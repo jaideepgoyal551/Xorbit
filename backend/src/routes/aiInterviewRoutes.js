@@ -4,6 +4,13 @@ const { protect } = require('../middleware/auth');
 const aiInterviewController = require('../controllers/aiInterviewController');
 
 const router = express.Router();
+const liveTokenLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 6,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many Gemini Live sessions were started. Wait a few minutes before starting another.' }
+});
 
 router.use(protect);
 router.use(rateLimit({
@@ -15,6 +22,7 @@ router.use(rateLimit({
 }));
 
 router.post('/start', aiInterviewController.startInterview);
+router.post('/:sessionId/live-token', liveTokenLimiter, aiInterviewController.createLiveToken);
 router.post('/:sessionId/answer', aiInterviewController.submitAnswer);
 router.post('/:sessionId/finish', aiInterviewController.finishInterview);
 

@@ -26,6 +26,7 @@ const DailyChallengePage = lazy(() => import('./pages/DailyChallengePage'));
 const ContestsPage = lazy(() => import('./pages/ContestsPage'));
 const BattleArenaPage = lazy(() => import('./pages/BattleArenaPage'));
 const AiInterviewPage = lazy(() => import('./pages/AiInterviewPage'));
+const AiVoiceInterviewPage = lazy(() => import('./pages/AiVoiceInterviewPage'));
 
 // Society Pages
 const SocietiesPage = lazy(() => import('./pages/SocietiesPage'));
@@ -82,6 +83,7 @@ function App() {
             <Route path="sheets" element={<SheetsPage />} />
             <Route path="dsa-guide" element={<DsaGuidePage />} />
             <Route path="ai-interview" element={<AiInterviewPage />} />
+            <Route path="ai-voice-interview" element={<AiVoiceInterviewPage />} />
             <Route path="leaderboard" element={<LeaderboardPage />} />
             <Route path="daily-challenge" element={<DailyChallengePage />} />
             <Route path="contests" element={<ContestsPage />} />

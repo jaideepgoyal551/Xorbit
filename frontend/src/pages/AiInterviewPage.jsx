@@ -3,6 +3,7 @@ import {
   ArrowLeft, ArrowRight, Bot, BrainCircuit, CheckCircle2, Clock3,
   MessageSquareText, RotateCcw, Send, Sparkles, Target, Trophy
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import api from '../services/api';
 
 const TOPICS = [
@@ -146,6 +147,9 @@ const AiInterviewPage = () => {
                 <span><Target className="h-4 w-4" /> DSA-focused questions</span>
                 <span><Trophy className="h-4 w-4" /> Personal scorecard</span>
               </div>
+              <Link to="/ai-voice-interview" className="ai-interview-voice-link">
+                Try a live voice interview <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
             <div className="ai-interview-hero-icon"><BrainCircuit className="h-10 w-10" /></div>
           </section>

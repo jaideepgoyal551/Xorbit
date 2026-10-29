@@ -2324,6 +2324,277 @@ body {
   }
 }
 
+.ai-interview-voice-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 17px;
+  border: 1px solid rgba(143, 228, 212, 0.28);
+  border-radius: 999px;
+  padding: 9px 14px;
+  background: rgba(81, 210, 189, 0.08);
+  color: #a7eee0;
+  font-size: 0.76rem;
+  font-weight: 680;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.ai-interview-voice-link:hover {
+  border-color: rgba(143, 228, 212, 0.5);
+  background: rgba(81, 210, 189, 0.14);
+}
+
+.ai-voice-back {
+  margin-bottom: 12px;
+}
+
+.ai-voice-session {
+  overflow: hidden;
+}
+
+.ai-voice-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px 24px 16px;
+}
+
+.ai-voice-header .ai-interview-session-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-voice-header h1 {
+  color: #fff8f2;
+  font-size: 1.08rem;
+  font-weight: 720;
+}
+
+.ai-voice-header p {
+  margin-top: 3px;
+  color: #aaa19a;
+  font-size: 0.72rem;
+}
+
+.ai-voice-status {
+  display: flex;
+  min-height: 205px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 9px;
+  padding: 20px;
+  text-align: center;
+}
+
+.ai-voice-status > strong {
+  color: #fff8f2;
+  font-size: 0.92rem;
+}
+
+.ai-voice-status > span:last-child {
+  max-width: 430px;
+  color: #a9a09a;
+  font-size: 0.74rem;
+  line-height: 1.6;
+}
+
+.ai-voice-status-orb {
+  display: grid;
+  width: 76px;
+  height: 76px;
+  place-items: center;
+  margin-bottom: 5px;
+  border: 1px solid rgba(143, 228, 212, 0.32);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(81, 210, 189, 0.2), rgba(81, 210, 189, 0.04) 70%);
+  color: #93e8d8;
+  box-shadow: 0 0 42px rgba(81, 210, 189, 0.12);
+}
+
+.ai-voice-status-orb.is-speaking {
+  border-color: rgba(255, 173, 120, 0.42);
+  background: radial-gradient(circle, rgba(240, 120, 57, 0.24), rgba(240, 120, 57, 0.04) 70%);
+  color: #ffb987;
+  animation: ai-voice-pulse 1.6s ease-in-out infinite;
+}
+
+.ai-voice-status-orb.is-connecting,
+.ai-voice-status-orb.is-scoring {
+  animation: ai-voice-pulse 1.8s ease-in-out infinite;
+}
+
+.ai-voice-status-orb.is-error {
+  border-color: rgba(255, 117, 117, 0.4);
+  color: #ff9595;
+}
+
+@keyframes ai-voice-pulse {
+  50% { transform: scale(1.07); box-shadow: 0 0 54px rgba(81, 210, 189, 0.22); }
+}
+
+.ai-voice-transcript {
+  display: flex;
+  min-height: 190px;
+  max-height: 360px;
+  overflow: auto;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 20px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 16px;
+  padding: 15px;
+  background: rgba(7, 9, 12, 0.36);
+}
+
+.ai-voice-transcript-empty {
+  margin: auto;
+  color: #827a72;
+  font-size: 0.74rem;
+}
+
+.ai-voice-message {
+  max-width: 88%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 13px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.ai-voice-message.from-user {
+  align-self: flex-end;
+  border-color: rgba(255, 154, 97, 0.16);
+  background: rgba(240, 90, 36, 0.08);
+}
+
+.ai-voice-message > strong {
+  color: #9de4d6;
+  font-size: 0.64rem;
+  font-weight: 720;
+}
+
+.ai-voice-message.from-user > strong {
+  color: #ffbd94;
+}
+
+.ai-voice-message p {
+  margin-top: 4px;
+  color: #e0d9d3;
+  font-size: 0.76rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.ai-voice-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px 20px 10px;
+}
+
+.ai-voice-mic-button,
+.ai-voice-end-button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(143, 228, 212, 0.3);
+  border-radius: 999px;
+  padding: 0 18px;
+  background: rgba(81, 210, 189, 0.1);
+  color: #a7eee0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, opacity 160ms ease;
+}
+
+.ai-voice-mic-button:hover:not(:disabled) {
+  border-color: rgba(143, 228, 212, 0.52);
+  background: rgba(81, 210, 189, 0.17);
+}
+
+.ai-voice-mic-button.is-muted {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: #c9c1bb;
+}
+
+.ai-voice-end-button {
+  border-color: rgba(255, 154, 97, 0.34);
+  background: rgba(240, 90, 36, 0.15);
+  color: #ffbd94;
+}
+
+.ai-voice-end-button:hover:not(:disabled) {
+  border-color: rgba(255, 154, 97, 0.56);
+  background: rgba(240, 90, 36, 0.22);
+}
+
+.ai-voice-mic-button:disabled,
+.ai-voice-end-button:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+.ai-voice-error {
+  margin: 12px 20px 0;
+}
+
+.ai-voice-footer-note {
+  padding: 0 18px 18px;
+  color: #827a72;
+  font-size: 0.64rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .ai-voice-header {
+    align-items: flex-start;
+    padding: 15px 13px 12px;
+  }
+
+  .ai-voice-header .ai-interview-session-title {
+    gap: 8px;
+  }
+
+  .ai-voice-header h1 {
+    font-size: 0.95rem;
+  }
+
+  .ai-voice-transcript {
+    min-height: 170px;
+    max-height: 300px;
+    margin: 0 12px;
+    padding: 11px;
+  }
+
+  .ai-voice-message {
+    max-width: 96%;
+  }
+
+  .ai-voice-controls {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 15px 12px 9px;
+  }
+
+  .ai-voice-mic-button,
+  .ai-voice-end-button {
+    width: 100%;
+  }
+
+  .ai-voice-error {
+    margin-right: 12px;
+    margin-left: 12px;
+  }
+}
+
 :root {
   color-scheme: dark;
   --ui-canvas: #0c0b0a;

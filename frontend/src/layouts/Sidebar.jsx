@@ -18,6 +18,7 @@ import {
   Building2,
   GraduationCap,
   BrainCircuit,
+  Mic,
   Compass,
   Home
 } from 'lucide-react';
@@ -42,6 +43,7 @@ const sections = [
       { to: '/sheets', icon: BookOpen, label: 'DSA Sheets' },
       { to: '/dsa-guide', icon: BookOpen, label: 'DSA Pattern Guide' },
       { to: '/ai-interview', icon: BrainCircuit, label: 'Interview Practice' },
+      { to: '/ai-voice-interview', icon: Mic, label: 'AI Voice Interview' },
       { to: '/daily-challenge', icon: Zap, label: 'Daily Challenge' },
       { to: '/problem-set', icon: FileCode2, label: 'Problem Set' },
     ]
