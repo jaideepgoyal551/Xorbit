@@ -76,10 +76,22 @@ const requestDeepSeek = async messages => {
     return content.trim();
   } catch (error) {
     if (error.statusCode) throw error;
-    console.error('DeepSeek interview request failed:', error.response?.status || error.message);
+    const providerStatus = error.response?.status;
+    console.error('DeepSeek interview request failed:', providerStatus || error.code || error.message);
+    const providerMessage = providerStatus === 401 || providerStatus === 403
+      ? 'DeepSeek rejected the API key. Check that DEEPSEEK_API_KEY is valid in backend/.env, then restart the backend.'
+      : providerStatus === 402
+        ? 'The DeepSeek account has insufficient balance for this request. Check the account billing and usage.'
+        : providerStatus === 429
+          ? 'DeepSeek rate limit or usage quota reached. Wait and try again, or check the account usage limits.'
+          : providerStatus >= 500
+            ? 'DeepSeek is temporarily experiencing a service issue. Please try again shortly.'
+            : null;
     const providerError = new Error(
       error.code === 'ECONNABORTED'
         ? 'The AI interviewer took too long to respond. Please try again.'
+        : providerMessage
+          ? providerMessage
         : 'The AI interviewer is temporarily unavailable. Please try again shortly.'
     );
     providerError.statusCode = 502;

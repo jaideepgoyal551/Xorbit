@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: xorbits
+    runtime: node
+    buildCommand: npm ci --prefix backend && npm ci --prefix frontend && npm run build --prefix frontend
+    startCommand: npm start --prefix backend
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false

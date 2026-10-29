@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const compression = require('compression');
+const fs = require('fs');
+const path = require('path');
 const passport = require('./config/passport');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 
@@ -56,7 +58,8 @@ app.get('/health', (req, res) => {
     features: {
       bullBoard: bullBoardInitialized,
       redis: redisEnabled,
-      syncMode: redisEnabled ? 'queue' : 'direct'
+      syncMode: redisEnabled ? 'queue' : 'direct',
+      aiInterviews: Boolean(process.env.DEEPSEEK_API_KEY)
     }
   });
 });
@@ -93,6 +96,19 @@ try {
   console.error('❌ Error loading routes:', error.message);
   console.error(error.stack);
   process.exit(1);
+}
+
+const frontendDistPath = path.resolve(__dirname, '../../frontend/dist');
+if (fs.existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath, { index: false }));
+  app.get('*', (req, res, next) => {
+    if (req.path === '/health' || req.path.startsWith('/socket.io') || req.path === '/api' || req.path.startsWith('/api/')) {
+      return next();
+    }
+    return res.sendFile(path.join(frontendDistPath, 'index.html'), error => {
+      if (error) next(error);
+    });
+  });
 }
 
 // 404 handler

@@ -183,10 +183,20 @@ cd frontend && npm run dev    # Vite dev server on :5173
 - `DEEPSEEK_API_URL` — Optional DeepSeek-compatible chat-completions URL
 - `DEEPSEEK_MODEL` — Optional model name (defaults to `deepseek-chat`)
 
-Keep `DEEPSEEK_API_KEY` only in `backend/.env` or your deployment's backend secrets. Never add it to the frontend environment or commit it.
+Copy `backend/.env.example` to `backend/.env` and fill in the required values. Keep `DEEPSEEK_API_KEY` only in `backend/.env` or your deployment's backend secrets. Never add it to the frontend environment or commit it.
 
 **Frontend** — Configure via `frontend/.env`:
-- `VITE_API_URL` — Backend API base URL (e.g. http://localhost:5000/api)
+- `VITE_API_URL` — Backend API base URL (defaults to `http://localhost:5000/api` for local development)
+
+### Deploy the full app to Render
+
+The recommended single-service deployment builds the frontend and serves it from the Express backend, keeping the web app, REST API, and Socket.IO on the same origin:
+
+1. Push the repository to GitHub and create a Render Blueprint from the repository root (`render.yaml`).
+2. Provide `MONGODB_URI` for a MongoDB database and a newly generated `DEEPSEEK_API_KEY` when Render requests the private environment values. Render generates `JWT_SECRET`.
+3. Deploy. The health endpoint is `/health`; its `features.aiInterviews` field indicates whether the DeepSeek key is configured.
+
+Do not put the DeepSeek key in `frontend/.env`, `VITE_*` variables, source files, or this repository. If using a separate frontend host instead, set `VITE_API_URL` to the public backend API URL including `/api`, and configure the backend `FRONTEND_URL` and `BACKEND_URL` for that deployment.
 
 ---
 

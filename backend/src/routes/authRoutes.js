@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const frontendUrl = process.env.FRONTEND_URL || process.env.RENDER_EXTERNAL_URL || 'http://localhost:5173';
 const passport = require('../config/passport');
 const multer = require('multer');
 const jwt = require('jsonwebtoken');
@@ -51,12 +52,12 @@ if (isGoogleOAuthConfigured) {
   );
 
   router.get('/google/callback',
-    passport.authenticate('google', { session: false, failureRedirect: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/login?error=oauth_failed` }),
+    passport.authenticate('google', { session: false, failureRedirect: `${frontendUrl}/login?error=oauth_failed` }),
     (req, res) => {
       // Generate JWT token
       const token = req.user.generateAuthToken();
       // Redirect to frontend with token
-      res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/oauth-success?token=${token}`);
+      res.redirect(`${frontendUrl}/oauth-success?token=${token}`);
     }
   );
 } else {
@@ -71,12 +72,12 @@ if (isGitHubOAuthConfigured) {
   );
 
   router.get('/github/callback',
-    passport.authenticate('github', { session: false, failureRedirect: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/login?error=oauth_failed` }),
+    passport.authenticate('github', { session: false, failureRedirect: `${frontendUrl}/login?error=oauth_failed` }),
     (req, res) => {
       // Generate JWT token
       const token = req.user.generateAuthToken();
       // Redirect to frontend with token
-      res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/oauth-success?token=${token}`);
+      res.redirect(`${frontendUrl}/oauth-success?token=${token}`);
     }
   );
 } else {
