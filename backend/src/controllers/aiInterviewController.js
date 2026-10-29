@@ -19,7 +19,7 @@ const allowedLevels = new Set(['Beginner', 'Intermediate', 'Advanced']);
 const criterionNames = ['Problem solving', 'Correctness', 'Communication', 'Complexity analysis', 'Adaptability'];
 const SESSION_TTL_MS = 30 * 60 * 1000;
 const MAX_TURNS = 24;
-const LIVE_MODEL = process.env.GEMINI_LIVE_MODEL || 'gemini-2.5-flash-native-audio-preview-12-2025';
+const LIVE_MODEL = process.env.GEMINI_LIVE_MODEL || 'gemini-3.8-live';
 const questionsByTopic = {
   'Arrays & Hashing': [
     'Given an array of integers, return the length of the longest contiguous range that contains no repeated values. Explain how you would update your range as you scan.',
@@ -95,6 +95,15 @@ const removeExpiredSessions = () => {
   for (const [id, session] of sessions) {
     if (now >= session.cleanupAt) sessions.delete(id);
   }
+};
+
+const getGeminiErrorDetail = error => {
+  const detail = error.response?.data?.error?.message;
+  if (typeof detail !== 'string' || !detail.trim()) return null;
+  return detail
+    .replace(/AIza[0-9A-Za-z_-]{20,}/g, '[redacted]')
+    .replace(/Bearer\s+\S+/gi, 'Bearer [redacted]')
+    .slice(0, 500);
 };
 
 const startInterview = async (req, res, next) => {
@@ -190,8 +199,6 @@ const createLiveToken = async (req, res, next) => {
           model: `models/${LIVE_MODEL}`,
           config: {
             responseModalities: ['AUDIO'],
-            inputAudioTranscription: {},
-            outputAudioTranscription: {},
             sessionResumption: {},
             systemInstruction: { parts: [{ text: systemInstruction }] }
           }
@@ -219,20 +226,37 @@ const createLiveToken = async (req, res, next) => {
     });
   } catch (error) {
     const status = error.response?.status;
-    console.error('Gemini Live token request failed:', status || error.code || error.message);
+    const detail = getGeminiErrorDetail(error);
+    console.error('Gemini Live token request failed:', {
+      status: status || null,
+      code: error.code || null,
+      detail: detail || error.message
+    });
     const message = status === 401 || status === 403
-      ? 'Gemini rejected the backend API key. Check GEMINI_API_KEY in the deployment environment.'
+      ? 'Gemini rejected the backend API key or project access. Check GEMINI_API_KEY and the API key restrictions in Google AI Studio.'
       : status === 402
         ? 'Google rejected this Live API request because of project billing or eligibility. Check Gemini API free-tier access and project settings.'
-      : status === 429
-        ? 'The Gemini free-tier request limit has been reached. Check the project quota and try again later.'
-        : status >= 500
-          ? 'Gemini Live is temporarily unavailable. Please try again shortly.'
-          : error.code === 'ECONNABORTED'
-            ? 'Gemini token creation timed out. Please try again.'
-            : 'Could not create a secure Gemini Live session.';
+        : status === 429
+          ? 'The Gemini free-tier request limit has been reached. Check the project quota and try again later.'
+          : status === 404
+            ? `Gemini could not find Live model "${LIVE_MODEL}". Remove GEMINI_LIVE_MODEL or set it to a currently supported Live model.`
+            : status === 400
+              ? `Gemini rejected the Live session configuration${detail ? `: ${detail}` : '.'}`
+              : status >= 500
+                ? `Gemini Live returned HTTP ${status}. Please try again shortly.`
+                : error.code === 'ECONNABORTED'
+                  ? 'Gemini token creation timed out. Please try again.'
+                  : error.code
+                    ? `The backend could not reach Gemini (${error.code}). Check outbound HTTPS access and try again.`
+                    : `Could not create a secure Gemini Live session${detail ? `: ${detail}` : '.'}`;
     const providerError = new Error(message);
-    providerError.statusCode = status === 429 ? 429 : status === 401 || status === 403 ? 502 : 503;
+    providerError.statusCode = status === 400 || status === 404 || status === 429
+      ? status
+      : status === 401 || status === 403
+        ? 502
+        : status >= 500
+          ? 503
+          : 502;
     return next(providerError);
   }
 };

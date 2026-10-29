@@ -180,7 +180,7 @@ cd frontend && npm run dev    # Vite dev server on :5173
 - `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` — Email configuration
 - `REDIS_ENABLED` — Set to true to use BullMQ with Redis (default: false)
 - `GEMINI_API_KEY` — Server-side Gemini API key for the optional Gemini Live voice interview
-- `GEMINI_LIVE_MODEL` — Optional Live model override (defaults to `gemini-2.5-flash-native-audio-preview-12-2025`)
+- `GEMINI_LIVE_MODEL` — Optional Live model override (defaults to `gemini-3.8-live`)
 
 Copy `backend/.env.example` to `backend/.env` and fill in the required values. Text Interview Practice uses built-in questions and rubric-based scoring without an AI API key. AI Voice Interview uses Gemini Live and Gemini Flash to conduct and score live voice sessions.
 
