@@ -159,6 +159,7 @@ const RatingChart = ({
                   stroke={platformRatingColors[platform]}
                   strokeWidth={2} 
                   fill={`url(#gradient${platform.charAt(0).toUpperCase() + platform.slice(1)})`}
+                  style={compact ? { filter: `drop-shadow(0 0 4px ${platformRatingColors[platform]}99)` } : undefined}
                   dot={false}
                   activeDot={{ r: 4, fill: platformRatingColors[platform] }}
                   connectNulls
@@ -172,6 +173,7 @@ const RatingChart = ({
                 stroke={platformRatingColors[selectedRatingPlatform]}
                 strokeWidth={2.5} 
                 fill={`url(#gradient${selectedRatingPlatform.charAt(0).toUpperCase() + selectedRatingPlatform.slice(1)})`}
+                style={compact ? { filter: `drop-shadow(0 0 5px ${platformRatingColors[selectedRatingPlatform]}aa)` } : undefined}
                 dot={false}
                 activeDot={{ r: 5, fill: platformRatingColors[selectedRatingPlatform] }}
                 connectNulls
@@ -183,6 +185,7 @@ const RatingChart = ({
                 stroke="#f59e0b" 
                 strokeWidth={2} 
                 fill="url(#gradientDefault)"
+                style={compact ? { filter: 'drop-shadow(0 0 4px #f59e0b99)' } : undefined}
                 dot={false}
                 activeDot={{ r: 4, fill: '#f59e0b' }}
               />

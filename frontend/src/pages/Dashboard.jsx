@@ -496,22 +496,21 @@ const Dashboard = () => {
                   totalProblems={totalProblems}
                   activeDays={contributionCalendar?.stats?.activeDays || userData?.totals?.activeDays || 0}
                 />
+                <Suspense fallback={<div className="dashboard-card dashboard-rating-chart-compact flex items-center justify-center text-gray-500">Loading chart...</div>}>
+                  <RatingChart
+                    ratingHistory={ratingHistory}
+                    allRatingHistory={allRatingHistory}
+                    selectedRatingPlatform={selectedRatingPlatform}
+                    setSelectedRatingPlatform={setSelectedRatingPlatform}
+                    platformStats={platformStats}
+                    platformRatingColors={platformRatingColors}
+                    compact
+                  />
+                </Suspense>
                 <div className="dashboard-card dashboard-heatmap-card">
                   <ContributionCalendar calendarData={contributionCalendar} connectedPlatforms={connectedPlatforms} />
                 </div>
               </div>
-
-              <Suspense fallback={<div className="dashboard-card flex h-32 items-center justify-center text-gray-500">Loading chart...</div>}>
-                <RatingChart
-                  ratingHistory={ratingHistory}
-                  allRatingHistory={allRatingHistory}
-                  selectedRatingPlatform={selectedRatingPlatform}
-                  setSelectedRatingPlatform={setSelectedRatingPlatform}
-                  platformStats={platformStats}
-                  platformRatingColors={platformRatingColors}
-                  compact
-                />
-              </Suspense>
 
               <div className="dashboard-section-intro dashboard-section-intro-compact">
                 <div>
