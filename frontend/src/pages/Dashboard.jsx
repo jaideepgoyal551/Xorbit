@@ -501,6 +501,18 @@ const Dashboard = () => {
                 </div>
               </div>
 
+              <Suspense fallback={<div className="dashboard-card flex h-32 items-center justify-center text-gray-500">Loading chart...</div>}>
+                <RatingChart
+                  ratingHistory={ratingHistory}
+                  allRatingHistory={allRatingHistory}
+                  selectedRatingPlatform={selectedRatingPlatform}
+                  setSelectedRatingPlatform={setSelectedRatingPlatform}
+                  platformStats={platformStats}
+                  platformRatingColors={platformRatingColors}
+                  compact
+                />
+              </Suspense>
+
               <div className="dashboard-section-intro dashboard-section-intro-compact">
                 <div>
                   <h2>Performance breakdown</h2>
@@ -511,17 +523,6 @@ const Dashboard = () => {
                 <ContestsSection totalContests={totalContests} contestsByPlatform={contestsByPlatform} PlatformIcon={PlatformIcon} getPlatformColor={getPlatformColor} />
                 <ProblemsBreakdown platformStats={platformStats} dsaProblems={dsaProblems} cpProblems={cpProblems} PLATFORM_CONFIG={PLATFORM_CONFIG} PlatformIcon={PlatformIcon} />
               </div>
-
-              <Suspense fallback={<div className="dashboard-card flex h-64 items-center justify-center text-gray-500">Loading chart...</div>}>
-                <RatingChart
-                  ratingHistory={ratingHistory}
-                  allRatingHistory={allRatingHistory}
-                  selectedRatingPlatform={selectedRatingPlatform}
-                  setSelectedRatingPlatform={setSelectedRatingPlatform}
-                  platformStats={platformStats}
-                  platformRatingColors={platformRatingColors}
-                />
-              </Suspense>
 
               <div 
                 onClick={() => navigate('/sheets')}
@@ -592,93 +593,97 @@ const ProfileSection = React.memo(({ displayUser, connectedPlatforms, codeforces
   const codeforcesRank = getCodeforcesMaxRank(codeforcesStats);
 
   return (
-    <section className="dashboard-profile-card">
-      <div className="dashboard-profile-sidebar-summary">
-        <div className="dashboard-avatar">
-          {displayUser?.avatar ? (
-            <img src={displayUser.avatar} alt="" className="h-full w-full object-cover" />
-          ) : (
-            <span>{displayUser?.fullName?.[0] || displayUser?.username?.[0] || 'U'}</span>
+    <>
+      <section className="dashboard-profile-card">
+        <div className="dashboard-profile-sidebar-summary">
+          <div className="dashboard-avatar">
+            {displayUser?.avatar ? (
+              <img src={displayUser.avatar} alt="" className="h-full w-full object-cover" />
+            ) : (
+              <span>{displayUser?.fullName?.[0] || displayUser?.username?.[0] || 'U'}</span>
+            )}
+          </div>
+          <div className="dashboard-profile-name">
+            <h2>{displayUser?.fullName || 'Coder'}</h2>
+            <p>@{displayUser?.username || 'coder'}</p>
+            <span className="dashboard-profile-total" title="Total questions solved across connected platforms">
+              <strong>{Number(totalProblems).toLocaleString()}</strong>
+              <span>questions solved</span>
+            </span>
+          </div>
+          {codeforcesRank && (
+            <span className="dashboard-rank-badge" title="Codeforces highest rank">
+              Codeforces · {codeforcesRank}
+            </span>
+          )}
+          <div className="dashboard-profile-meta">
+            {displayUser?.location && <span><MapPin className="h-3.5 w-3.5" />{displayUser.location}</span>}
+            {displayUser?.institution && <span><Building className="h-3.5 w-3.5" />{displayUser.institution}</span>}
+          </div>
+          {displayUser?.bio && <p className="dashboard-profile-bio">{displayUser.bio}</p>}
+          {isOwnProfile && (
+            <button onClick={() => navigate('/settings')} className="dashboard-outline-button">
+              Edit Profile
+            </button>
           )}
         </div>
-        <div className="dashboard-profile-name">
-          <h2>{displayUser?.fullName || 'Coder'}</h2>
-          <p>@{displayUser?.username || 'coder'}</p>
-          <span className="dashboard-profile-total" title="Total questions solved across connected platforms">
-            <strong>{Number(totalProblems).toLocaleString()}</strong>
-            <span>questions solved</span>
-          </span>
-        </div>
-        {codeforcesRank && (
-          <span className="dashboard-rank-badge" title="Codeforces highest rank">
-            Codeforces · {codeforcesRank}
-          </span>
-        )}
-        <div className="dashboard-profile-meta">
-          {displayUser?.location && <span><MapPin className="h-3.5 w-3.5" />{displayUser.location}</span>}
-          {displayUser?.institution && <span><Building className="h-3.5 w-3.5" />{displayUser.institution}</span>}
-        </div>
-        {displayUser?.bio && <p className="dashboard-profile-bio">{displayUser.bio}</p>}
-        {isOwnProfile && (
-          <button onClick={() => navigate('/settings')} className="dashboard-outline-button">
-            Edit Profile
-          </button>
-        )}
-      </div>
+      </section>
 
-      <div className="dashboard-sidebar-platforms">
-        <div className="dashboard-sidebar-section-heading">
-          <h3>Connected platforms</h3>
-          <span>{connectedPlatforms.length}</span>
-        </div>
-        {connectedPlatforms.length > 0 ? connectedPlatforms.map(platform => {
-          const stats = platform.stats || {};
-          const isGithub = platform.key === 'github';
-          const count = Number(isGithub
-            ? (stats.totalContributions || stats.allTimeContributions || stats.contributions || 0)
-            : (stats.totalSolved || stats.problemsSolved || 0));
-          const rating = Number(stats.rating || stats.currentRating || 0);
-          const maxRating = Number(stats.maxRating || rating || 0);
-          const rank = platform.key === 'codeforces' ? getCodeforcesMaxRank(stats) : null;
-          return (
-            <a
-              key={platform.key}
-              href={getPlatformUrl(platform.key, platform.username)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="dashboard-sidebar-platform"
-            >
-              <div className="dashboard-platform-icon">
-                <PlatformIcon platform={platform.key} className="h-5 w-5" color={platform.color} />
-              </div>
-              <div className="dashboard-sidebar-platform-info">
-                <div className="dashboard-sidebar-platform-name">
-                  <span>{platform.name}</span>
-                  <ChevronRight className="h-3.5 w-3.5" />
+      <section className="dashboard-card dashboard-connected-platforms">
+        <div className="dashboard-sidebar-platforms">
+          <div className="dashboard-sidebar-section-heading">
+            <h3>Connected platforms</h3>
+            <span>{connectedPlatforms.length}</span>
+          </div>
+          {connectedPlatforms.length > 0 ? connectedPlatforms.map(platform => {
+            const stats = platform.stats || {};
+            const isGithub = platform.key === 'github';
+            const count = Number(isGithub
+              ? (stats.totalContributions || stats.allTimeContributions || stats.contributions || 0)
+              : (stats.totalSolved || stats.problemsSolved || 0));
+            const rating = Number(stats.rating || stats.currentRating || 0);
+            const maxRating = Number(stats.maxRating || rating || 0);
+            const rank = platform.key === 'codeforces' ? getCodeforcesMaxRank(stats) : null;
+            return (
+              <a
+                key={platform.key}
+                href={getPlatformUrl(platform.key, platform.username)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="dashboard-sidebar-platform"
+              >
+                <div className="dashboard-platform-icon">
+                  <PlatformIcon platform={platform.key} className="h-5 w-5" color={platform.color} />
                 </div>
-                <span className="dashboard-sidebar-platform-username">@{platform.username}</span>
-                {rating > 0 ? (
-                  <div className="dashboard-sidebar-platform-rating">
-                    <span>Rating <strong>{rating.toLocaleString()}</strong></span>
-                    <span>Max <strong>{maxRating.toLocaleString()}</strong></span>
+                <div className="dashboard-sidebar-platform-info">
+                  <div className="dashboard-sidebar-platform-name">
+                    <span>{platform.name}</span>
+                    <ChevronRight className="h-3.5 w-3.5" />
                   </div>
-                ) : (
-                  <span className="dashboard-sidebar-platform-solved">
-                    {count.toLocaleString()} {isGithub ? 'contributions' : 'solved'}
-                  </span>
-                )}
-                {rank && <span className="dashboard-platform-rank">{rank}</span>}
-              </div>
-              {rating > 0 && <span className="dashboard-sidebar-platform-count">{count.toLocaleString()}</span>}
-            </a>
-          );
-        }) : (
-          <button onClick={() => navigate('/settings')} className="dashboard-add-platform">
-            + Connect your first coding platform
-          </button>
-        )}
-      </div>
-    </section>
+                  <span className="dashboard-sidebar-platform-username">@{platform.username}</span>
+                  {rating > 0 ? (
+                    <div className="dashboard-sidebar-platform-rating">
+                      <span>Rating <strong>{rating.toLocaleString()}</strong></span>
+                      <span>Max <strong>{maxRating.toLocaleString()}</strong></span>
+                    </div>
+                  ) : (
+                    <span className="dashboard-sidebar-platform-solved">
+                      {count.toLocaleString()} {isGithub ? 'contributions' : 'solved'}
+                    </span>
+                  )}
+                  {rank && <span className="dashboard-platform-rank">{rank}</span>}
+                </div>
+                {rating > 0 && <span className="dashboard-sidebar-platform-count">{count.toLocaleString()}</span>}
+              </a>
+            );
+          }) : (
+            <button onClick={() => navigate('/settings')} className="dashboard-add-platform">
+              + Connect your first coding platform
+            </button>
+          )}
+        </div>
+      </section>
+    </>
   );
 });
 

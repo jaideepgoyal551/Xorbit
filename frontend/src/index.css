@@ -251,7 +251,7 @@ body {
 .dashboard-overview {
   display: grid;
   grid-template-columns: minmax(150px, 0.36fr) minmax(150px, 0.36fr) minmax(0, 1.8fr);
-  align-items: stretch;
+  align-items: start;
   gap: 12px;
 }
 
@@ -260,8 +260,8 @@ body {
 }
 
 .dashboard-summary-stats .dashboard-stat-card {
-  min-height: 168px;
-  padding: 18px 16px;
+  min-height: 108px;
+  padding: 13px 14px;
 }
 
 .dashboard-stat-card-primary .dashboard-stat-value {
@@ -272,7 +272,7 @@ body {
 .dashboard-secondary-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  align-items: stretch;
+  align-items: start;
   gap: 14px;
 }
 
@@ -404,7 +404,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding: 15px 12px 12px;
 }
 
@@ -1058,7 +1057,7 @@ body {
   }
 
   .dashboard-summary-stats .dashboard-stat-card {
-    min-height: 132px;
+    min-height: 108px;
   }
 
   .dashboard-secondary-grid {
@@ -1093,30 +1092,26 @@ body {
   }
 
   .dashboard-profile-card {
-    display: grid;
-    grid-template-columns: minmax(210px, 0.72fr) minmax(0, 1fr);
-    align-items: start;
+    display: block;
   }
 
   .dashboard-profile-sidebar-summary {
-    grid-row: span 2;
+    grid-row: auto;
     padding: 18px 14px;
   }
 
   .dashboard-sidebar-platforms {
-    border-top: 0;
-    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    border: 0;
     padding: 15px 12px;
   }
 
   .dashboard-profile-column {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(220px, 0.7fr);
-    align-items: start;
+    display: flex;
+    flex-direction: column;
   }
 
   .dashboard-profile-column > .dashboard-profile-card {
-    grid-row: span 2;
+    grid-row: auto;
   }
 }
 
@@ -1172,8 +1167,7 @@ body {
   .dashboard-sidebar-platforms {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    border-left: 0;
+    border: 0;
     padding: 12px;
   }
 
@@ -1197,7 +1191,7 @@ body {
   }
 
   .dashboard-summary-stats .dashboard-stat-card {
-    min-height: 112px;
+    min-height: 96px;
     padding: 13px 11px;
   }
 
