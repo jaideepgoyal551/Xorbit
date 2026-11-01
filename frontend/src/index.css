@@ -5546,173 +5546,19 @@ body {
   }
 }
 
-.dashboard-page {
-  --dashboard-border: rgba(210, 218, 228, 0.2);
-  --dashboard-muted: #aeb8c5;
-  --dashboard-orange: #d7dee8;
-}
-
-.dashboard-page .dashboard-profile-card,
 .dashboard-page .dashboard-card,
+.dashboard-page .dashboard-profile-card,
 .dashboard-page .dashboard-platform-card,
 .dashboard-page .dashboard-promo-card,
-.dashboard-page .dashboard-add-platform {
-  border-color: rgba(205, 215, 228, 0.2);
-  background:
-    linear-gradient(135deg, rgba(226, 233, 242, 0.075), transparent 46%),
-    linear-gradient(145deg, rgba(35, 40, 48, 0.96), rgba(17, 20, 25, 0.98));
-  box-shadow:
-    0 12px 30px rgba(0, 0, 0, 0.28),
-    0 0 20px rgba(190, 204, 222, 0.075),
-    inset 0 1px 0 rgba(245, 248, 252, 0.12);
-}
-
-.dashboard-page .dashboard-card::before,
-.dashboard-page .dashboard-profile-card::before {
-  background:
-    linear-gradient(132deg, rgba(240, 245, 252, 0.09), transparent 42%),
-    radial-gradient(ellipse at 100% 0%, rgba(205, 217, 234, 0.075), transparent 44%);
-}
-
-.dashboard-page .dashboard-stat-card-primary,
-.dashboard-page .dashboard-stat-card:nth-child(2),
-.dashboard-page .dashboard-profile-card {
-  background:
-    linear-gradient(135deg, rgba(226, 233, 242, 0.085), transparent 46%),
-    linear-gradient(145deg, rgba(40, 45, 54, 0.98), rgba(19, 22, 27, 0.98));
-}
-
-.dashboard-page .dashboard-heatmap-card,
-.dashboard-page .dashboard-connected-platforms,
-.dashboard-page .dashboard-rating-chart-compact,
-.dashboard-page .dashboard-contests-card {
-  box-shadow:
-    0 12px 30px rgba(0, 0, 0, 0.28),
-    0 0 22px rgba(198, 211, 228, 0.09),
-    inset 0 1px 0 rgba(245, 248, 252, 0.12);
-}
-
-.dashboard-page .dashboard-profile-name h2,
-.dashboard-page .dashboard-section-intro h2,
-.dashboard-page .dashboard-card h3,
-.dashboard-page .dashboard-stat-value,
-.dashboard-page .dashboard-stat-card-primary .dashboard-stat-value {
-  color: #f2f5f9;
-}
-
-.dashboard-page .dashboard-profile-name > p,
-.dashboard-page .dashboard-profile-meta > span,
-.dashboard-page .dashboard-profile-bio,
-.dashboard-page .dashboard-stat-note,
-.dashboard-page .dashboard-section-intro > span {
-  color: #bac3cf;
-}
-
-.dashboard-page .dashboard-profile-total,
-.dashboard-page .dashboard-rank-badge,
-.dashboard-page .dashboard-platform-rank {
-  border-color: rgba(211, 221, 234, 0.26);
-  background: rgba(194, 207, 224, 0.1);
-  color: #e0e7f0 !important;
-}
-
-.dashboard-page .dashboard-profile-total strong,
-.dashboard-page .dashboard-sidebar-platform-count {
-  color: #eef2f8;
-}
-
-.dashboard-page .dashboard-live-dot {
-  background: #d7e0eb;
-  box-shadow: 0 0 10px rgba(215, 224, 235, 0.72);
-}
-
-.dashboard-page .dashboard-rating-peak strong {
-  border-color: rgba(211, 221, 234, 0.28);
-  background: rgba(194, 207, 224, 0.1);
-  color: #e0e7f0;
-}
-
-.dashboard-page .dashboard-outline-button {
-  border-color: rgba(211, 221, 234, 0.3);
-  color: #e0e7f0;
-}
-
-.dashboard-page .dashboard-outline-button:hover {
-  border-color: rgba(225, 233, 243, 0.52);
-  background: rgba(205, 217, 234, 0.09);
-}
-
-.dashboard-page .dashboard-section-intro > span {
-  border-color: rgba(198, 211, 228, 0.22);
-  background: rgba(198, 211, 228, 0.07);
+.dashboard-page .dashboard-add-platform,
+.dashboard-page .dashboard-sidebar-platform {
+  border-color: rgba(205, 215, 228, 0.14);
 }
 
 .dashboard-page .dashboard-card:hover,
 .dashboard-page .dashboard-profile-card:hover,
 .dashboard-page .dashboard-platform-card:hover,
-.dashboard-page .dashboard-promo-card:hover {
-  border-color: rgba(225, 233, 243, 0.42);
-  background:
-    linear-gradient(135deg, rgba(236, 241, 248, 0.09), transparent 46%),
-    linear-gradient(145deg, rgba(42, 48, 57, 0.98), rgba(20, 23, 28, 0.99));
-  box-shadow:
-    0 16px 36px rgba(0, 0, 0, 0.32),
-    0 0 26px rgba(205, 218, 236, 0.15),
-    inset 0 1px 0 rgba(248, 250, 253, 0.17);
-}
-
+.dashboard-page .dashboard-promo-card:hover,
 .dashboard-page .dashboard-sidebar-platform:hover {
-  border-color: rgba(218, 228, 241, 0.38);
-  background: rgba(220, 229, 241, 0.075);
-}
-
-.dashboard-page .dashboard-sidebar-platform,
-.dashboard-page .dashboard-rating-chart-compact,
-.dashboard-page .dashboard-contests-card,
-.dashboard-page .dashboard-secondary-grid > .dashboard-card {
-  border-radius: 14px;
-}
-
-.dashboard-overview {
-  gap: 12px;
-}
-
-.dashboard-summary-stats .dashboard-stat-card {
-  min-height: 104px;
-  padding: 14px;
-}
-
-.dashboard-summary-stats .dashboard-stat-value {
-  font-size: clamp(1.7rem, 2.4vw, 2.15rem);
-}
-
-.dashboard-rating-chart-compact {
-  padding: 12px 14px;
-}
-
-.dashboard-rating-chart-compact > div:last-child {
-  height: 82px;
-}
-
-.dashboard-secondary-grid > .dashboard-card {
-  padding: 18px;
-}
-
-@media (max-width: 640px) {
-  .dashboard-summary-stats .dashboard-stat-card {
-    min-height: 96px;
-    padding: 12px;
-  }
-
-  .dashboard-rating-chart-compact {
-    padding: 10px 12px;
-  }
-
-  .dashboard-rating-chart-compact > div:last-child {
-    height: 76px;
-  }
-
-  .dashboard-secondary-grid > .dashboard-card {
-    padding: 15px;
-  }
+  border-color: rgba(215, 224, 236, 0.28);
 }

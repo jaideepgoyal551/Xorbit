@@ -14,11 +14,6 @@ const RatingChart = ({
   platformRatingColors,
   compact = false
 }) => {
-  const compactRatingColors = {
-    leetcode: '#e7edf5',
-    codeforces: '#bcc8d8',
-    codechef: '#8795a8'
-  };
   const currentRating = selectedRatingPlatform === 'all'
     ? (platformStats.leetcode?.rating || platformStats.codeforces?.rating || platformStats.codechef?.rating || 0)
     : (platformStats[selectedRatingPlatform]?.rating || 0);
@@ -55,7 +50,6 @@ const RatingChart = ({
         <button
           onClick={() => setSelectedRatingPlatform('all')}
           title="All platforms"
-          style={compact && selectedRatingPlatform === 'all' ? { backgroundColor: '#cbd5e1', color: '#111827' } : undefined}
           className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
             selectedRatingPlatform === 'all' 
               ? 'bg-[#22c55e] text-[#06100a]' 
@@ -80,10 +74,7 @@ const RatingChart = ({
                     ? 'bg-gray-100 dark:bg-[#1a1a2e] text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-[#252536] border border-gray-300 dark:border-gray-700 transition-colors'
                     : 'bg-gray-100 dark:bg-[#1a1a2e] text-gray-400 dark:text-gray-600 cursor-not-allowed opacity-50 transition-colors'
               }`}
-              style={selectedRatingPlatform === platform ? {
-                backgroundColor: compact ? '#cbd5e1' : platformRatingColors[platform],
-                color: compact ? '#111827' : undefined
-              } : {}}
+              style={selectedRatingPlatform === platform ? { backgroundColor: platformRatingColors[platform] } : {}}
             >
               <PlatformIcon platform={platform} className="w-4 h-4" /> {compact ? platformName.slice(0, 2).toUpperCase() : platformName}
             </button>
@@ -96,7 +87,7 @@ const RatingChart = ({
         <div className="flex flex-wrap gap-4 mb-3">
           {allRatingHistory.platforms.map(platform => (
             <div key={platform} className="flex items-center gap-2">
-              <PlatformIcon platform={platform} className="w-3.5 h-3.5" color={compact ? compactRatingColors[platform] : platformRatingColors[platform]} />
+              <PlatformIcon platform={platform} className="w-3.5 h-3.5" color={platformRatingColors[platform]} />
               <span className="text-xs text-gray-400">{PLATFORM_CONFIG[platform]?.name || platform}</span>
             </div>
           ))}
@@ -113,20 +104,20 @@ const RatingChart = ({
           >
             <defs>
               <linearGradient id="gradientLeetcode" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={compact ? compactRatingColors.leetcode : '#FFA116'} stopOpacity={0.4}/>
-                <stop offset="95%" stopColor={compact ? compactRatingColors.leetcode : '#FFA116'} stopOpacity={0}/>
+                <stop offset="5%" stopColor="#FFA116" stopOpacity={0.4}/>
+                <stop offset="95%" stopColor="#FFA116" stopOpacity={0}/>
               </linearGradient>
               <linearGradient id="gradientCodeforces" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={compact ? compactRatingColors.codeforces : '#1F8ACB'} stopOpacity={0.4}/>
-                <stop offset="95%" stopColor={compact ? compactRatingColors.codeforces : '#1F8ACB'} stopOpacity={0}/>
+                <stop offset="5%" stopColor="#1F8ACB" stopOpacity={0.4}/>
+                <stop offset="95%" stopColor="#1F8ACB" stopOpacity={0}/>
               </linearGradient>
               <linearGradient id="gradientCodechef" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={compact ? compactRatingColors.codechef : '#5B4638'} stopOpacity={0.4}/>
-                <stop offset="95%" stopColor={compact ? compactRatingColors.codechef : '#5B4638'} stopOpacity={0}/>
+                <stop offset="5%" stopColor="#5B4638" stopOpacity={0.4}/>
+                <stop offset="95%" stopColor="#5B4638" stopOpacity={0}/>
               </linearGradient>
               <linearGradient id="gradientDefault" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={compact ? '#e7edf5' : '#f59e0b'} stopOpacity={0.4}/>
-                <stop offset="95%" stopColor={compact ? '#e7edf5' : '#f59e0b'} stopOpacity={0}/>
+                <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.4}/>
+                <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
               </linearGradient>
             </defs>
             {!compact && <CartesianGrid strokeDasharray="3 3" stroke="currentColor" className="text-gray-200 dark:text-[#2a2a3e]" vertical={false} />}
@@ -165,12 +156,12 @@ const RatingChart = ({
                   type="natural" 
                   dataKey={platform}
                   name={platform}
-                  stroke={compact ? compactRatingColors[platform] : platformRatingColors[platform]}
+                  stroke={platformRatingColors[platform]}
                   strokeWidth={2} 
                   fill={`url(#gradient${platform.charAt(0).toUpperCase() + platform.slice(1)})`}
-                  style={compact ? { filter: `drop-shadow(0 0 4px ${compactRatingColors[platform]}99)` } : undefined}
+                  style={compact ? { filter: `drop-shadow(0 0 4px ${platformRatingColors[platform]}99)` } : undefined}
                   dot={false}
-                  activeDot={{ r: 4, fill: compact ? compactRatingColors[platform] : platformRatingColors[platform] }}
+                  activeDot={{ r: 4, fill: platformRatingColors[platform] }}
                   connectNulls
                 />
               ))
@@ -179,24 +170,24 @@ const RatingChart = ({
                 type="natural" 
                 dataKey={selectedRatingPlatform}
                 name={selectedRatingPlatform}
-                stroke={compact ? compactRatingColors[selectedRatingPlatform] : platformRatingColors[selectedRatingPlatform]}
+                stroke={platformRatingColors[selectedRatingPlatform]}
                 strokeWidth={2.5} 
                 fill={`url(#gradient${selectedRatingPlatform.charAt(0).toUpperCase() + selectedRatingPlatform.slice(1)})`}
-                style={compact ? { filter: `drop-shadow(0 0 5px ${compactRatingColors[selectedRatingPlatform]}aa)` } : undefined}
+                style={compact ? { filter: `drop-shadow(0 0 5px ${platformRatingColors[selectedRatingPlatform]}aa)` } : undefined}
                 dot={false}
-                activeDot={{ r: 5, fill: compact ? compactRatingColors[selectedRatingPlatform] : platformRatingColors[selectedRatingPlatform] }}
+                activeDot={{ r: 5, fill: platformRatingColors[selectedRatingPlatform] }}
                 connectNulls
               />
             ) : (
               <Area 
                 type="natural" 
                 dataKey="rating" 
-                stroke={compact ? '#e7edf5' : '#f59e0b'}
+                stroke="#f59e0b"
                 strokeWidth={2} 
                 fill="url(#gradientDefault)"
-                style={compact ? { filter: 'drop-shadow(0 0 4px #e7edf599)' } : undefined}
+                style={compact ? { filter: 'drop-shadow(0 0 4px #f59e0b99)' } : undefined}
                 dot={false}
-                activeDot={{ r: 4, fill: compact ? '#e7edf5' : '#f59e0b' }}
+                activeDot={{ r: 4, fill: '#f59e0b' }}
               />
             )}
           </AreaChart>
