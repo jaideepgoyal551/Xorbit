@@ -53,9 +53,9 @@ const ContributionCalendar = ({ calendarData, connectedPlatforms = [] }) => {
   }, [weeks.length, hasData]);
 
   // ── Theme-aware color palette ──
-  const COLOR = isDark 
-    ? ['#2d333b', '#0e4429', '#006d32', '#26a641', '#39d353']  // Dark mode - LeetCode green
-    : ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39']; // Light mode - lighter greens
+  const COLOR = isDark
+    ? ['#262c34', '#3d4652', '#606d7d', '#9aa6b5', '#e0e6ee']
+    : ['#e5e9ef', '#c4ccd7', '#9ba6b5', '#6b7787', '#414b59'];
 
   // ── tooltip ──
   const tip = (day) => {
@@ -151,6 +151,7 @@ const ContributionCalendar = ({ calendarData, connectedPlatforms = [] }) => {
                     height: cellPx,
                     borderRadius: 3,
                     backgroundColor: day ? COLOR[day.level] : 'transparent',
+                    boxShadow: day?.count ? `0 0 7px ${COLOR[day.level]}55` : 'none',
                     cursor: day ? 'pointer' : 'default',
                   }}
                   onMouseEnter={e => { if (day) e.currentTarget.style.filter = 'brightness(1.3)'; }}
